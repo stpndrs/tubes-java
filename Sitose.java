@@ -99,13 +99,68 @@ class Sitose {
     }
 
     void setup() {
-        if (this.level == 1) {
-
-        }
-        menu();
+        showMenu("menu", 0);
     }
 
-    void menu() {
-        
+    void showMenu(String type, int choosedMenu) {
+        if (type == "menu") {
+            if (this.level == 1) {
+                System.out.println("========Menu Aplikasi========");
+                System.out.println("----------MANAJEMEN PRODUK--------");
+                System.out.println("1. Jenis Produk");
+                System.out.println("2. Kategori Produk");
+                System.out.println("3. Data Produk");
+                System.out.println("----------MANAJEMEN TOKO CABANG--------");
+                System.out.println("4. Manajemen Toko Cabang");
+                System.out.println("----------MANAJEMEN TRANSAKSI--------");
+                System.out.println("5. Transaksi");
+                System.out.println("------------MANAJEMEN PENGGUNA----------");
+                System.out.println("6. Pengguna");
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int cm = chooseMenu();
+                showMenu("submenu", cm);
+            }
+        } else if (type == "submenu") {
+            if (choosedMenu == 1) {
+                if (this.level == 1 || this.level == 2) {
+                    System.out.println("========Menu Jenis Produk========");
+                    System.out.println("1. Lihat Data");
+                    System.out.println("2. Tambah Data");
+                    System.out.println("3. Edit Data");
+                    System.out.println("4. Hapus Data");
+                    System.out.println("========Pilih Untuk Mengakses Menu========");
+                    int csm = chooseSubMenu();
+
+                    switch (csm) {
+                        case 1:
+                            viewJenis();
+                            break;
+                    
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+    
+    int chooseMenu() {
+        int choosedMenu;
+        System.out.print("Masukkan Angka Menu : ");
+        choosedMenu = input.nextInt();
+
+        return choosedMenu;
+    }
+
+    int chooseSubMenu() {
+        int choosedSubMenu;
+        System.out.println("Masukkan Angka Menu : ");
+        choosedSubMenu = input.nextInt();
+
+        return choosedSubMenu;
+    }
+
+    void viewJenis() {
+        System.out.println("view jenis");
     }
 }
