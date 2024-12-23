@@ -13,6 +13,8 @@ class Sitose {
     ArrayList<String> menus = new ArrayList<>();
     ArrayList<String> selectedMenus = new ArrayList<>();
     
+    ArrayList<String> jenis = new ArrayList<>();
+    ArrayList<jenis> jenisObj = new ArrayList<jenis>();
     
     public static void main(String[] args) {
         Sitose func = new Sitose();
@@ -128,12 +130,25 @@ class Sitose {
                     System.out.println("2. Tambah Data");
                     System.out.println("3. Edit Data");
                     System.out.println("4. Hapus Data");
+                    System.out.println("5. Kembali");
                     System.out.println("========Pilih Untuk Mengakses Menu========");
                     int csm = chooseSubMenu();
 
                     switch (csm) {
                         case 1:
                             viewJenis();
+                            break;
+                        case 2:
+                            insertJenis();
+                            break;
+                        case 3:
+                            updateJenis();
+                            break;
+                        case 4:
+                            removeJenis();
+                            break;
+                        case 5:
+                            showMenu("menu", 0);
                             break;
                     
                         default:
@@ -161,6 +176,92 @@ class Sitose {
     }
 
     void viewJenis() {
-        System.out.println("view jenis");
+        System.out.println("====DATA JENIS PRODUK====");
+
+        jenisObj.forEach((item) -> {
+            System.out.print("> id : ");
+            System.out.print(item.id);
+            System.out.print(" - name : ");
+            System.out.println(item.name);
+        });
+
+        showMenu("submenu", 1);
+    }
+
+    void insertJenis() {
+        try {
+            System.out.println(">>>>TAMBAH JENIS PRODUK<<<<");
+    
+            int id = jenisObj.size() + 1;
+            input.nextLine(); // wait
+            System.out.print("Masukkan nama jenis produk : ");
+            String name = input.nextLine();
+            
+            if (name != "") {
+                jenis jn = new jenis(id, name);
+                jenisObj.add(jn);
+        
+                System.out.println(">>>>Data Berhasil Disimpan<<<<");
+                
+                showMenu("submenu", 1);
+            } else {
+                System.out.println("Kolom wajib diisi!");
+            }
+            
+        } catch (Exception e) {
+            System.out.println("!!!!Data Gagal Disimpan!!!!");
+        }
+    }
+
+    void updateJenis() {
+        System.out.println(">>>>EDIT JENIS PRODUK");
+
+        jenisObj.forEach((item) -> {
+            System.out.print("> id : ");
+            System.out.print(item.id);
+            System.out.print(" - name : ");
+            System.out.println(item.name);
+        });
+
+        System.out.println("Masukkan id jenis produk : ");
+        int id = input.nextInt();
+        input.nextLine(); // wait
+
+        System.out.println("Masukkan nama baru : ");
+        String name = input.nextLine();
+        
+        jenisObj.get(id - 1).name = name;
+        System.out.println(">>>>Data Berhasil Diubah<<<<");
+
+        showMenu("submenu", 1);
+    }
+
+    void removeJenis() {
+        System.out.println(">>>>HAPUS JENIS PRODUK<<<<");
+        
+        jenisObj.forEach((item) -> {
+            System.out.print("> id : ");
+            System.out.print(item.id);
+            System.out.print(" - name : ");
+            System.out.println(item.name);
+        });
+
+        System.out.println("Masukkan id jenis produk : ");
+        int id = input.nextInt();
+
+        jenisObj.remove(id - 1);
+        System.out.println(">>>>Data Berhasil Dihapus<<<<");
+
+        showMenu("submenu", 1);
+    }
+}
+
+class jenis {
+    public int id;
+    public String name;
+
+    public jenis(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 }
