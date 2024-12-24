@@ -16,6 +16,9 @@ class Sitose {
     ArrayList<String> jenis = new ArrayList<>();
     ArrayList<jenis> jenisObj = new ArrayList<jenis>();
 
+    ArrayList<String> kategori = new ArrayList<>();
+    ArrayList<kategori> kategoriObj = new ArrayList<kategori>();
+
     public static void main(String[] args) {
         Sitose func = new Sitose();
 
@@ -124,6 +127,7 @@ class Sitose {
             }
         } else if (type == "submenu") {
             String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
+            String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
 
             if (choosedMenu == 1) {
                 if (this.level == 1 || this.level == 2) {
@@ -151,6 +155,41 @@ class Sitose {
                             break;
                         case 4:
                             removeJenis();
+                            break;
+                        case 5:
+                            showMenu("menu", 0);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            } else if (choosedMenu == 2) {
+                if (this.level == 1 || this.level == 2) {
+                    System.out.println("+-------+----------------------+");
+                    System.out.printf("| %-4s | %-20s |\n", "Pilih", " Menu Kategori Produk");
+                    System.out.println("+------------------------------+");
+                    int i = 0;
+                    for (String mk : menuKategori) {
+                        System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mk);
+                    }
+                    System.out.println("+------------------------------+");
+
+                    System.out.println("========Pilih Untuk Mengakses Menu========");
+                    int csm = chooseSubMenu();
+
+                    switch (csm) {
+                        case 1:
+                            viewKategori();
+                            break;
+                        case 2:
+                            insertKategori();
+                            break;
+                        case 3:
+                            updateKategori();
+                            break;
+                        case 4:
+                            removeKategori();
                             break;
                         case 5:
                             showMenu("menu", 0);
@@ -269,6 +308,96 @@ class Sitose {
 
         showMenu("submenu", 1);
     }
+
+    void viewKategori() {
+        System.out.println("====DATA KATEGORI PRODUK====");
+
+        if (kategoriObj.isEmpty()) {
+            System.out.println("Tidak ada data untuk ditampilkan.");
+        } else {
+            // atas
+            System.out.println("+----+----------------------+");
+            System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Jenis Produk");
+            System.out.println("+----+----------------------+");
+
+            // Isi
+            for (kategori item : kategoriObj) {
+                System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
+            }
+
+            // bawah
+            System.out.println("+----+----------------------+");
+        }
+
+        showMenu("submenu", 2);
+    }
+
+    void insertKategori() {
+        try {
+            System.out.println(">>>>TAMBAH KATEGORI PRODUK<<<<");
+
+            int id = kategoriObj.size() + 1;
+            input.nextLine(); // wait
+            System.out.print("Masukkan nama kategori produk : ");
+            String name = input.nextLine();
+
+            if (name != "") {
+                kategori jn = new kategori(id, name);
+                kategoriObj.add(jn);
+
+                System.out.println(">>>>Data Berhasil Disimpan<<<<");
+
+                showMenu("submenu", 2);
+            } else {
+                System.out.println("Kolom wajib diisi!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("!!!!Data Gagal Disimpan!!!!");
+        }
+    }
+
+    void updateKategori() {
+        System.out.println(">>>>EDIT KATEGORI PRODUK");
+
+        kategoriObj.forEach((item) -> {
+            System.out.print("> id : ");
+            System.out.print(item.id);
+            System.out.print(" - name : ");
+            System.out.println(item.name);
+        });
+
+        System.out.println("Masukkan id kategori produk : ");
+        int id = input.nextInt();
+        input.nextLine(); // wait
+
+        System.out.println("Masukkan nama baru : ");
+        String name = input.nextLine();
+
+        kategoriObj.get(id - 1).name = name;
+        System.out.println(">>>>Data Berhasil Diubah<<<<");
+
+        showMenu("submenu", 2);
+    }
+
+    void removeKategori() {
+        System.out.println(">>>>HAPUS KATEGORI PRODUK<<<<");
+
+        kategoriObj.forEach((item) -> {
+            System.out.print("> id : ");
+            System.out.print(item.id);
+            System.out.print(" - name : ");
+            System.out.println(item.name);
+        });
+
+        System.out.println("Masukkan id kategori produk : ");
+        int id = input.nextInt();
+
+        kategoriObj.remove(id - 1);
+        System.out.println(">>>>Data Berhasil Dihapus<<<<");
+
+        showMenu("submenu", 2);
+    }
 }
 
 class jenis {
@@ -276,6 +405,16 @@ class jenis {
     public String name;
 
     public jenis(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+
+class kategori {
+    public int id;
+    public String name;
+
+    public kategori(int id, String name) {
         this.id = id;
         this.name = name;
     }
