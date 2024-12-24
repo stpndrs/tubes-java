@@ -12,16 +12,16 @@ class Sitose {
 
     ArrayList<String> menus = new ArrayList<>();
     ArrayList<String> selectedMenus = new ArrayList<>();
-    
+
     ArrayList<String> jenis = new ArrayList<>();
     ArrayList<jenis> jenisObj = new ArrayList<jenis>();
-    
+
     public static void main(String[] args) {
         Sitose func = new Sitose();
-        
+
         func.run();
     }
-    
+
     void run() {
         welcome();
     }
@@ -32,7 +32,7 @@ class Sitose {
         System.out.println("==SILAHKAN LOGIN UNTUK MENGAKSES APLIKASI==");
         login();
     }
-    
+
     void login() {
         user = new ArrayList<>();
         user.add("admin"); // username
@@ -92,7 +92,7 @@ class Sitose {
 
                 setup();
             }
-            
+
             if (!this.isLogin) {
                 System.out.println("Username dan password salah!");
                 login();
@@ -123,19 +123,19 @@ class Sitose {
                 showMenu("submenu", cm);
             }
         } else if (type == "submenu") {
+            String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
+
             if (choosedMenu == 1) {
                 if (this.level == 1 || this.level == 2) {
-					System.out.println("+-------+----------------------+");
-        System.out.printf("| %-4s | %-20s |\n", "Pilih", " Menu Jenisa Produk");
-        System.out.println("+------------------------------+");
-                    
-				 System.out.printf("| %4s| %-21s| \n","  1.  ","  Lihat Data");
-				 System.out.printf("| %4s| %-21s| \n","  2.  ","  Tambah Data");
-				 System.out.printf("| %4s| %-21s| \n","  3.  ","  Edit Data");
-				 System.out.printf("| %4s| %-21s| \n","  4.  ","  Hapus Data");
-				 System.out.printf("| %4s| %-21s| \n","  5.  ","  Kembali");
-				System.out.println("+------------------------------+");
-                    
+                    System.out.println("+-------+----------------------+");
+                    System.out.printf("| %-4s | %-20s |\n", "Pilih", " Menu Jenis Produk");
+                    System.out.println("+------------------------------+");
+                    int i = 0;
+                    for (String mj : menuJenis) {
+                        System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
+                    }
+                    System.out.println("+------------------------------+");
+
                     System.out.println("========Pilih Untuk Mengakses Menu========");
                     int csm = chooseSubMenu();
 
@@ -155,7 +155,7 @@ class Sitose {
                         case 5:
                             showMenu("menu", 0);
                             break;
-                    
+
                         default:
                             break;
                     }
@@ -163,7 +163,7 @@ class Sitose {
             }
         }
     }
-    
+
     int chooseMenu() {
         int choosedMenu;
         System.out.print("Masukkan Angka Menu : ");
@@ -183,46 +183,46 @@ class Sitose {
     void viewJenis() {
         System.out.println("====DATA JENIS PRODUK====");
 
-    if (jenisObj.isEmpty()) {
-        System.out.println("Tidak ada data untuk ditampilkan.");
-    } else {
-        // atas
-        System.out.println("+----+----------------------+");
-        System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Jenisa Produk");
-        System.out.println("+----+----------------------+");
+        if (jenisObj.isEmpty()) {
+            System.out.println("Tidak ada data untuk ditampilkan.");
+        } else {
+            // atas
+            System.out.println("+----+----------------------+");
+            System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Jenis Produk");
+            System.out.println("+----+----------------------+");
 
-        // Isi 
-        for (jenis item : jenisObj) {
-            System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
+            // Isi
+            for (jenis item : jenisObj) {
+                System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
+            }
+
+            // bawah
+            System.out.println("+----+----------------------+");
         }
 
-        // bawah
-        System.out.println("+----+----------------------+");
+        showMenu("submenu", 1);
     }
-
-    showMenu("submenu", 1);
-}
 
     void insertJenis() {
         try {
             System.out.println(">>>>TAMBAH JENIS PRODUK<<<<");
-    
+
             int id = jenisObj.size() + 1;
             input.nextLine(); // wait
             System.out.print("Masukkan nama jenis produk : ");
             String name = input.nextLine();
-            
+
             if (name != "") {
                 jenis jn = new jenis(id, name);
                 jenisObj.add(jn);
-        
+
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
-                
+
                 showMenu("submenu", 1);
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
-            
+
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
         }
@@ -244,7 +244,7 @@ class Sitose {
 
         System.out.println("Masukkan nama baru : ");
         String name = input.nextLine();
-        
+
         jenisObj.get(id - 1).name = name;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
@@ -253,7 +253,7 @@ class Sitose {
 
     void removeJenis() {
         System.out.println(">>>>HAPUS JENIS PRODUK<<<<");
-        
+
         jenisObj.forEach((item) -> {
             System.out.print("> id : ");
             System.out.print(item.id);
