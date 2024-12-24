@@ -125,12 +125,17 @@ class Sitose {
         } else if (type == "submenu") {
             if (choosedMenu == 1) {
                 if (this.level == 1 || this.level == 2) {
-                    System.out.println("========Menu Jenis Produk========");
-                    System.out.println("1. Lihat Data");
-                    System.out.println("2. Tambah Data");
-                    System.out.println("3. Edit Data");
-                    System.out.println("4. Hapus Data");
-                    System.out.println("5. Kembali");
+					System.out.println("+-------+----------------------+");
+        System.out.printf("| %-4s | %-20s |\n", "Pilih", " Menu Jenisa Produk");
+        System.out.println("+------------------------------+");
+                    
+				 System.out.printf("| %4s| %-21s| \n","  1.  ","  Lihat Data");
+				 System.out.printf("| %4s| %-21s| \n","  2.  ","  Tambah Data");
+				 System.out.printf("| %4s| %-21s| \n","  3.  ","  Edit Data");
+				 System.out.printf("| %4s| %-21s| \n","  4.  ","  Hapus Data");
+				 System.out.printf("| %4s| %-21s| \n","  5.  ","  Kembali");
+				System.out.println("+------------------------------+");
+                    
                     System.out.println("========Pilih Untuk Mengakses Menu========");
                     int csm = chooseSubMenu();
 
@@ -178,15 +183,25 @@ class Sitose {
     void viewJenis() {
         System.out.println("====DATA JENIS PRODUK====");
 
-        jenisObj.forEach((item) -> {
-            System.out.print("> id : ");
-            System.out.print(item.id);
-            System.out.print(" - name : ");
-            System.out.println(item.name);
-        });
+    if (jenisObj.isEmpty()) {
+        System.out.println("Tidak ada data untuk ditampilkan.");
+    } else {
+        // atas
+        System.out.println("+----+----------------------+");
+        System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Jenisa Produk");
+        System.out.println("+----+----------------------+");
 
-        showMenu("submenu", 1);
+        // Isi 
+        for (jenis item : jenisObj) {
+            System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
+        }
+
+        // bawah
+        System.out.println("+----+----------------------+");
     }
+
+    showMenu("submenu", 1);
+}
 
     void insertJenis() {
         try {
