@@ -412,7 +412,7 @@ class jenis {
 
 class kategori {
     public int id;
-    public String name;
+    public String name; // test
 
     public kategori(int id, String name) {
         this.id = id;
