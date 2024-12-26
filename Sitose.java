@@ -142,13 +142,28 @@ class Sitose {
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
+            if (this.level == 3){
+                System.out.println("----------MANAJEMEN TOKO CABANG--------");
+                System.out.println("1. Manajemen Toko Cabang");
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int cm = chooseMenu();
+                showMenu("submenu", cm);
+            }
+            if (this.level == 4){
+                System.out.println("----------MANAJEMEN TRANSAKSI--------");
+                System.out.println("1. Transaksi");
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int cm = chooseMenu();
+                showMenu("submenu", cm);
+            }
         } else if (type == "submenu") {
             String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
+            String[] menuProduk = { "Lihat Data", "Tambah Data", "kembali"};
 
             if (choosedMenu == 0){
                 System.out.println("Anda telah logout");
-                input.nextLine();
+                input.nextLine(); // Clear Buffer
                 welcome();
             }
             if (choosedMenu == 1) {
@@ -221,6 +236,32 @@ class Sitose {
                             break;
                     }
                 }
+            } else if (choosedMenu == 3) {
+                System.out.println("+------------------------------+");
+                int i = 0;
+                for (String mj : menuProduk) {
+                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
+                }
+                System.out.println("+------------------------------+");
+
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int csm = chooseSubMenu();
+
+                switch (csm) {
+                    case 1:
+                        viewProduk();
+                        break;
+                    case 2:
+                        insertProduk();
+                        break;
+                    case 3:
+                        showMenu("menu", 0);
+                        break;
+                    default:
+                    break;
+
+                }
+                
             }
         }
     }
@@ -420,6 +461,84 @@ class Sitose {
 
         showMenu("submenu", 2);
     }
+
+    void viewProduk() {
+        System.out.println("====LIHAT DATA PRODUK====");
+        
+        if (kategoriObj.isEmpty()) {
+            System.out.println("Tidak ada data kategori yang tersedia.");
+        } else {
+            System.out.println("+----+----------------------+");
+            System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Kategori");
+            System.out.println("+----+----------------------+");
+    
+            for (kategori item : kategoriObj) {
+                System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
+            }
+            System.out.println("+----+----------------------+");
+    
+            System.out.print("Pilih ID kategori untuk melihat data produk: ");
+            int idKategori = input.nextInt();
+    
+            if (idKategori > 0 && idKategori <= kategoriObj.size()) {
+                kategori selectedKategori = kategoriObj.get(idKategori - 1);
+                if (selectedKategori.data.isEmpty()) {
+                    System.out.println("Tidak ada data produk untuk kategori ini.");
+                } else {
+                    System.out.println("====DATA PRODUK DI KATEGORI: " + selectedKategori.name + "====");
+    
+                    for (String dataProduk : selectedKategori.data) {
+                        System.out.println(" - " + dataProduk);
+                    }
+                }
+            } else {
+                System.out.println("ID kategori tidak valid.");
+            }
+        }
+        showMenu("submenu", 3); 
+    }
+
+    void insertProduk(){
+        System.out.println("====DATA KATEGORI PRODUK====");
+
+        if (kategoriObj.isEmpty()) {
+                    System.out.println("Tidak ada data kategori untuk ditampilkan.");
+        } else {
+            System.out.println("+----+----------------------+\n");
+            System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Kategori");
+            System.out.println("+----+----------------------+\n");
+
+            for (kategori item : kategoriObj) {
+                System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
+            }
+            System.out.println("+----+----------------------+\n");
+
+            System.out.print("Masukkan ID kategori: ");
+            int idKategori = input.nextInt();
+
+            if (idKategori > 0 && idKategori <= kategoriObj.size()) {
+                kategori selectedKategori = kategoriObj.get(idKategori - 1);
+
+                input.nextLine(); // Clear buffer
+                System.out.print("Masukkan data untuk kategori ini: ");
+                String dataBaru = input.nextLine();
+
+                if (!dataBaru.isEmpty()) {
+                    selectedKategori.data.add(dataBaru);
+                    System.out.println(">>>>Data Berhasil Disimpan<<<<");
+                    showMenu("submenu", 3);
+
+                } else {
+                    System.out.println("Data tidak boleh kosong.");
+                    showMenu("submenu", 3);
+                }
+            } else {
+                System.out.println("ID kategori tidak valid.");
+                showMenu("submenu", 3);
+            }
+        }
+    }
+    
 }
 
 class jenis {
@@ -433,11 +552,13 @@ class jenis {
 }
 
 class kategori {
-    public int id;
-    public String name; // test
+    int id;
+    String name;
+    ArrayList<String> data; 
 
     public kategori(int id, String name) {
         this.id = id;
         this.name = name;
+        this.data = new ArrayList<>();
     }
 }
