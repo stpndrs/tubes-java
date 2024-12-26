@@ -6,7 +6,7 @@ class Sitose {
 
     ArrayList<ArrayList<String>> users = new ArrayList<>();
     ArrayList<String> user;
-    boolean isLogin = false;
+
     ArrayList<String> userLoggedin = new ArrayList<>();
     int level;
 
@@ -26,17 +26,11 @@ class Sitose {
     }
 
     void run() {
+        iniUser();
         welcome();
     }
 
-    void welcome() {
-        System.out.println("========SELAMAT DATANG DI SITOSE========");
-        System.out.println("===========Sistem Toko Sembako==========");
-        System.out.println("==SILAHKAN LOGIN UNTUK MENGAKSES APLIKASI==");
-        login();
-    }
-
-    void login() {
+    void iniUser(){
         user = new ArrayList<>();
         user.add("admin"); // username
         user.add("password"); // password
@@ -60,16 +54,29 @@ class Sitose {
         user.add("password"); // password
         user.add("kasir"); // level
         users.add(new ArrayList<>(user));
+    }
 
+    void welcome() {
+        System.out.println("========SELAMAT DATANG DI SITOSE========");
+        System.out.println("===========Sistem Toko Sembako==========");
+        System.out.println("==SILAHKAN LOGIN UNTUK MENGAKSES APLIKASI==");
+        login();
+    }
+
+    void login() {
         System.out.print("Masukkan Username : ");
         String username = input.nextLine();
         System.out.print("Masukkan Password : ");
         String password = input.nextLine();
-
-        auth(username, password);
+        
+        if (auth(username, password) ){
+            setup();
+        } else {
+            login();
+        }
     }
 
-    void auth(String usernameInput, String passwordInput) {
+    boolean auth(String usernameInput, String passwordInput) {
         for (int idx = 0; idx < users.size(); idx++) {
             ArrayList<String> user = users.get(idx);
 
@@ -78,7 +85,6 @@ class Sitose {
             String level = user.get(2);
 
             if (username.equals(usernameInput) && password.equals(passwordInput)) {
-                this.isLogin = true;
 
                 if (level == "admin") {
                     this.level = 1;
@@ -93,14 +99,11 @@ class Sitose {
                 this.userLoggedin.add(username);
                 this.userLoggedin.add(level);
 
-                setup();
-            }
-
-            if (!this.isLogin) {
-                System.out.println("Username dan password salah!");
-                login();
+                return true;
             }
         }
+        System.out.println("Username dan password salah!");
+        return false;
     }
 
     void setup() {
@@ -121,6 +124,20 @@ class Sitose {
                 System.out.println("5. Transaksi");
                 System.out.println("------------MANAJEMEN PENGGUNA----------");
                 System.out.println("6. Pengguna");
+                System.out.println("---------------AKSES-------------");
+                System.out.println("0. logout");
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int cm = chooseMenu();
+                showMenu("submenu", cm);
+            }
+            if (this.level == 2){
+                System.out.println("========Menu Aplikasi========");
+                System.out.println("----------MANAJEMEN PRODUK--------");
+                System.out.println("1. Jenis Produk");
+                System.out.println("2. Kategori Produk");
+                System.out.println("3. Data Produk");
+                System.out.println("---------------AKSES-------------");
+                System.out.println("0. logout");
                 System.out.println("========Pilih Untuk Mengakses Menu========");
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
@@ -129,6 +146,11 @@ class Sitose {
             String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
 
+            if (choosedMenu == 0){
+                System.out.println("Anda telah logout");
+                input.nextLine();
+                welcome();
+            }
             if (choosedMenu == 1) {
                 if (this.level == 1 || this.level == 2) {
                     System.out.println("+-------+----------------------+");
