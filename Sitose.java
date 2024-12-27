@@ -37,14 +37,18 @@ class Sitose {
     }
 
     void welcome() {
-        System.out.println("========SELAMAT DATANG DI SITOSE========");
-        System.out.println("===========Sistem Toko Sembako==========");
-        System.out.println("==SILAHKAN LOGIN UNTUK MENGAKSES APLIKASI==");
+		System.out.println("========================================");
+		System.out.println(" ");
+        System.out.println("        SELAMAT DATANG DI SITOSE        ");
+		System.out.println(" ");
+		System.out.println("========================================");
+		
         login();
     }
 
     void login() {
         System.out.print("Masukkan Username : ");
+		
         String username = input.nextLine();
         System.out.print("Masukkan Password : ");
         String password = input.nextLine();
@@ -81,50 +85,72 @@ class Sitose {
     void setup() {
         showMenu("menu", 0);
     }
+	void menutemplate(){
+		System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("             MENU APLIKASI");
+        System.out.println(" ");
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("+-----+--------------------------------+");
+        System.out.println("| No  |           Pilihan Menu         |");
+        System.out.println("+-----+--------------------------------+");
+		
+	}
 
     void showMenu(String type, int choosedMenu) {
+		
+		 String[] menuItems = {
+            "Jenis Produk", "Kategori Produk","Data Produk","Manajemen Toko Cabang", "Transaksi","Pengguna","Logout"
+        };
+		
         if (type == "menu") {
             if (this.level == 1) {
-                System.out.println("========Menu Aplikasi========");
-                System.out.println("----------MANAJEMEN PRODUK--------");
-                System.out.println("1. Jenis Produk");
-                System.out.println("2. Kategori Produk");
-                System.out.println("3. Data Produk");
-                System.out.println("----------MANAJEMEN TOKO CABANG--------");
-                System.out.println("4. Manajemen Toko Cabang");
-                System.out.println("----------MANAJEMEN TRANSAKSI--------");
-                System.out.println("5. Transaksi");
-                System.out.println("------------MANAJEMEN PENGGUNA----------");
-                System.out.println("6. Pengguna");
-                System.out.println("---------------AKSES-------------");
-                System.out.println("0. logout");
-                System.out.println("========Pilih Untuk Mengakses Menu========");
+				menutemplate();
+
+         //menu
+        for (int i = 0; i < menuItems.length; i++) {
+            
+            System.out.printf("| %-3d | %-30s |\n", i + 1, menuItems[i]);
+        }
+
+        System.out.println("+-----+--------------------------------+");
+        System.out.println(" ");
+        System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
             if (this.level == 2) {
-                System.out.println("========Menu Aplikasi========");
-                System.out.println("----------MANAJEMEN PRODUK--------");
-                System.out.println("1. Jenis Produk");
-                System.out.println("2. Kategori Produk");
-                System.out.println("3. Data Produk");
-                System.out.println("---------------AKSES-------------");
-                System.out.println("0. logout");
-                System.out.println("========Pilih Untuk Mengakses Menu========");
+				
+				menutemplate();
+		
+					for (int i = 0; i <= 3; i++) {
+            System.out.printf("| %-3d | %-30s |\n", i + 1, menuItems[i]);
+			System.out.println("+-----+--------------------------------+");
+        System.out.println(" ");
+        System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
+        }
+					
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
             if (this.level == 3) {
-                System.out.println("----------MANAJEMEN TOKO CABANG--------");
-                System.out.println("1. Manajemen Toko Cabang");
-                System.out.println("========Pilih Untuk Mengakses Menu========");
+				menutemplate();
+			   System.out.printf("| %-3d | %-30s |\n", 1, menuItems[4]);
+			   System.out.println("+-----+--------------------------------+");
+               System.out.println(" ");
+               System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
+                
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
             if (this.level == 4) {
-                System.out.println("----------MANAJEMEN TRANSAKSI--------");
-                System.out.println("1. Transaksi");
-                System.out.println("========Pilih Untuk Mengakses Menu========");
+				menutemplate();
+				System.out.printf("| %-3d | %-30s |\n", 1, menuItems[5]);
+			   System.out.println("+-----+--------------------------------+");
+               System.out.println(" ");
+               System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
+               
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
