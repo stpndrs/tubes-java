@@ -28,10 +28,8 @@ class Sitose {
     }
 
     void initUser() {
-        users.add(new User("admin", "password", "admin"));
-        users.add(new User("gudang", "password", "gudang"));
-        users.add(new User("manajer", "password", "manajer"));
-        users.add(new User("kasir", "password", "kasir"));
+        users.add(new User(1, "admin", "password", "admin", null));
+        users.add(new User(2, "gudang", "password", "gudang", null));
     }
 
     void welcome() {
@@ -757,17 +755,106 @@ class Sitose {
 
         showMenu("submenu", 4);
     }
+
+    void viewUser(boolean isShowMenu) {
+        if (users.isEmpty()) {
+            System.out.println("Tidak ada data untuk ditampilkan.");
+        } else {
+            for (User item : users) {
+                System.out.println(item.id);
+                System.out.println(item.username);
+                System.out.println(item.password);
+                System.out.println(item.level);
+            }
+        }
+        if (isShowMenu) {
+            showMenu("submenu", 2);
+        }
+    }
+
+    // BELOM SELESAIII
+    void insertUser() {
+        try {
+            System.out.println(">>>>TAMBAH KATEGORI PRODUK<<<<");
+
+            int id = 1;
+            if (!users.isEmpty()) {
+                id = users.get(users.size() - 1).id + 1;
+            }
+            input.nextLine(); // wait
+            System.out.print("Masukkan username : ");
+            String username = input.nextLine();
+            System.out.print("Masukkan password : ");
+            String password = input.nextLine();
+            System.out.print("Masukkan level (admin, gudang, manajer, kasir) : ");
+            String level = input.nextLine();
+
+            if (username != "" && password != "") {
+                users.add(new User(id, username, password, level, null));
+
+                System.out.println(">>>>Data Berhasil Disimpan<<<<");
+
+                showMenu("submenu", 2);
+            } else {
+                System.out.println("Kolom wajib diisi!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("!!!!Data Gagal Disimpan!!!!");
+            System.out.println("error : " + e.getMessage());
+        }
+    }
+
+    void updateUser() {
+        System.out.println(">>>>EDIT KATEGORI PRODUK");
+
+        // tampilkan kategori produk
+        viewUser(false);
+
+        System.out.println("Masukkan id kategori produk : ");
+        int id = input.nextInt();
+        input.nextLine(); // wait
+
+        System.out.println("Masukkan username baru : ");
+        String username = input.nextLine();
+        System.out.println("Masukkan password baru : ");
+        String password = input.nextLine();
+
+        // tambahkan if kosong maka tidak ada yang diubah ---------------------
+        users.get(id - 1).username = username;
+        users.get(id - 1).password = password;
+        System.out.println(">>>>Data Berhasil Diubah<<<<");
+
+        showMenu("submenu", 2);
+    }
+
+    void removeUser() {
+        System.out.println(">>>>HAPUS KATEGORI PRODUK<<<<");
+
+        // tampilkan kategori produk
+        viewUser(false);
+
+        System.out.println("Masukkan id kategori produk : ");
+        int id = input.nextInt();
+
+        users.removeIf(n -> n.id == id);
+        System.out.println(">>>>Data Berhasil Dihapus<<<<");
+
+        showMenu("submenu", 2);
+    }
 }
 
 class User {
-    String username;
-    String password;
-    String level;
+    int id;
+    String username, password, level;
+    CabangToko cabangtoko;
 
-    User(String username, String password, String level) {
+    User(int id, String username, String password, String level, CabangToko cabangtoko) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.level = level;
+        this.cabangtoko = cabangtoko;
     }
 }
 
