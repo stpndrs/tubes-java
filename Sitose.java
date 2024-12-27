@@ -6,7 +6,6 @@ class Sitose {
 
     ArrayList<User> users = new ArrayList<>();
 
-    // ArrayList<String> userLoggedin = new ArrayList<>();
     int level;
 
     ArrayList<String> menus = new ArrayList<>();
@@ -15,6 +14,7 @@ class Sitose {
     ArrayList<Jenis> jenisObj = new ArrayList<Jenis>();
     ArrayList<Kategori> kategoriObj = new ArrayList<Kategori>();
     ArrayList<Produk> produkObj = new ArrayList<Produk>();
+    ArrayList<CabangToko> cabangtokoObj = new ArrayList<CabangToko>();
 
     public static void main(String[] args) {
         Sitose func = new Sitose();
@@ -136,6 +136,7 @@ class Sitose {
             }
             if (this.level == 3) {
                 menutemplate();
+
                 System.out.printf("| %-3d | %-30s |\n", 1, menuItems[4]);
                 System.out.println("+-----+--------------------------------+");
                 System.out.println(" ");
@@ -146,6 +147,7 @@ class Sitose {
             }
             if (this.level == 4) {
                 menutemplate();
+
                 System.out.printf("| %-3d | %-30s |\n", 1, menuItems[5]);
                 System.out.println("+-----+--------------------------------+");
                 System.out.println(" ");
@@ -158,6 +160,7 @@ class Sitose {
             String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuProduk = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
+            String[] menuCabangToko = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
 
             if (choosedMenu == 0) {
                 System.out.println("Anda telah logout");
@@ -265,9 +268,72 @@ class Sitose {
                         break;
 
                 }
+            } else if (choosedMenu == 4) {
+                System.out.println("+------------------------------+");
+                int i = 0;
+                for (String mj : menuCabangToko) {
+                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
+                }
+                System.out.println("+------------------------------+");
 
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int csm = chooseSubMenu();
+
+                switch (csm) {
+                    case 1:
+                        viewCabangToko(true);
+                        break;
+                    case 2:
+                        insertCabangToko();
+                        break;
+                    case 3:
+                        updateCabangToko();
+                        break;
+                    case 4:
+                        removeCabangToko();
+                        break;
+                    case 5:
+                        showMenu("menu", 0);
+                        break;
+                    default:
+                        break;
+
+                }
             }
         }
+
+        // int a = 0;
+        // a++;
+        // if (choosedMenu == 1) {
+        // if (this.level == 1 || this.level == 2) {
+        // System.out.println(a + ". Lihat Data");
+        // System.out.println(a + ". Tambah Data");
+        // System.out.println(a + ". Edit Data");
+        // System.out.println(a + ". Hapus Data");
+        // System.out.println(a + ". Kembali");
+        // int csm = 1;
+        // switch (csm) {
+        // case 1:
+
+        // break;
+
+        // default:
+        // break;
+        // }
+        // } else if (choosedMenu == 2) {
+        // System.out.println(a + ". Lihat Data");
+        // System.out.println(a + ". Tambah Data");
+        // System.out.println(a + ". Edit Data");
+        // System.out.println(a + ". Hapus Data");
+        // System.out.println(a + ". Kembali");
+        // } else if (choosedMenu == 3) {
+        // System.out.println(a + ". Lihat Data");
+        // System.out.println(a + ". Tambah Data");
+        // System.out.println(a + ". Edit Data");
+        // System.out.println(a + ". Hapus Data");
+        // System.out.println(a + ". Kembali");
+        // }
+        // }
     }
 
     int chooseMenu() {
@@ -379,8 +445,6 @@ class Sitose {
     }
 
     void viewKategori(boolean isShowMenu) {
-        System.out.println("====DATA KATEGORI PRODUK====");
-
         if (kategoriObj.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
@@ -595,6 +659,104 @@ class Sitose {
         showMenu("submenu", 3);
     }
 
+    void viewCabangToko(boolean isShowMenu) {
+        if (cabangtokoObj.isEmpty()) {
+            System.out.println("Tidak ada data untuk ditampilkan.");
+        } else {
+            for (CabangToko item : cabangtokoObj) {
+                System.out.println(item.id);
+                System.out.println(item.name);
+                System.out.println(item.kode);
+                System.out.println(item.telepon);
+                System.out.println(item.alamat);
+            }
+
+            // bawah
+            System.out.println("+----+----------------------+");
+        }
+
+        if (isShowMenu) {
+            showMenu("submenu", 4);
+        }
+    }
+
+    void insertCabangToko() {
+        try {
+            System.out.println(">>>>TAMBAH KATEGORI PRODUK<<<<");
+
+            int id = 1;
+            if (!cabangtokoObj.isEmpty()) {
+                id = cabangtokoObj.get(cabangtokoObj.size() - 1).id + 1;
+            }
+            input.nextLine(); // wait
+            System.out.print("Masukkan nama cabang : ");
+            String name = input.nextLine();
+            System.out.print("Masukkan kode cabang : ");
+            String kode = input.nextLine();
+            System.out.print("Masukkan telepon cabang : ");
+            String telepon = input.nextLine();
+            System.out.print("Masukkan alamat cabang : ");
+            String alamat = input.nextLine();
+
+            if (name != "" && telepon != "") {
+                cabangtokoObj.add(new CabangToko(id, name, kode, telepon, alamat));
+
+                System.out.println(">>>>Data Berhasil Disimpan<<<<");
+
+                showMenu("submenu", 4);
+            } else {
+                System.out.println("Kolom wajib diisi!");
+            }
+
+        } catch (Exception e) {
+            System.out.println("!!!!Data Gagal Disimpan!!!!");
+            System.out.println("error : " + e.getMessage());
+        }
+    }
+
+    void updateCabangToko() {
+        System.out.println(">>>>EDIT CABANG TOKO");
+
+        // tampilkan cabang toko produk
+        viewCabangToko(false);
+
+        System.out.println("Masukkan id cabang toko : ");
+        int id = input.nextInt();
+        input.nextLine(); // wait
+
+        System.out.println("Masukkan nama baru : ");
+        String name = input.nextLine();
+        System.out.println("Masukkan kode baru : ");
+        String kode = input.nextLine();
+        System.out.println("Masukkan kode baru : ");
+        String telepon = input.nextLine();
+        System.out.println("Masukkan kode baru : ");
+        String alamat = input.nextLine();
+
+        // tambahkan if kosong maka tidak ada yang diubah ---------------------
+        cabangtokoObj.get(id - 1).name = name;
+        cabangtokoObj.get(id - 1).kode = kode;
+        cabangtokoObj.get(id - 1).telepon = telepon;
+        cabangtokoObj.get(id - 1).alamat = alamat;
+        System.out.println(">>>>Data Berhasil Diubah<<<<");
+
+        showMenu("submenu", 4);
+    }
+
+    void removeCabangToko() {
+        System.out.println(">>>>HAPUS CABANG TOKO<<<<");
+
+        // tampilkan cabang toko
+        viewCabangToko(false);
+
+        System.out.println("Masukkan id cabang toko : ");
+        int id = input.nextInt();
+
+        cabangtokoObj.removeIf(n -> n.id == id);
+        System.out.println(">>>>Data Berhasil Dihapus<<<<");
+
+        showMenu("submenu", 4);
+    }
 }
 
 class User {
@@ -647,5 +809,18 @@ class Produk {
         // jenis, MA (makanan) kode dari kategori dan 0001 didapat dari nomor id)
         this.stok = stok;
         this.harga = harga;
+    }
+}
+
+class CabangToko {
+    int id;
+    String kode, name, telepon, alamat;
+
+    public CabangToko(int id, String name, String kode, String telepon, String alamat) {
+        this.id = id;
+        this.name = name;
+        this.kode = kode;
+        this.telepon = telepon;
+        this.alamat = alamat;
     }
 }
