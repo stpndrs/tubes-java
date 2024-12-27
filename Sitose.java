@@ -349,24 +349,24 @@ class Sitose {
 
         return choosedSubMenu;
     }
-
+//checkpoint
     void viewJenis(boolean isShowMenu) {
         if (jenisObj.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             // atas
-            System.out.println("+----+----------------------+");
-            System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Jenis Produk", "Kode Jenis Produk");
-            System.out.println("+----+----------------------+");
+            System.out.println("+----+------+-------------------+");
+            System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode","Nama Jenis Produk"  );
+            System.out.println("+----+------+-------------------+");
 
             // Isi
             for (Jenis item : jenisObj) {
-                System.out.printf("| %-2d | %-20s |\n", item.id, item.name, item.kode);
-                System.out.println(item.kode);
+			System.out.printf("| %-2d | %-4s | %-17s | \n", item.id,  item.kode, item.name);
+                //System.out.println(item.kode);
             }
 
             // bawah
-            System.out.println("+----+----------------------+");
+            System.out.println("+----+------+-------------------+");
         }
 
         if (isShowMenu) {
@@ -405,10 +405,23 @@ class Sitose {
     }
 
     void updateJenis() {
-        System.out.println(">>>>EDIT JENIS PRODUK");
+		System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("             EDIT JENIS PRODUK");
+        System.out.println(" ");
+        System.out.println("========================================");
+        
 
         // tampilkan jenis produk
         viewJenis(false);
+		// jika tidak ada yg harus di tampilkan harus tampilkan menu produk
+		if (jenisObj.isEmpty()) {
+        System.out.println("Tidak ada data yang dapat diubah. Kembali ke menu utama.");
+        showMenu("submenu", 1);
+        return;
+    }
+	
+	
 
         System.out.println("Masukkan id jenis produk : ");
         int id = input.nextInt();
