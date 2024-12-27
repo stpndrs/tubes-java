@@ -4,10 +4,9 @@ import java.util.Scanner;
 class Sitose {
     Scanner input = new Scanner(System.in);
 
-    ArrayList<ArrayList<String>> users = new ArrayList<>();
-    ArrayList<String> user;
+    ArrayList<User> users = new ArrayList<>();
 
-    ArrayList<String> userLoggedin = new ArrayList<>();
+    // ArrayList<String> userLoggedin = new ArrayList<>();
     int level;
 
     ArrayList<String> menus = new ArrayList<>();
@@ -26,34 +25,15 @@ class Sitose {
     }
 
     void run() {
-        iniUser();
+        initUser();
         welcome();
     }
 
-    void iniUser(){
-        user = new ArrayList<>();
-        user.add("admin"); // username
-        user.add("password"); // password
-        user.add("admin"); // level
-        users.add(new ArrayList<>(user));
-
-        user = new ArrayList<>();
-        user.add("gudang"); // username
-        user.add("password"); // password
-        user.add("gudang"); // level
-        users.add(new ArrayList<>(user));
-
-        user = new ArrayList<>();
-        user.add("manajer"); // username
-        user.add("password"); // password
-        user.add("manajer"); // level
-        users.add(new ArrayList<>(user));
-
-        user = new ArrayList<>();
-        user.add("kasir"); // username
-        user.add("password"); // password
-        user.add("kasir"); // level
-        users.add(new ArrayList<>(user));
+    void initUser() {
+        users.add(new User("admin", "password", "admin"));
+        users.add(new User("gudang", "password", "gudang"));
+        users.add(new User("manajer", "password", "manajer"));
+        users.add(new User("kasir", "password", "kasir"));
     }
 
     void welcome() {
@@ -68,8 +48,9 @@ class Sitose {
         String username = input.nextLine();
         System.out.print("Masukkan Password : ");
         String password = input.nextLine();
-        
-        if (auth(username, password) ){
+
+        if (auth(username, password)) {
+            System.out.println("asdasd");
             setup();
         } else {
             login();
@@ -77,27 +58,18 @@ class Sitose {
     }
 
     boolean auth(String usernameInput, String passwordInput) {
-        for (int idx = 0; idx < users.size(); idx++) {
-            ArrayList<String> user = users.get(idx);
-
-            String username = user.get(0);
-            String password = user.get(1);
-            String level = user.get(2);
-
-            if (username.equals(usernameInput) && password.equals(passwordInput)) {
-
-                if (level == "admin") {
+        for (User user : users) {
+            if (user.username.equals(usernameInput) && user.password.equals(passwordInput)) {
+                // userLoggedin = user
+                if (user.level.equals("admin")) {
                     this.level = 1;
-                } else if (level == "gudang") {
+                } else if (user.level.equals("gudang")) {
                     this.level = 2;
-                } else if (level == "manajer") {
+                } else if (user.level.equals("manajer")) {
                     this.level = 3;
-                } else if (level == "kasir") {
+                } else if (user.level.equals("kasir")) {
                     this.level = 4;
                 }
-
-                this.userLoggedin.add(username);
-                this.userLoggedin.add(level);
 
                 return true;
             }
@@ -130,7 +102,7 @@ class Sitose {
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
-            if (this.level == 2){
+            if (this.level == 2) {
                 System.out.println("========Menu Aplikasi========");
                 System.out.println("----------MANAJEMEN PRODUK--------");
                 System.out.println("1. Jenis Produk");
@@ -142,14 +114,14 @@ class Sitose {
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
-            if (this.level == 3){
+            if (this.level == 3) {
                 System.out.println("----------MANAJEMEN TOKO CABANG--------");
                 System.out.println("1. Manajemen Toko Cabang");
                 System.out.println("========Pilih Untuk Mengakses Menu========");
                 int cm = chooseMenu();
                 showMenu("submenu", cm);
             }
-            if (this.level == 4){
+            if (this.level == 4) {
                 System.out.println("----------MANAJEMEN TRANSAKSI--------");
                 System.out.println("1. Transaksi");
                 System.out.println("========Pilih Untuk Mengakses Menu========");
@@ -159,9 +131,9 @@ class Sitose {
         } else if (type == "submenu") {
             String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
-            String[] menuProduk = { "Lihat Data", "Tambah Data", "kembali"};
+            String[] menuProduk = { "Lihat Data", "Tambah Data", "kembali" };
 
-            if (choosedMenu == 0){
+            if (choosedMenu == 0) {
                 System.out.println("Anda telah logout");
                 input.nextLine(); // Clear Buffer
                 welcome();
@@ -258,10 +230,10 @@ class Sitose {
                         showMenu("menu", 0);
                         break;
                     default:
-                    break;
+                        break;
 
                 }
-                
+
             }
         }
     }
@@ -464,29 +436,29 @@ class Sitose {
 
     void viewProduk() {
         System.out.println("====LIHAT DATA PRODUK====");
-        
+
         if (kategoriObj.isEmpty()) {
             System.out.println("Tidak ada data kategori yang tersedia.");
         } else {
             System.out.println("+----+----------------------+");
             System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Kategori");
             System.out.println("+----+----------------------+");
-    
+
             for (kategori item : kategoriObj) {
                 System.out.printf("| %-2d | %-20s |\n", item.id, item.name);
             }
             System.out.println("+----+----------------------+");
-    
+
             System.out.print("Pilih ID kategori untuk melihat data produk: ");
             int idKategori = input.nextInt();
-    
+
             if (idKategori > 0 && idKategori <= kategoriObj.size()) {
                 kategori selectedKategori = kategoriObj.get(idKategori - 1);
                 if (selectedKategori.data.isEmpty()) {
                     System.out.println("Tidak ada data produk untuk kategori ini.");
                 } else {
                     System.out.println("====DATA PRODUK DI KATEGORI: " + selectedKategori.name + "====");
-    
+
                     for (String dataProduk : selectedKategori.data) {
                         System.out.println(" - " + dataProduk);
                     }
@@ -495,14 +467,14 @@ class Sitose {
                 System.out.println("ID kategori tidak valid.");
             }
         }
-        showMenu("submenu", 3); 
+        showMenu("submenu", 3);
     }
 
-    void insertProduk(){
+    void insertProduk() {
         System.out.println("====DATA KATEGORI PRODUK====");
 
         if (kategoriObj.isEmpty()) {
-                    System.out.println("Tidak ada data kategori untuk ditampilkan.");
+            System.out.println("Tidak ada data kategori untuk ditampilkan.");
         } else {
             System.out.println("+----+----------------------+\n");
             System.out.printf("| %-2s | %-20s |\n", "ID", "Nama Kategori");
@@ -538,7 +510,19 @@ class Sitose {
             }
         }
     }
-    
+
+}
+
+class User {
+    String username;
+    String password;
+    String level;
+
+    User(String username, String password, String level) {
+        this.username = username;
+        this.password = password;
+        this.level = level;
+    }
 }
 
 class jenis {
@@ -554,7 +538,7 @@ class jenis {
 class kategori {
     int id;
     String name;
-    ArrayList<String> data; 
+    ArrayList<String> data;
 
     public kategori(int id, String name) {
         this.id = id;
