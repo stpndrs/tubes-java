@@ -2,36 +2,103 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 class Sitose {
+    /*
+     * variabel input sebagai scanner yang akan digunakkan untuk menangkap data
+     * inputan
+     */
     Scanner input = new Scanner(System.in);
 
-    ArrayList<User> users = new ArrayList<>();
-
+    /*
+     * ArrayList<User> penggunaObject = new ArrayList<>(); mendefinisikan sebuah
+     * ArrayList sebagai wadah dinamis yang digunakan untuk menyimpan objek-objek
+     * yang dibentuk dari kelas User.
+     */
+    ArrayList<User> penggunaObject = new ArrayList<>();
+    /*
+     * variabel level untuk menyimpan level pengguna yang sedang login
+     */
     int level;
 
-    ArrayList<String> menus = new ArrayList<>();
-    ArrayList<String> selectedMenus = new ArrayList<>();
+    /*
+     * ArrayList<Jenis> jenisProdukObject = new ArrayList<>();
+     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
+     * untuk menyimpan objek-objek yang dibentuk dari kelas Jenis.
+     */
+    ArrayList<Jenis> jenisProdukObject = new ArrayList<>();
 
-    ArrayList<Jenis> jenisObj = new ArrayList<Jenis>();
-    ArrayList<Kategori> kategoriObj = new ArrayList<Kategori>();
-    ArrayList<Produk> produkObj = new ArrayList<Produk>();
-    ArrayList<CabangToko> cabangtokoObj = new ArrayList<CabangToko>();
+    /*
+     * ArrayList<Kategori> kategoriProdukObject = new ArrayList<>();
+     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
+     * untuk menyimpan objek-objek yang dibentuk dari kelas Kategori.
+     */
+    ArrayList<Kategori> kategoriProdukObject = new ArrayList<>();
+
+    /*
+     * ArrayList<Produk> produkObject = new ArrayList<>();
+     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
+     * untuk menyimpan objek-objek yang dibentuk dari kelas Produk.
+     */
+    ArrayList<Produk> produkObject = new ArrayList<>();
+
+    /*
+     * ArrayList<CabangToko> cabangTokoObject = new ArrayList<>();
+     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
+     * untuk menyimpan objek-objek yang dibentuk dari kelas CabangToko.
+     */
+    ArrayList<CabangToko> cabangTokoObject = new ArrayList<>();
 
     public static void main(String[] args) {
+        // Membuat objek baru dari kelas Sitose dan menyimpannya di variabel func
         Sitose func = new Sitose();
 
+        // Menjalankan metode run() pada objek func yang telah dibuat
         func.run();
     }
 
+    /*
+     * method run() menjalankan :
+     * -> method initUser() untuk mengisi data pengguna yang akan login kedalam
+     * aplikasi
+     * -> method welcome() untuk menampilkan halaman depan dari program yang
+     * dijalankan
+     */
     void run() {
         initUser();
         welcome();
     }
 
+    /*
+     * method initUser() mengisi data pengguna yang akan masuk dan mengakses
+     * aplikasi
+     * Daftar role/level pengguna:
+     * 1. admin
+     * -> bisa mengakses semua menu kecuali menambah data transaksi
+     * 2. gudang
+     * -> mengatur semua manajemen produk yang ada di gudang utama
+     * 3. manajer toko
+     * -> mengatur data toko
+     * 4. gudang toko
+     * -> mengatur produk yang ada di toko tersebut
+     * 5. kasir
+     * -> melakukan transaksi
+     */
     void initUser() {
-        users.add(new User(1, "admin", "password", "admin", null));
-        users.add(new User(2, "gudang", "password", "gudang", null));
+        /*
+         * melakukan insert data kedalam arraylist penggunaObject dalam bentuk objek
+         * dari kelas User dengan parameter :
+         * -> id : id pengguna
+         * -> username : username atau nama pengguna
+         * -> password : password pengguna
+         * -> level : level atau role yang digunakkan untuk memvalidasi hak akses
+         */
+        penggunaObject.add(new User(1, "admin", "password", "admin", null));
+        penggunaObject.add(new User(2, "gudang", "password", "gudang", null));
     }
 
+    /*
+     * method welcome() menampilkan pesan selamat datang di aplikasi, lalu memanggil
+     * method login() agar pengguna bisa melakukan login
+     */
     void welcome() {
         System.out.println("========================================");
         System.out.println(" ");
@@ -42,13 +109,25 @@ class Sitose {
         login();
     }
 
+    /*
+     * method login() memanggil input agar pengguna bisa melakukan login dengan
+     * memasukkan username dan password
+     */
     void login() {
         System.out.print("Masukkan Username : ");
-
         String username = input.nextLine();
         System.out.print("Masukkan Password : ");
         String password = input.nextLine();
 
+        /*
+         * melakukan pengecekan pada fungsi auth() dengan username dan password sebagai
+         * parameter.
+         * -> jika kondisi benar, maka pengguna diizinkan untuk melanjutkan dan
+         * mengakses
+         * menu aplikasi sesuai dengan level atau role-nya.
+         * -> jika kondisi salah, pengguna diarahkan untuk kembali mengisi username dan
+         * password
+         */
         if (auth(username, password)) {
             setup();
         } else {
@@ -56,10 +135,24 @@ class Sitose {
         }
     }
 
+    /*
+     * fungsi auth() dengan parameter username dan password mengembalikan status
+     * apakah username dan password yang dimasukkan benar atau salah dengan tipe
+     * data boolean. pengecekan dilakukan dengan menggunakkan looping (foreach),
+     * jika terdapat
+     * username dan password yang sama dari objek yang diulang (loop), maka username
+     * dan password yang dimasukkan bernilai benar, jika tidak bernilai salah.
+     * 
+     * -> jika username dan password bernilai benar, maka simpan level sebagai angka
+     * didalam variabel global level yang sudah dibuat sebelumnya (variabel yang
+     * dibuat untuk menyimpan level pengguna yang sedang login) dan kembalikan nilai
+     * true
+     * -> jika username dan password bernilai salah, maka tampilkan pesan
+     * "Username dan password salah!" dan kembalikan nilai false
+     */
     boolean auth(String usernameInput, String passwordInput) {
-        for (User user : users) {
+        for (User user : penggunaObject) {
             if (user.username.equals(usernameInput) && user.password.equals(passwordInput)) {
-                // userLoggedin = user
                 if (user.level.equals("admin")) {
                     this.level = 1;
                 } else if (user.level.equals("gudang")) {
@@ -77,10 +170,17 @@ class Sitose {
         return false;
     }
 
+    /*
+     * method setup() untuk memanggil method showMenu() yang akan menampilkan daftar
+     * menu aplikasi sesuai dengan hak akses pengguna
+     */
     void setup() {
         showMenu("menu", 0);
     }
 
+    /*
+     * Rakha Jelasin
+     */
     void menutemplate() {
         System.out.println("========================================");
         System.out.println(" ");
@@ -91,9 +191,11 @@ class Sitose {
         System.out.println("+-----+--------------------------------+");
         System.out.println("| No  |           Pilihan Menu         |");
         System.out.println("+-----+--------------------------------+");
-
     }
 
+    /*
+     * Rakha Jelasin
+     */
     void showMenu(String type, int choosedMenu) {
 
         String[] menuItems = {
@@ -365,6 +467,10 @@ class Sitose {
         // }
     }
 
+    /*
+     * fungsi chooseMenu() akan mengembalikan angka yang sudah dimasukkan oleh
+     * pengguna untuk memilih menu apa yang akan di akses
+     */
     int chooseMenu() {
         int choosedMenu;
         System.out.print("Masukkan Angka Menu : ");
@@ -373,6 +479,10 @@ class Sitose {
         return choosedMenu;
     }
 
+    /*
+     * fungsi chooseSubMenu() akan mengembalikan angka yang sudah dimasukkan oleh
+     * pengguna untuk memilih submenu apa yang akan di akses
+     */
     int chooseSubMenu() {
         int choosedSubMenu;
         System.out.println("Masukkan Angka Menu : ");
@@ -381,50 +491,124 @@ class Sitose {
         return choosedSubMenu;
     }
 
+    /*
+     * method viewJenis() menampilkan data jenis produk, dengan parameter isShowMenu
+     * dengan tipe data boolean yang berfungsi untuk memberikan kondisi apakah
+     * method showMenu akan dipanggil atau tidak.
+     * -> jika isShowMenu bernilai benar, maka akan memanggil method showMenu()
+     * dengan parameter "submenu" sebagai tipe menu yang dipanggil dan "1" sebagai
+     * submenu yang dipilih untuk ditampilkan
+     * -> jika isShowMenu bernilai salah, maka tidak akan memanggil method
+     * showMenu()
+     */
     // checkpoint
     void viewJenis(boolean isShowMenu) {
-        if (jenisObj.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
+        /*
+         * kondisi dibawah akan mengecek apakah data didalam jenisProdukObject kosong
+         * atau tidak,
+         * -> jika data kosong, maka tampilkan pesan "Tidak ada data untuk ditampilkan"
+         * -> jika data tidak kosong, maka tampilkan data dalam bentuk tabel
+         */
+        // atas
+        System.out.println("+----+------+-------------------+");
+        System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode", "Nama Jenis Produk");
+        System.out.println("+----+------+-------------------+");
+
+        if (jenisProdukObject.isEmpty()) {
+
+            System.out.println("|       Tidak ada data          |");
+            System.out.println("+-------------------------------+");
+
         } else {
-            // atas
-            System.out.println("+----+------+-------------------+");
-            System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode", "Nama Jenis Produk");
-            System.out.println("+----+------+-------------------+");
+            /*
+             * Rakha jelasin struktur table nya
+             */
 
             // Isi
-            for (Jenis item : jenisObj) {
-                System.out.printf("| %-2d | %-4s | %-17s | \n", item.id, item.kode, item.name);
-                // System.out.println(item.kode);
+            for (Jenis item : jenisProdukObject) {
+                System.out.printf("| %-2d | %-4s | %-17s | \n", item.id, item.kode, item.nama);
+
             }
 
             // bawah
             System.out.println("+----+------+-------------------+");
         }
 
+        /*
+         * kondisi isShowMenu untuk memanggil method showMenu
+         */
+
         if (isShowMenu) {
             showMenu("submenu", 1);
         }
     }
 
+    /*
+     * method insertJenis() digunakkan untuk menyimpan jenis produk yang dimasukkan
+     * oleh pengguna kedalam ArrayList jenisProdukObject dalam bentuk objek dari
+     * kelas Jenis()
+     */
     void insertJenis() {
+        /*
+         * try catch digunakkan untuk membungkus isi dari method insertJenis, untuk
+         * mengantisipasi jika terjadi kesalahan pada program
+         * -> jika sintak didalam try tidak terjadi kesalahan, maka program akan
+         * berjalan dengan baik
+         * -> jika sintak didalam try terjadi kesalahan, maka catch akan menampilkan
+         * pesan "Data Gagal Disimpan!" dan menampilkan pesan error program dengan
+         * variabel e sebagai parameter untuk menangkap error dan fungsi getMessage()
+         * untuk mengambil pesan error program
+         */
         try {
+            System.out.println("========================================");
+            System.out.println(" ");
+            System.out.println("             TAMBAH JENIS PRODUK");
+            System.out.println(" ");
+            System.out.println("========================================");
             System.out.println(">>>>TAMBAH JENIS PRODUK<<<<");
 
             int id = 1;
-            if (!jenisObj.isEmpty()) {
-                id = jenisObj.get(jenisObj.size() - 1).id + 1;
+            if (!jenisProdukObject.isEmpty()) {
+                id = jenisProdukObject.get(jenisProdukObject.size() - 1).id + 1;
             }
-            input.nextLine(); // wait
-            System.out.print("Masukkan nama jenis produk : ");
-            String name = input.nextLine();
-            System.out.print("Masukkan kode jenis produk : ");
-            String kode = input.nextLine();
 
-            if (name != "" && kode != "") {
-                jenisObj.add(new Jenis(id, name, kode));
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
+
+            System.out.print("Masukkan nama jenis produk : ");
+            String nama = input.nextLine(); // input nama jenis produk
+            System.out.print("Masukkan kode jenis produk (1 huruf alphabet) : ");
+            String kode = input.nextLine(); // input kode jenis produk
+
+            /*
+             * kondisi !nama.isEmpty() && !kode.isEmpty() digunakkan untuk melakukan
+             * validasi agar pengguna tidak memasukkan inputan kosong
+             * -> jika input tidak kosong, maka data akan disimpan kedalam kelas Jenis() dan
+             * tampilkan pesan "Data Berhasil Disimpan"
+             * -> jika input kosong, maka data tidak akan disimpan dan tampilkan pesan
+             * "Kolom wajib diisi!"
+             */
+            if (!nama.isEmpty() && !kode.isEmpty()) {
+                /*
+                 * melakukan insert data kedalam arraylist jenisProdukObject dalam bentuk objek
+                 * dari kelas Jenis dengan parameter :
+                 * -> id : id data
+                 * -> nama : nama jenis produk
+                 * -> kode : kode jenis produk (berisi 1 huruf yang unik sebagai kode dari jenis
+                 * produk)
+                 */
+                jenisProdukObject.add(new Jenis(id, nama, kode));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
+                /*
+                 * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+                 * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
+                 */
                 showMenu("submenu", 1);
             } else {
                 System.out.println("Kolom wajib diisi!");
@@ -436,6 +620,12 @@ class Sitose {
         }
     }
 
+    /*
+     * method updateJenis() digunakkan untuk memperbarui jenis produk yang
+     * dimasukkan
+     * oleh pengguna kedalam ArrayList jenisProdukObject dalam bentuk objek dari
+     * kelas Jenis()
+     */
     void updateJenis() {
         System.out.println("========================================");
         System.out.println(" ");
@@ -443,48 +633,103 @@ class Sitose {
         System.out.println(" ");
         System.out.println("========================================");
 
-        // tampilkan jenis produk
+        /*
+         * memanggil method viewJenis() untuk menampilkan data jenis produk agar
+         * pengguna bisa melihat id jenis produk, dengan parameter isShowMenu bernilai
+         * false agar menu tidak ditampilkan
+         */
         viewJenis(false);
-        // jika tidak ada yg harus di tampilkan harus tampilkan menu produk
-        if (jenisObj.isEmpty()) {
-            System.out.println("Tidak ada data yang dapat diubah. Kembali ke menu utama.");
-            showMenu("submenu", 1);
-            return;
-        }
+
         System.out.println("Masukkan id jenis produk : ");
         int id = input.nextInt();
-        input.nextLine(); // wait
 
-        System.out.println("Masukkan nama baru : ");
-        String name = input.nextLine();
-        System.out.println("Masukkan kode baru : ");
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
+
+        /*
+         * namaTmp dan kodeTmp digunakkan sebagai temporary variable untuk menyimpan
+         * nama dan kode yang lama, nantinya akan digunakkan jika pengguna tidak ingin
+         * mengubah data lama mereka
+         */
+        String namaTmp = jenisProdukObject.get(id - 1).nama;
+        String kodeTmp = jenisProdukObject.get(id - 1).kode;
+
+        System.out.println("Masukkan nama baru (masukkan jika ingin mengganti) : ");
+        String nama = input.nextLine();
+        System.out.println("Masukkan kode baru (masukkan jika ingin mengganti) : ");
         String kode = input.nextLine();
 
-        // tambahkan if kosong maka tidak berubah ---------------------
-        jenisObj.get(id - 1).name = name;
-        jenisObj.get(id - 1).kode = kode;
+        /*
+         * jenisProdukObject.get(id - 1).name digunakan untuk mengambil nilai properti
+         * nama dari objek pada indeks ke-id - 1 di dalam daftar jenisProdukObject.
+         * Lalu, = (sama dengan) didepannya digunakkan untuk melakukan assignment
+         * kedalam property yang sudah dipanggil
+         * 
+         * nama.isEmpty() ? namaTmp : nama adalah ternary operator,
+         * fungsinya mirip seperti if hanya saja lebih ringkas.
+         * -> nama.isEmpty() adalah kondisinya dan akan menghasilkan tipe data boolean
+         * -> jika bernilai benar, maka value yang akan digunakkan diambil dari variable
+         * namaTmp
+         * -> jika bernilai salah, maka value yang akan digunakkan diambil dari variable
+         * nama
+         * jadi, singkatnya kondisi tersebut untuk mengecek, jika nama yang diinputkan
+         * oleh pengguna kosong, maka property nama akan diisi oleh nama jenis produk
+         * yang sudah disimpan pada variable namaTmp, jika tidak maka akan menggunakkan
+         * nama yang baru, yang sudah dimasukkan oleh pengguna
+         */
+        jenisProdukObject.get(id - 1).nama = nama.isEmpty() ? namaTmp : nama;
+        jenisProdukObject.get(id - 1).kode = kode.isEmpty() ? kodeTmp : kode;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
+        /*
+         * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+         * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
+         */
         showMenu("submenu", 1);
     }
 
+    /*
+     * method removeJenis() digunakkan untuk menghapus data jenis produk
+     */
     void removeJenis() {
-        System.out.println(">>>>HAPUS JENIS PRODUK<<<<");
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("          HAPUS JENIS PRODUK");
+        System.out.println(" ");
+        System.out.println("========================================");
 
-        // tampilkan jenis produk
+        /*
+         * memanggil method viewJenis() untuk menampilkan data jenis produk agar
+         * pengguna bisa melihat id jenis produk, dengan parameter isShowMenu bernilai
+         * false agar menu tidak ditampilkan
+         */
         viewJenis(false);
 
+        /*
+         * pengguna memasukkan id jenis produk
+         */
         System.out.println("Masukkan id jenis produk : ");
         int id = input.nextInt();
 
-        jenisObj.removeIf(n -> n.id == id);
+        /*
+         * removeIf akan mencari ............. BELOMMMMMMMMMMMMMMMMM
+         */
+        jenisProdukObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
+        /*
+         * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+         * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
+         */
         showMenu("submenu", 1);
     }
 
     void viewKategori(boolean isShowMenu) {
-        if (kategoriObj.isEmpty()) {
+        if (kategoriProdukObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             // atas
@@ -493,8 +738,8 @@ class Sitose {
             System.out.println("+----+----------------------+");
 
             // Isi
-            for (Kategori item : kategoriObj) {
-                System.out.printf("| %-2d | %-20s |\n", item.id, item.name, item.kode);
+            for (Kategori item : kategoriProdukObject) {
+                System.out.printf("| %-2d | %-20s |\n", item.id, item.nama, item.kode);
                 System.out.println(item.kode);
             }
 
@@ -509,20 +754,31 @@ class Sitose {
 
     void insertKategori() {
         try {
-            System.out.println(">>>>TAMBAH KATEGORI PRODUK<<<<");
+            System.out.println("========================================");
+            System.out.println(" ");
+            System.out.println("         TAMBAH KATEGORI PRODUK");
+            System.out.println(" ");
+            System.out.println("========================================");
+            System.out.println(">>>><<<<");
 
             int id = 1;
-            if (!kategoriObj.isEmpty()) {
-                id = kategoriObj.get(kategoriObj.size() - 1).id + 1;
+            if (!kategoriProdukObject.isEmpty()) {
+                id = kategoriProdukObject.get(kategoriProdukObject.size() - 1).id + 1;
             }
-            input.nextLine(); // wait
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
+
             System.out.print("Masukkan nama kategori produk : ");
-            String name = input.nextLine();
+            String nama = input.nextLine();
             System.out.print("Masukkan kode kategori produk : ");
             String kode = input.nextLine();
 
-            if (name != "" && kode != "") {
-                kategoriObj.add(new Kategori(id, name, kode));
+            if (nama != "" && kode != "") {
+                kategoriProdukObject.add(new Kategori(id, nama, kode));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
@@ -538,30 +794,48 @@ class Sitose {
     }
 
     void updateKategori() {
-        System.out.println(">>>>EDIT KATEGORI PRODUK");
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("        EDIT KATEGORI PRODUK");
+        System.out.println(" ");
+        System.out.println("========================================");
+        System.out.println(">>>>");
 
         // tampilkan kategori produk
         viewKategori(false);
 
         System.out.println("Masukkan id kategori produk : ");
         int id = input.nextInt();
-        input.nextLine(); // wait
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
+
+        String namaTmp = kategoriProdukObject.get(id - 1).nama;
+        String kodeTmp = kategoriProdukObject.get(id - 1).kode;
 
         System.out.println("Masukkan nama baru : ");
-        String name = input.nextLine();
+        String nama = input.nextLine();
         System.out.println("Masukkan kode baru : ");
         String kode = input.nextLine();
 
         // tambahkan if kosong maka tidak ada yang diubah ---------------------
-        kategoriObj.get(id - 1).name = name;
-        kategoriObj.get(id - 1).kode = kode;
+        kategoriProdukObject.get(id - 1).nama = nama.isEmpty() ? namaTmp : nama;
+        kategoriProdukObject.get(id - 1).kode = kode.isEmpty() ? kodeTmp : kode;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
         showMenu("submenu", 2);
     }
 
     void removeKategori() {
-        System.out.println(">>>>HAPUS KATEGORI PRODUK<<<<");
+
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("            HAPUS KATEGORI PRODUK");
+        System.out.println(" ");
+        System.out.println("========================================");
 
         // tampilkan kategori produk
         viewKategori(false);
@@ -569,19 +843,19 @@ class Sitose {
         System.out.println("Masukkan id kategori produk : ");
         int id = input.nextInt();
 
-        kategoriObj.removeIf(n -> n.id == id);
+        kategoriProdukObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
         showMenu("submenu", 2);
     }
 
     void viewProduk(boolean isShowMenu) {
-        if (kategoriObj.isEmpty()) {
+        if (kategoriProdukObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
-            for (Produk item : produkObj) {
+            for (Produk item : produkObject) {
                 System.out.println(item.id);
-                System.out.println(item.name);
+                System.out.println(item.nama);
                 System.out.println(item.kode);
                 System.out.println(item.jenis);
                 System.out.println(item.kategori);
@@ -597,16 +871,26 @@ class Sitose {
 
     void insertProduk() {
         try {
-            System.out.println(">>>>TAMBAH PRODUK<<<<");
+
+            System.out.println("========================================");
+            System.out.println(" ");
+            System.out.println("           TAMBAH PRODUK");
+            System.out.println(" ");
+            System.out.println("========================================");
 
             int id = 1;
-            if (!produkObj.isEmpty()) {
-                id = produkObj.get(produkObj.size() - 1).id + 1;
+            if (!produkObject.isEmpty()) {
+                id = produkObject.get(produkObject.size() - 1).id + 1;
             }
-            input.nextLine(); // wait
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
 
             System.out.print("Masukkan nama produk : ");
-            String name = input.nextLine();
+            String nama = input.nextLine();
 
             viewJenis(false);
             System.out.print("Pilih angka jenis produk : ");
@@ -622,8 +906,9 @@ class Sitose {
             System.out.print("Masukkan harga satuan : ");
             int harga = input.nextInt();
 
-            if (name != "") {
-                produkObj.add(new Produk(id, name, jenisObj.get(id_jenis - 1), kategoriObj.get(id_kategori - 1), stok,
+            if (nama != "") {
+                produkObject.add(new Produk(id, nama, jenisProdukObject.get(id_jenis - 1),
+                        kategoriProdukObject.get(id_kategori - 1), stok,
                         harga));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
@@ -641,13 +926,23 @@ class Sitose {
 
     void updateProduk() {
         try {
-            System.out.println(">>>>EDIT PRODUK<<<<");
+
+            System.out.println("========================================");
+            System.out.println(" ");
+            System.out.println("           EDIT PRODUK");
+            System.out.println(" ");
+            System.out.println("========================================");
 
             int id = input.nextInt();
-            input.nextLine(); // wait
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
 
             System.out.print("Masukkan nama produk baru : ");
-            String name = input.nextLine();
+            String nama = input.nextLine();
 
             viewJenis(false);
             System.out.print("Pilih angka jenis produk baru : ");
@@ -663,12 +958,12 @@ class Sitose {
             System.out.print("Masukkan harga satuan baru : ");
             int harga = input.nextInt();
 
-            if (name != "") {
-                produkObj.get(id - 1).name = name;
-                produkObj.get(id - 1).jenis = jenisObj.get(id_jenis - 1);
-                produkObj.get(id - 1).kategori = kategoriObj.get(id_kategori - 1);
-                produkObj.get(id - 1).stok = stok;
-                produkObj.get(id - 1).harga = harga;
+            if (nama != "") {
+                produkObject.get(id - 1).nama = nama;
+                produkObject.get(id - 1).jenis = jenisProdukObject.get(id_jenis - 1);
+                produkObject.get(id - 1).kategori = kategoriProdukObject.get(id_kategori - 1);
+                produkObject.get(id - 1).stok = stok;
+                produkObject.get(id - 1).harga = harga;
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
@@ -684,7 +979,12 @@ class Sitose {
     }
 
     void removeProduk() {
-        System.out.println(">>>>HAPUS PRODUK<<<<");
+
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("           HAPUS PRODUK");
+        System.out.println(" ");
+        System.out.println("========================================");
 
         // tampilkan kategori produk
         viewProduk(false);
@@ -692,19 +992,19 @@ class Sitose {
         System.out.println("Masukkan id produk : ");
         int id = input.nextInt();
 
-        produkObj.removeIf(n -> n.id == id);
+        produkObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
         showMenu("submenu", 3);
     }
 
     void viewCabangToko(boolean isShowMenu) {
-        if (cabangtokoObj.isEmpty()) {
+        if (cabangTokoObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
-            for (CabangToko item : cabangtokoObj) {
+            for (CabangToko item : cabangTokoObject) {
                 System.out.println(item.id);
-                System.out.println(item.name);
+                System.out.println(item.nama);
                 System.out.println(item.kode);
                 System.out.println(item.telepon);
                 System.out.println(item.alamat);
@@ -724,12 +1024,17 @@ class Sitose {
             System.out.println(">>>>TAMBAH KATEGORI PRODUK<<<<");
 
             int id = 1;
-            if (!cabangtokoObj.isEmpty()) {
-                id = cabangtokoObj.get(cabangtokoObj.size() - 1).id + 1;
+            if (!cabangTokoObject.isEmpty()) {
+                id = cabangTokoObject.get(cabangTokoObject.size() - 1).id + 1;
             }
-            input.nextLine(); // wait
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
             System.out.print("Masukkan nama cabang : ");
-            String name = input.nextLine();
+            String nama = input.nextLine();
             System.out.print("Masukkan kode cabang : ");
             String kode = input.nextLine();
             System.out.print("Masukkan telepon cabang : ");
@@ -737,8 +1042,8 @@ class Sitose {
             System.out.print("Masukkan alamat cabang : ");
             String alamat = input.nextLine();
 
-            if (name != "" && telepon != "") {
-                cabangtokoObj.add(new CabangToko(id, name, kode, telepon, alamat));
+            if (nama != "" && telepon != "") {
+                cabangTokoObject.add(new CabangToko(id, nama, kode, telepon, alamat));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
@@ -761,10 +1066,15 @@ class Sitose {
 
         System.out.println("Masukkan id cabang toko : ");
         int id = input.nextInt();
-        input.nextLine(); // wait
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
 
         System.out.println("Masukkan nama baru : ");
-        String name = input.nextLine();
+        String nama = input.nextLine();
         System.out.println("Masukkan kode baru : ");
         String kode = input.nextLine();
         System.out.println("Masukkan kode baru : ");
@@ -773,10 +1083,10 @@ class Sitose {
         String alamat = input.nextLine();
 
         // tambahkan if kosong maka tidak ada yang diubah ---------------------
-        cabangtokoObj.get(id - 1).name = name;
-        cabangtokoObj.get(id - 1).kode = kode;
-        cabangtokoObj.get(id - 1).telepon = telepon;
-        cabangtokoObj.get(id - 1).alamat = alamat;
+        cabangTokoObject.get(id - 1).nama = nama;
+        cabangTokoObject.get(id - 1).kode = kode;
+        cabangTokoObject.get(id - 1).telepon = telepon;
+        cabangTokoObject.get(id - 1).alamat = alamat;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
         showMenu("submenu", 4);
@@ -791,17 +1101,17 @@ class Sitose {
         System.out.println("Masukkan id cabang toko : ");
         int id = input.nextInt();
 
-        cabangtokoObj.removeIf(n -> n.id == id);
+        cabangTokoObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
         showMenu("submenu", 4);
     }
 
     void viewUser(boolean isShowMenu) {
-        if (users.isEmpty()) {
+        if (penggunaObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
-            for (User item : users) {
+            for (User item : penggunaObject) {
                 System.out.println(item.id);
                 System.out.println(item.username);
                 System.out.println(item.password);
@@ -815,16 +1125,20 @@ class Sitose {
         }
     }
 
-    // BELOM SELESAIII
     void insertUser() {
         try {
             System.out.println(">>>>TAMBAH USER<<<<");
 
             int id = 1;
-            if (!users.isEmpty()) {
-                id = users.get(users.size() - 1).id + 1;
+            if (!penggunaObject.isEmpty()) {
+                id = penggunaObject.get(penggunaObject.size() - 1).id + 1;
             }
-            input.nextLine(); // wait
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
             System.out.print("Masukkan username : ");
             String username = input.nextLine();
             System.out.print("Masukkan password : ");
@@ -837,11 +1151,11 @@ class Sitose {
                 System.out.print("Pilih angka cabang toko : ");
                 int cabangtoko = input.nextInt();
 
-                cabangToko = cabangtokoObj.get(cabangtoko - 1);
+                cabangToko = cabangTokoObject.get(cabangtoko - 1);
             }
 
             if (username != "" && password != "") {
-                users.add(new User(id, username, password, level, cabangToko));
+                penggunaObject.add(new User(id, username, password, level, cabangToko));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
@@ -864,7 +1178,12 @@ class Sitose {
 
         System.out.println("Masukkan id kategori produk : ");
         int id = input.nextInt();
-        input.nextLine(); // wait
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
 
         System.out.println("Masukkan username baru : ");
         String username = input.nextLine();
@@ -872,8 +1191,8 @@ class Sitose {
         String password = input.nextLine();
 
         // tambahkan if kosong maka tidak ada yang diubah ---------------------
-        users.get(id - 1).username = username;
-        users.get(id - 1).password = password;
+        penggunaObject.get(id - 1).username = username;
+        penggunaObject.get(id - 1).password = password;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
         showMenu("submenu", 6);
@@ -888,7 +1207,7 @@ class Sitose {
         System.out.println("Masukkan id kategori produk : ");
         int id = input.nextInt();
 
-        users.removeIf(n -> n.id == id);
+        penggunaObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
         showMenu("submenu", 6);
@@ -911,35 +1230,35 @@ class User {
 
 class Jenis {
     public int id;
-    public String name, kode;
+    public String nama, kode;
 
-    public Jenis(int id, String name, String kode) {
+    public Jenis(int id, String nama, String kode) {
         this.id = id;
-        this.name = name;
+        this.nama = nama;
         this.kode = kode;
     }
 }
 
 class Kategori {
     int id;
-    String name, kode;
+    String nama, kode;
 
-    public Kategori(int id, String name, String kode) {
+    public Kategori(int id, String nama, String kode) {
         this.id = id;
-        this.name = name;
+        this.nama = nama;
         this.kode = kode;
     }
 }
 
 class Produk {
     int id, stok, harga;
-    String name, kode;
+    String nama, kode;
     Jenis jenis;
     Kategori kategori;
 
-    public Produk(int id, String name, Jenis jenis, Kategori kategori, int stok, int harga) {
+    public Produk(int id, String nama, Jenis jenis, Kategori kategori, int stok, int harga) {
         this.id = id;
-        this.name = name;
+        this.nama = nama;
         this.jenis = jenis;
         this.kategori = kategori;
         this.kode = this.jenis.kode + this.kategori.kode + String.format("%04d", id);
@@ -952,11 +1271,11 @@ class Produk {
 
 class CabangToko {
     int id;
-    String kode, name, telepon, alamat;
+    String kode, nama, telepon, alamat;
 
-    public CabangToko(int id, String name, String kode, String telepon, String alamat) {
+    public CabangToko(int id, String nama, String kode, String telepon, String alamat) {
         this.id = id;
-        this.name = name;
+        this.nama = nama;
         this.kode = kode;
         this.telepon = telepon;
         this.alamat = alamat;
