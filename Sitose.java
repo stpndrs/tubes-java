@@ -50,7 +50,6 @@ class Sitose {
         String password = input.nextLine();
 
         if (auth(username, password)) {
-            System.out.println("asdasd");
             setup();
         } else {
             login();
@@ -159,6 +158,7 @@ class Sitose {
             String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuProduk = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
             String[] menuCabangToko = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
+            String[] menuUser = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
 
             if (choosedMenu == 0) {
                 System.out.println("Anda telah logout");
@@ -297,6 +297,37 @@ class Sitose {
                         break;
 
                 }
+            } else if (choosedMenu == 6) {
+                System.out.println("+------------------------------+");
+                int i = 0;
+                for (String mj : menuUser) {
+                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
+                }
+                System.out.println("+------------------------------+");
+
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int csm = chooseSubMenu();
+
+                switch (csm) {
+                    case 1:
+                        viewUser(true);
+                        break;
+                    case 2:
+                        insertUser();
+                        break;
+                    case 3:
+                        updateUser();
+                        break;
+                    case 4:
+                        removeUser();
+                        break;
+                    case 5:
+                        showMenu("menu", 0);
+                        break;
+                    default:
+                        break;
+
+                }
             }
         }
 
@@ -349,20 +380,21 @@ class Sitose {
 
         return choosedSubMenu;
     }
-//checkpoint
+
+    // checkpoint
     void viewJenis(boolean isShowMenu) {
         if (jenisObj.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             // atas
             System.out.println("+----+------+-------------------+");
-            System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode","Nama Jenis Produk"  );
+            System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode", "Nama Jenis Produk");
             System.out.println("+----+------+-------------------+");
 
             // Isi
             for (Jenis item : jenisObj) {
-			System.out.printf("| %-2d | %-4s | %-17s | \n", item.id,  item.kode, item.name);
-                //System.out.println(item.kode);
+                System.out.printf("| %-2d | %-4s | %-17s | \n", item.id, item.kode, item.name);
+                // System.out.println(item.kode);
             }
 
             // bawah
@@ -405,24 +437,20 @@ class Sitose {
     }
 
     void updateJenis() {
-		System.out.println("========================================");
+        System.out.println("========================================");
         System.out.println(" ");
         System.out.println("             EDIT JENIS PRODUK");
         System.out.println(" ");
         System.out.println("========================================");
-        
 
         // tampilkan jenis produk
         viewJenis(false);
-		// jika tidak ada yg harus di tampilkan harus tampilkan menu produk
-		if (jenisObj.isEmpty()) {
-        System.out.println("Tidak ada data yang dapat diubah. Kembali ke menu utama.");
-        showMenu("submenu", 1);
-        return;
-    }
-	
-	
-
+        // jika tidak ada yg harus di tampilkan harus tampilkan menu produk
+        if (jenisObj.isEmpty()) {
+            System.out.println("Tidak ada data yang dapat diubah. Kembali ke menu utama.");
+            showMenu("submenu", 1);
+            return;
+        }
         System.out.println("Masukkan id jenis produk : ");
         int id = input.nextInt();
         input.nextLine(); // wait
@@ -778,17 +806,19 @@ class Sitose {
                 System.out.println(item.username);
                 System.out.println(item.password);
                 System.out.println(item.level);
+                if (item.level.equals("manajer") || item.level.equals("kasir"))
+                    System.out.println(item.cabangtoko.toString());
             }
         }
         if (isShowMenu) {
-            showMenu("submenu", 2);
+            showMenu("submenu", 6);
         }
     }
 
     // BELOM SELESAIII
     void insertUser() {
         try {
-            System.out.println(">>>>TAMBAH KATEGORI PRODUK<<<<");
+            System.out.println(">>>>TAMBAH USER<<<<");
 
             int id = 1;
             if (!users.isEmpty()) {
@@ -801,13 +831,21 @@ class Sitose {
             String password = input.nextLine();
             System.out.print("Masukkan level (admin, gudang, manajer, kasir) : ");
             String level = input.nextLine();
+            CabangToko cabangToko = null;
+            if (level.equals("manajer") || level.equals("kasir")) {
+                viewCabangToko(false);
+                System.out.print("Pilih angka cabang toko : ");
+                int cabangtoko = input.nextInt();
+
+                cabangToko = cabangtokoObj.get(cabangtoko - 1);
+            }
 
             if (username != "" && password != "") {
-                users.add(new User(id, username, password, level, null));
+                users.add(new User(id, username, password, level, cabangToko));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu("submenu", 2);
+                showMenu("submenu", 6);
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -819,7 +857,7 @@ class Sitose {
     }
 
     void updateUser() {
-        System.out.println(">>>>EDIT KATEGORI PRODUK");
+        System.out.println(">>>>EDIT USER");
 
         // tampilkan kategori produk
         viewUser(false);
@@ -838,11 +876,11 @@ class Sitose {
         users.get(id - 1).password = password;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-        showMenu("submenu", 2);
+        showMenu("submenu", 6);
     }
 
     void removeUser() {
-        System.out.println(">>>>HAPUS KATEGORI PRODUK<<<<");
+        System.out.println(">>>>HAPUS USER<<<<");
 
         // tampilkan kategori produk
         viewUser(false);
@@ -853,7 +891,7 @@ class Sitose {
         users.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu("submenu", 2);
+        showMenu("submenu", 6);
     }
 }
 
