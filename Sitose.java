@@ -432,39 +432,6 @@ class Sitose {
                 }
             }
         }
-
-        // int a = 0;
-        // a++;
-        // if (choosedMenu == 1) {
-        // if (this.level == 1 || this.level == 2) {
-        // System.out.println(a + ". Lihat Data");
-        // System.out.println(a + ". Tambah Data");
-        // System.out.println(a + ". Edit Data");
-        // System.out.println(a + ". Hapus Data");
-        // System.out.println(a + ". Kembali");
-        // int csm = 1;
-        // switch (csm) {
-        // case 1:
-
-        // break;
-
-        // default:
-        // break;
-        // }
-        // } else if (choosedMenu == 2) {
-        // System.out.println(a + ". Lihat Data");
-        // System.out.println(a + ". Tambah Data");
-        // System.out.println(a + ". Edit Data");
-        // System.out.println(a + ". Hapus Data");
-        // System.out.println(a + ". Kembali");
-        // } else if (choosedMenu == 3) {
-        // System.out.println(a + ". Lihat Data");
-        // System.out.println(a + ". Tambah Data");
-        // System.out.println(a + ". Edit Data");
-        // System.out.println(a + ". Hapus Data");
-        // System.out.println(a + ". Kembali");
-        // }
-        // }
     }
 
     /*
@@ -1433,5 +1400,19 @@ class CabangToko {
         this.kode = kode;
         this.telepon = telepon;
         this.alamat = alamat;
+    }
+}
+
+class Transaksi {
+    int id;
+    String kode, waktu, total;
+    ArrayList<String> transaksi_detail;
+
+    public Transaksi(int id, String kode, String waktu, String total) {
+        this.id = id;
+        this.kode = kode;
+        this.waktu = waktu;
+        this.total = total;
+        this.transaksi_detail = new ArrayList<>();
     }
 }
