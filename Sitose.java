@@ -760,7 +760,7 @@ class Sitose {
         } else {
             // atas
             System.out.println("+----+----------------------+");
-            System.out.printf("| %-2s |%-2| %-18s |\n", "ID", "Kode", "Nama Kategori Produk" );
+            System.out.printf("| %-2s |%-2| %-18s |\n", "ID", "Kode", "Nama Kategori Produk");
             System.out.println("+----+----------------------+");
 
             // Isi
@@ -857,8 +857,7 @@ class Sitose {
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
-			
-            
+
         }
     }
 
@@ -1155,13 +1154,12 @@ class Sitose {
 
     void insertCabangToko() {
         try {
-			
-        System.out.println("========================================");
-        System.out.println(" ");
-        System.out.println("           TAMBAH KATEGORI PRODUK");
-        System.out.println(" ");
-        System.out.println("========================================");
-            
+
+            System.out.println("========================================");
+            System.out.println(" ");
+            System.out.println("           TAMBAH KATEGORI PRODUK");
+            System.out.println(" ");
+            System.out.println("========================================");
 
             int id = 1;
             if (!cabangTokoObject.isEmpty()) {
@@ -1233,12 +1231,11 @@ class Sitose {
     }
 
     void removeCabangToko() {
-		 System.out.println("========================================");
+        System.out.println("========================================");
         System.out.println(" ");
         System.out.println("          HAPUS CABANG TOKO");
         System.out.println(" ");
         System.out.println("========================================");
-        
 
         // tampilkan cabang toko
         viewCabangToko(false);
@@ -1272,12 +1269,11 @@ class Sitose {
 
     void insertUser() {
         try {
-			System.out.println("========================================");
+            System.out.println("========================================");
             System.out.println(" ");
-			System.out.println("          TAMBAH USER");
-			System.out.println(" ");
-			System.out.println("========================================");
-           
+            System.out.println("          TAMBAH USER");
+            System.out.println(" ");
+            System.out.println("========================================");
 
             int id = 1;
             if (!penggunaObject.isEmpty()) {
@@ -1321,11 +1317,11 @@ class Sitose {
     }
 
     void updateUser() {
-			System.out.println("========================================");
-            System.out.println(" ");
-			System.out.println("          EDIT USER");
-			System.out.println(" ");
-			System.out.println("========================================");
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("          EDIT USER");
+        System.out.println(" ");
+        System.out.println("========================================");
 
         // tampilkan kategori produk
         viewUser(false);
@@ -1352,14 +1348,12 @@ class Sitose {
         showMenu("submenu", 6);
     }
 
-    void rem
-	oveUser() {
-			System.out.println("========================================");
-            System.out.println(" ");
-			System.out.println("          HAPUS USER");
-			System.out.println(" ");
-			System.out.println("========================================");
-       
+    void removeUser() {
+        System.out.println("========================================");
+        System.out.println(" ");
+        System.out.println("          HAPUS USER");
+        System.out.println(" ");
+        System.out.println("========================================");
 
         // tampilkan kategori produk
         viewUser(false);
