@@ -1,4 +1,4 @@
-    import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Sitose {
@@ -181,8 +181,8 @@ class Sitose {
     /*
      * Rakha Jelasin
      */
-    void headermenu(String judul){
-         int lineLength = 40; // Panjang garis
+    void headermenu(String judul) {
+        int lineLength = 40; // Panjang garis
         String line = "=".repeat(lineLength);
 
         System.out.println(line);
@@ -192,6 +192,7 @@ class Sitose {
         System.out.println(line);
 
     }
+
     void menutemplate() {
         headermenu("MENU APLIKASI");
         System.out.println(" ");
@@ -533,17 +534,7 @@ class Sitose {
          * untuk mengambil pesan error program
          */
         try {
-<<<<<<< HEAD
             headermenu("TAMBAH JENIS PRODUK");
-            
-            
-=======
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("             TAMBAH JENIS PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
 
             int id = 1;
             if (!jenisProdukObject.isEmpty()) {
@@ -606,17 +597,8 @@ class Sitose {
      * kelas Jenis()
      */
     void updateJenis() {
-<<<<<<< HEAD
-        headermenu("EDIT JENIS PRODUK");
-        
-=======
         try {
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("             EDIT JENIS PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
+            headermenu("EDIT JENIS PRODUK");
 
             /*
              * memanggil method viewJenis() untuk menampilkan data jenis produk agar
@@ -685,17 +667,8 @@ class Sitose {
      * method removeJenis() digunakkan untuk menghapus data jenis produk
      */
     void removeJenis() {
-<<<<<<< HEAD
-        headermenu("HAPUS JENIS PRODUK");
-        
-=======
         try {
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("          HAPUS JENIS PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
+            headermenu("HAPUS JENIS PRODUK");
 
             /*
              * memanggil method viewJenis() untuk menampilkan data jenis produk agar
@@ -749,20 +722,13 @@ class Sitose {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             // atas
-<<<<<<< HEAD
             System.out.println("+----+----+----------------------+");
-            System.out.printf("| %-2s |%-2s| %-18s |\n", "ID", "Kode", "Nama Kategori Produk" );
+            System.out.printf("| %-2s |%-2s| %-18s |\n", "ID", "Kode", "Nama Kategori Produk");
             System.out.println("+----+----+----------------------+");
-=======
-            System.out.println("+----+----------------------+");
-            System.out.printf("| %-2s |%-2| %-18s |\n", "ID", "Kode", "Nama Kategori Produk");
-            System.out.println("+----+----------------------+");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
 
             // Isi
             for (Kategori item : kategoriProdukObject) {
                 System.out.printf("| %-2s | %-2s | %-20s |\n", item.id, item.kode, item.nama);
-                
             }
 
             // bawah
@@ -796,16 +762,7 @@ class Sitose {
          * untuk mengambil pesan error program
          */
         try {
-<<<<<<< HEAD
             headermenu("TAMBAH KATEGORI PRODUK");
-            
-=======
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("         TAMBAH KATEGORI PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
 
             int id = 1;
             if (!kategoriProdukObject.isEmpty()) {
@@ -869,17 +826,8 @@ class Sitose {
      * kelas Kategori()
      */
     void updateKategori() {
-<<<<<<< HEAD
-        headermenu("EDIT KATEGORI PRODUK");
-        
-=======
         try {
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("        EDIT KATEGORI PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
+            headermenu("EDIT KATEGORI PRODUK");
 
             /*
              * memanggil method viewKategori() untuk menampilkan data kategori produk agar
@@ -950,17 +898,8 @@ class Sitose {
      * method removeKategori() digunakkan untuk menghapus data kategori produk
      */
     void removeKategori() {
-<<<<<<< HEAD
-        headermenu("HAPUS KATEGORI PRODUK");
-
-       
-=======
         try {
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("            HAPUS KATEGORI PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
+            headermenu("HAPUS KATEGORI PRODUK");
 
             /*
              * memanggil method viewKategori() untuk menampilkan data kategori produk agar
@@ -969,8 +908,6 @@ class Sitose {
              * false agar menu tidak ditampilkan
              */
             viewKategori(false);
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
-
             /*
              * pengguna memasukkan id jenis produk
              */
@@ -1151,18 +1088,8 @@ class Sitose {
 
     void insertCabangToko() {
         try {
-<<<<<<< HEAD
             headermenu("TAMBAH CABANG PRODUK");
-            
-=======
 
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("           TAMBAH KATEGORI PRODUK");
-            System.out.println(" ");
-            System.out.println("========================================");
-
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
             int id = 1;
             if (!cabangTokoObject.isEmpty()) {
                 id = cabangTokoObject.get(cabangTokoObject.size() - 1).id + 1;
@@ -1201,7 +1128,6 @@ class Sitose {
     void updateCabangToko() {
         headermenu("EDIT CABANG TOKO");
 
-
         // tampilkan cabang toko produk
         viewCabangToko(false);
 
@@ -1234,17 +1160,8 @@ class Sitose {
     }
 
     void removeCabangToko() {
-<<<<<<< HEAD
         headermenu("HAPUS CABANG TOKO");
-		
-=======
-        System.out.println("========================================");
-        System.out.println(" ");
-        System.out.println("          HAPUS CABANG TOKO");
-        System.out.println(" ");
-        System.out.println("========================================");
 
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
         // tampilkan cabang toko
         viewCabangToko(false);
 
@@ -1277,16 +1194,7 @@ class Sitose {
 
     void insertUser() {
         try {
-<<<<<<< HEAD
             headermenu("TAMBAH USER");
-			
-=======
-            System.out.println("========================================");
-            System.out.println(" ");
-            System.out.println("          TAMBAH USER");
-            System.out.println(" ");
-            System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
 
             int id = 1;
             if (!penggunaObject.isEmpty()) {
@@ -1330,15 +1238,7 @@ class Sitose {
     }
 
     void updateUser() {
-<<<<<<< HEAD
         headermenu("EDIT USER");
-=======
-        System.out.println("========================================");
-        System.out.println(" ");
-        System.out.println("          EDIT USER");
-        System.out.println(" ");
-        System.out.println("========================================");
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
 
         // tampilkan kategori produk
         viewUser(false);
@@ -1366,17 +1266,8 @@ class Sitose {
     }
 
     void removeUser() {
-<<<<<<< HEAD
         headermenu("HAPUS USER");
-			
-=======
-        System.out.println("========================================");
-        System.out.println(" ");
-        System.out.println("          HAPUS USER");
-        System.out.println(" ");
-        System.out.println("========================================");
 
->>>>>>> 62d78111ce040201ac0da79141b7999ec0357dcd
         // tampilkan kategori produk
         viewUser(false);
 
