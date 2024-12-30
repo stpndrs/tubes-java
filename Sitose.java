@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 class Sitose {
     /*
@@ -39,6 +41,13 @@ class Sitose {
      * untuk menyimpan objek-objek yang dibentuk dari kelas Produk.
      */
     ArrayList<Produk> produkObject = new ArrayList<>();
+
+    /*
+     * ArrayList<Transaksi> transaksiObject = new ArrayList<>();
+     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
+     * untuk menyimpan objek-objek yang dibentuk dari kelas Transaksi.
+     */
+    ArrayList<Transaksi> transaksiObject = new ArrayList<>();
 
     /*
      * ArrayList<CabangToko> cabangTokoObject = new ArrayList<>();
@@ -268,6 +277,7 @@ class Sitose {
             String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
             String[] menuProduk = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
             String[] menuCabangToko = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
+            String[] menuTransaksi = { "Lihat Transaksi", "Tambah Transaksi", "Hapus Transaksi", "kembali" };
             String[] menuUser = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
 
             if (choosedMenu == 0) {
@@ -401,6 +411,34 @@ class Sitose {
                         removeCabangToko();
                         break;
                     case 5:
+                        showMenu("menu", 0);
+                        break;
+                    default:
+                        break;
+
+                }
+            } else if (choosedMenu == 5) {
+                System.out.println("+------------------------------+");
+                int i = 0;
+                for (String mj : menuTransaksi) {
+                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
+                }
+                System.out.println("+------------------------------+");
+
+                System.out.println("========Pilih Untuk Mengakses Menu========");
+                int csm = chooseSubMenu();
+
+                switch (csm) {
+                    case 1:
+                        viewTransaksi(true);
+                        break;
+                    case 2:
+                        insertTransaksi();
+                        break;
+                    case 3:
+                        removeTransaksi();
+                        break;
+                    case 4:
                         showMenu("menu", 0);
                         break;
                     default:
@@ -1174,6 +1212,108 @@ class Sitose {
         showMenu("submenu", 4);
     }
 
+    void viewTransaksi(boolean isShowMenu) {
+        if (transaksiObject.isEmpty()) {
+            System.out.println("Tidak ada data untuk ditampilkan.");
+        } else {
+            for (Transaksi item : transaksiObject) {
+                System.out.println(item.id);
+                System.out.println(item.kode);
+                System.out.println(item.waktu);
+                System.out.println(item.total);
+                System.out.println(item.transaksi_detail);
+            }
+        }
+        if (isShowMenu) {
+            showMenu("submenu", 6);
+        }
+    }
+
+    void insertTransaksi() {
+        try {
+            headermenu("TAMBAH TRANSAKSI");
+
+            cabangTokoObject.add(new CabangToko(1, "Cabang 1", "C1", "0000", "tes"));
+            jenisProdukObject.add(new Jenis(1, "jenis 1", "J"));
+            kategoriProdukObject.add(new Kategori(1, "kategori 1", "KA"));
+            produkObject.add(new Produk(1, "produk 1", jenisProdukObject.get(0),
+                    kategoriProdukObject.get(0), 10, 10000));
+
+            ArrayList<ArrayList<String>> tmp = new ArrayList<>();
+            ArrayList<String> tmpItem;
+
+            boolean isNewProduct = true;
+            while (isNewProduct) {
+                viewProduk(false);
+
+                input.nextLine();
+
+                System.out.print("Pilih produk : ");
+                String produk = input.nextLine();
+
+                System.out.print("Masukkan Quantity : ");
+                String qty = input.nextLine();
+
+                tmpItem = new ArrayList<>();
+                tmpItem.add(produk); // 0
+                tmpItem.add(qty); // 1
+                tmp.add(new ArrayList<>(tmpItem));
+
+                System.out.print("Ingin menambahkan produk baru (y/n)?");
+                String isnpr = input.nextLine();
+
+                if (isnpr.equals("n")) {
+                    isNewProduct = false;
+                }
+            }
+
+            if (!isNewProduct) {
+                int total = 0;
+                CabangToko cabang = cabangTokoObject.get(0); // diganti jadi diambil dari data user
+                Transaksi transaksiBaru = new Transaksi(total, cabang);
+
+                for (ArrayList<String> item : tmp) {
+                    int produkIndex = Integer.parseInt(item.get(0));
+                    int kuantiti = Integer.parseInt(item.get(1));
+
+                    Produk produkName = produkObject.get(produkIndex - 1);
+                    int totalPerProduk = kuantiti * produkName.harga;
+                    total += totalPerProduk;
+
+                    ArrayList<String> detailItem = new ArrayList<>();
+                    detailItem.add(produkName.nama); // Nama produk
+                    detailItem.add(produkName.kode); // Kode produk
+                    detailItem.add(String.valueOf(kuantiti)); // Kuantitas
+                    detailItem.add(String.valueOf(totalPerProduk)); // Total harga
+                    transaksiBaru.transaksi_detail.add(detailItem);
+
+                    // viewNota(); <- tampilkan nota
+                }
+
+                showMenu("submenu", 5);
+            }
+
+        } catch (Exception e) {
+            System.out.println("!!!!Data Gagal Disimpan!!!!");
+            System.out.println("error : " + e.getMessage());
+        }
+    }
+
+    void removeTransaksi() {
+        headermenu("HAPUS TRANSAKSI");
+
+        // tampilkan transaksi
+        viewUser(false);
+
+        System.out.println("Masukkan id transaksi : ");
+        int id = input.nextInt();
+
+        transaksiObject.removeIf(n -> n.id == id);
+        System.out.println(">>>>Data Berhasil Dihapus<<<<");
+
+        showMenu("submenu", 6);
+    }
+
     void viewUser(boolean isShowMenu) {
         if (penggunaObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
@@ -1350,15 +1490,21 @@ class CabangToko {
 }
 
 class Transaksi {
-    int id;
-    String kode, waktu, total;
-    ArrayList<String> transaksi_detail;
+    int id, total;
+    String kode, waktu;
+    ArrayList<ArrayList<String>> transaksi_detail = new ArrayList<>();
+    ArrayList<String> transaksi_detail_item;
 
-    public Transaksi(int id, String kode, String waktu, String total) {
-        this.id = id;
+    public Transaksi(int total, CabangToko cabang) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = now.format(formatter);
+        System.out.println("Tanggal dan waktu yang diformat: " + formattedDate);
+
+        // this.id = id;
         this.kode = kode;
-        this.waktu = waktu;
+        this.waktu = formattedDate;
         this.total = total;
-        this.transaksi_detail = new ArrayList<>();
+        // this.transaksi_detail_i;
     }
 }
