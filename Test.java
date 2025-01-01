@@ -2,65 +2,53 @@ import java.util.Scanner;
 
 class Test {
     static Scanner input = new Scanner(System.in);
-
+    
     public static void main(String[] args) {
-        User currentUser = new User(1, "Stevan", "hehe", "UC");
+        User currentUser = new User(1, "Stevan", "hehe", "UA");
         // level = admin manajer kasir
         /*
-         * Menu
-         * menu 1
-         * -> lihat
-         * -> tambah
-         * -> edit
-         * -> hapus
-         * 
-         * menu 2
-         * -> lihat
-         * -> tambah
-         * -> edit
-         * -> hapus
-         * 
-         * menu 3
-         * -> lihat
-         * -> tambah
-         * -> hapus
-         * 
-         * ================================
-         * 
-         * Akses
-         * admin
-         * -> menu 1 = semua
-         * -> menu 2 = semua
-         * -> menu 3 = lihat hapus
-         * 
-         * manajer
-         * -> menu 2 = lihat edit
+        * Menu
+        * menu 1
+        * -> lihat
+        * -> tambah
+        * -> edit
+        * -> hapus
+        * 
+        * menu 2
+        * -> lihat
+        * -> tambah
+        * -> edit
+        * -> hapus
+        * 
+        * menu 3
+        * -> lihat
+        * -> tambah
+        * -> hapus
+        * 
+        * ================================
+        * 
+        * Akses
+        * admin
+        * -> menu 1 = semua
+        * -> menu 2 = semua
+        * -> menu 3 = lihat hapus
+        * 
+        * manajer
+        * -> menu 2 = lihat edit
          * -> menu 3 = lihat
          * 
          * kasir
          * -> menu 3 = lihat tambah
          */
-
+        
         // 0 = nama menu, 1 = kode menu
+        header("semabarang aja dulu");
         String[][] mainMenus = { { "menu 1", "A" }, { "menu 2", "B" }, { "menu 3", "C" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABC" }, { "UB", "BC" }, { "UC", "C" } };
-
-        String userAccess = findUserAccess(mainMenuAccess, currentUser.level);
-        // cek jika false brarti ga ktemu
-        if (userAccess.equals("false")) {
-            System.out.println("There is an error");
-            return;
-        }
-        for (String[] mainMenu : mainMenus) {
-            // kalau misalnya ternyata kode menu dari mainMenu index 1 ga ada di userAccess
-            // yang udah di return, maka lewati dan kembali cek lagi ke looping
-            if (!userAccess.contains(mainMenu[1]))
-                continue;
-
-            System.out.println(mainMenu[0]);
-        }
-
+        
+        output(mainMenus, mainMenuAccess, currentUser);
+      
         System.out.println("Masukkan kode menu");
         String inpmenu = input.nextLine();
 
@@ -81,6 +69,39 @@ class Test {
                 break;
         }
     }
+    static void header(String title){
+
+        int width = 29;
+        int length = title.length();
+        int sepasi = (width - length) / 2;
+
+        System.out.println("=============================");
+        System.out.println("");
+        System.out.printf("%" + sepasi + "s%s%" + sepasi + "s\n", "", title, "");
+        System.out.println("");
+        System.out.println("=============================");
+    }
+
+    static void output(String[][] mainMenus, String[][] mainMenuAccess, User currentUser){
+        String userAccess = findUserAccess(mainMenuAccess, currentUser.level);
+        // cek jika false brarti ga ktemu
+        if (userAccess.equals("false")) {
+            System.out.println("There is an error");
+            return;
+        }
+    
+        System.out.println("+--------------------------+");
+        System.out.printf("| %-4s | %-16s |\n","pilih", "Menu");
+        System.out.println("+--------------------------+");
+        for (String[] mainMenu : mainMenus) {
+            if (!userAccess.contains(mainMenu[1]))
+                continue;
+                
+            System.out.printf("| %-5s | %-16s |\n", mainMenu[1], mainMenu[0] );
+    
+        }
+        System.out.println("+--------------------------+");
+    }
 
     // fungsi buat nyari array aksesnya
     public static String findUserAccess(String[][] mainMenuAccess, String roleName) {
@@ -97,23 +118,75 @@ class Test {
         return err;
     }
 
-    public static void subMenu3(User currentUser) {
+    public static void subMenu1(User currentUser) {
         // 0 = nama menu, 1 = kode menu
         String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "AD" }, { "UB", "A" }, { "UC", "AB" } };
 
-        String userAccess = findUserAccess(mainMenuAccess, currentUser.level);
-        if (userAccess.equals("false")) {
-            System.out.println("There is an error");
-            return;
-        }
-        for (String[] mainMenu : mainMenus) {
-            if (!userAccess.contains(mainMenu[1]))
-                continue;
+        header("A dil A");
+        
+        output(mainMenus, mainMenuAccess, currentUser);
 
-            System.out.println(mainMenu[0]);
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
+
+        switch (inpmenu) {
+            case "A":
+                viewMenu1();
+                break;
+            case "B":
+                tambahMenu1();
+                break;
+            case "C":
+                editMenu1();
+                break;
+            case "D":
+                hapusMenu1();
+                break;
+
+            default:
+                break;
         }
+    }
+
+    public static void subMenu2(User currentUser) {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "AD" }, { "UB", "A" }, { "UC", "AB" } };
+        
+        output(mainMenus, mainMenuAccess, currentUser);
+
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
+
+        switch (inpmenu) {
+            case "A":
+                viewMenu2();
+                break;
+            case "B":
+                tambahMenu2();
+                break;
+            case "C":
+                editMenu2();
+                break;
+            case "D":
+                hapusMenu2();
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public static void subMenu3(User currentUser) {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "AD" }, { "UB", "A" }, { "UC", "AB" } };
+        
+        output(mainMenus, mainMenuAccess, currentUser);
 
         System.out.println("Masukkan kode menu");
         String inpmenu = input.nextLine();

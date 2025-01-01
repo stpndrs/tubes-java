@@ -1,7 +1,5 @@
-import java.util.ArrayList;
+    import java.util.ArrayList;
 import java.util.Scanner;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 class Sitose {
     /*
@@ -41,13 +39,6 @@ class Sitose {
      * untuk menyimpan objek-objek yang dibentuk dari kelas Produk.
      */
     ArrayList<Produk> produkObject = new ArrayList<>();
-
-    /*
-     * ArrayList<Transaksi> transaksiObject = new ArrayList<>();
-     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
-     * untuk menyimpan objek-objek yang dibentuk dari kelas Transaksi.
-     */
-    ArrayList<Transaksi> transaksiObject = new ArrayList<>();
 
     /*
      * ArrayList<CabangToko> cabangTokoObject = new ArrayList<>();
@@ -109,11 +100,7 @@ class Sitose {
      * method login() agar pengguna bisa melakukan login
      */
     void welcome() {
-        System.out.println("========================================");
-        System.out.println(" ");
-        System.out.println("        SELAMAT DATANG DI SITOSE        ");
-        System.out.println(" ");
-        System.out.println("========================================");
+        header("SELAMAT DATANG DI SIAPBANG");
 
         login();
     }
@@ -190,319 +177,250 @@ class Sitose {
     /*
      * Rakha Jelasin
      */
-    void headermenu(String judul) {
-        int lineLength = 40; // Panjang garis
-        String line = "=".repeat(lineLength);
+    static void header(String title){
 
-        System.out.println(line);
-        System.out.println();
-        System.out.printf("%" + (lineLength / 2 + judul.length() / 2) + "s%n", judul);
-        System.out.println();
-        System.out.println(line);
+        int width = 29;
+        int length = title.length();
+        int sepasi = (width - length) / 2;
 
-    }
-
-    void menutemplate() {
-        headermenu("MENU APLIKASI");
-        System.out.println(" ");
-        System.out.println("+-----+--------------------------------+");
-        System.out.println("| No  |           Pilihan Menu         |");
-        System.out.println("+-----+--------------------------------+");
+        System.out.println("=============================");
+        System.out.println("");
+        System.out.printf("%" + sepasi + "s%s%" + sepasi + "s\n", "", title, "");
+        System.out.println("");
+        System.out.println("=============================");
     }
 
     /*
      * Rakha Jelasin
      */
-    void showMenu(String type, int choosedMenu) {
+    void showmenu(String[] arg){
+        // 0 = nama menu, 1 = kode menu
+        header("semabarang aja dulu");
+        String[][] mainMenus = { { "JENIS", "A" }, { "KATEGORI", "B" }, { "produk", "C" },  {"cabang toko", "D"}, {"transaksi","E"}, {"Manajemen User", "F"} };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ABCDEF" }, { "UB", "BCD" }, { "UC", "CD" }, {"UD","E"}};
+        
+        output(mainMenus, mainMenuAccess, currentUser);
+      
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
 
-        String[] menuItems = {
-                "Jenis Produk", "Kategori Produk", "Data Produk", "Manajemen Toko Cabang", "Transaksi", "Pengguna",
-                "Logout"
-        };
+        switch (inpmenu) {
+            case "A":
+                // TINGGAL DIGANTI JADI SUBMENU 1
+                // subMenu3(currentUser);
+                break;
+            case "B":
+                // TINGGAL DIGANTI JADI SUBMENU 2
+                // subMenu3(currentUser);
+                break;
+            case "C":
+                subMenu3(currentUser);
+                break;
 
-        if (type == "menu") {
-            if (this.level == 1) {
-                menutemplate();
+            default:
+                break;
+        }
+        
+    }
+    void output(String[][] mainMenus, String[][] mainMenuAccess, User currentUser){
 
-                // menu
-                for (int i = 0; i < menuItems.length; i++) {
+        String userAccess = findUserAccess(mainMenuAccess, currentUser.level);
+        // cek jika false brarti ga ktemu
+        if (userAccess.equals("false")) {
+            System.out.println("There is an error");
+            return;
+        }
+    
+        System.out.println("+--------------------------+");
+        System.out.printf("| %-4s | %-16s |\n","pilih", "Menu");
+        System.out.println("+--------------------------+");
+        for (String[] mainMenu : mainMenus) {
+            if (!userAccess.contains(mainMenu[1]))
+                continue;
+                
+            System.out.printf("| %-5s | %-16s |\n", mainMenu[1], mainMenu[0] );
+    
+        }
+        System.out.println("+--------------------------+");
+    }
 
-                    System.out.printf("| %-3d | %-30s |\n", i + 1, menuItems[i]);
-                }
-
-                System.out.println("+-----+--------------------------------+");
-                System.out.println(" ");
-                System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
-                int cm = chooseMenu();
-                showMenu("submenu", cm);
+    public static String findUserAccess(String[][] mainMenuAccess, String roleName) {
+        for (String[] mainMenuAcc : mainMenuAccess) {
+            // nyamain antara kode level yang di array sama level yang disimpan waktu user
+            // login
+            if (mainMenuAcc[0].equals(roleName)) {
+                // kalau sama, return kode menu
+                return mainMenuAcc[1];
             }
-            if (this.level == 2) {
+        }
 
-                menutemplate();
+        String err = "false";
+        return err;
+    }
 
-                for (int i = 0; i <= 3; i++) {
-                    System.out.printf("| %-3d | %-30s |\n", i + 1, menuItems[i]);
-                    System.out.println("+-----+--------------------------------+");
-                    System.out.println(" ");
-                    System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
-                }
+    void menuJenis(User currentUser) {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
 
-                int cm = chooseMenu();
-                showMenu("submenu", cm);
-            }
-            if (this.level == 3) {
-                menutemplate();
+        header("A dil A");
+        
+        output(mainMenus, mainMenuAccess, currentUser);
 
-                System.out.printf("| %-3d | %-30s |\n", 1, menuItems[4]);
-                System.out.println("+-----+--------------------------------+");
-                System.out.println(" ");
-                System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
 
-                int cm = chooseMenu();
-                showMenu("submenu", cm);
-            }
-            if (this.level == 4) {
-                menutemplate();
+        switch (inpmenu) {
+            case "A":
+                viewJenis(true);
+                break;
+            case "B":
+                insertJenis();
+                break;
+            case "C":
+                updateJenis();
+                break;
+            case "D":
+                removeJenis();
+                break;
 
-                System.out.printf("| %-3d | %-30s |\n", 1, menuItems[5]);
-                System.out.println("+-----+--------------------------------+");
-                System.out.println(" ");
-                System.out.println("======== PILIH UNTUK MENGAKSES MENU ========");
-
-                int cm = chooseMenu();
-                showMenu("submenu", cm);
-            }
-        } else if (type == "submenu") {
-            String[] menuJenis = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
-            String[] menuKategori = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "Kembali" };
-            String[] menuProduk = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
-            String[] menuCabangToko = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
-            String[] menuTransaksi = { "Lihat Transaksi", "Tambah Transaksi", "Hapus Transaksi", "kembali" };
-            String[] menuUser = { "Lihat Data", "Tambah Data", "Edit Data", "Hapus Data", "kembali" };
-
-            if (choosedMenu == 0) {
-                System.out.println("Anda telah logout");
-                input.nextLine(); // Clear Buffer
-                welcome();
-            }
-            if (choosedMenu == 1) {
-                if (this.level == 1 || this.level == 2) {
-                    System.out.println("+-------+----------------------+");
-                    System.out.printf("| %-4s | %-20s |\n", "Pilih", " Menu Jenis Produk");
-                    System.out.println("+------------------------------+");
-                    int i = 0;
-                    for (String mj : menuJenis) {
-                        System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
-                    }
-                    System.out.println("+------------------------------+");
-
-                    System.out.println("========Pilih Untuk Mengakses Menu========");
-                    int csm = chooseSubMenu();
-
-                    switch (csm) {
-                        case 1:
-                            viewJenis(true);
-                            break;
-                        case 2:
-                            insertJenis();
-                            break;
-                        case 3:
-                            updateJenis();
-                            break;
-                        case 4:
-                            removeJenis();
-                            break;
-                        case 5:
-                            showMenu("menu", 0);
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-            } else if (choosedMenu == 2) {
-                if (this.level == 1 || this.level == 2) {
-                    System.out.println("+-------+----------------------+");
-                    System.out.printf("| %-4s | %-20s |\n", "Pilih", " Menu Kategori Produk");
-                    System.out.println("+------------------------------+");
-                    int i = 0;
-                    for (String mk : menuKategori) {
-                        System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mk);
-                    }
-                    System.out.println("+------------------------------+");
-
-                    System.out.println("========Pilih Untuk Mengakses Menu========");
-                    int csm = chooseSubMenu();
-
-                    switch (csm) {
-                        case 1:
-                            viewKategori(true);
-                            break;
-                        case 2:
-                            insertKategori();
-                            break;
-                        case 3:
-                            updateKategori();
-                            break;
-                        case 4:
-                            removeKategori();
-                            break;
-                        case 5:
-                            showMenu("menu", 0);
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-            } else if (choosedMenu == 3) {
-                System.out.println("+------------------------------+");
-                int i = 0;
-                for (String mj : menuProduk) {
-                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
-                }
-                System.out.println("+------------------------------+");
-
-                System.out.println("========Pilih Untuk Mengakses Menu========");
-                int csm = chooseSubMenu();
-
-                switch (csm) {
-                    case 1:
-                        viewProduk(true);
-                        break;
-                    case 2:
-                        insertProduk();
-                        break;
-                    case 3:
-                        updateProduk();
-                        break;
-                    case 4:
-                        removeProduk();
-                        break;
-                    case 5:
-                        showMenu("menu", 0);
-                        break;
-                    default:
-                        break;
-
-                }
-            } else if (choosedMenu == 4) {
-                System.out.println("+------------------------------+");
-                int i = 0;
-                for (String mj : menuCabangToko) {
-                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
-                }
-                System.out.println("+------------------------------+");
-
-                System.out.println("========Pilih Untuk Mengakses Menu========");
-                int csm = chooseSubMenu();
-
-                switch (csm) {
-                    case 1:
-                        viewCabangToko(true);
-                        break;
-                    case 2:
-                        insertCabangToko();
-                        break;
-                    case 3:
-                        updateCabangToko();
-                        break;
-                    case 4:
-                        removeCabangToko();
-                        break;
-                    case 5:
-                        showMenu("menu", 0);
-                        break;
-                    default:
-                        break;
-
-                }
-            } else if (choosedMenu == 5) {
-                System.out.println("+------------------------------+");
-                int i = 0;
-                for (String mj : menuTransaksi) {
-                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
-                }
-                System.out.println("+------------------------------+");
-
-                System.out.println("========Pilih Untuk Mengakses Menu========");
-                int csm = chooseSubMenu();
-
-                switch (csm) {
-                    case 1:
-                        viewTransaksi(true);
-                        break;
-                    case 2:
-                        insertTransaksi();
-                        break;
-                    case 3:
-                        removeTransaksi();
-                        break;
-                    case 4:
-                        showMenu("menu", 0);
-                        break;
-                    default:
-                        break;
-
-                }
-            } else if (choosedMenu == 6) {
-                System.out.println("+------------------------------+");
-                int i = 0;
-                for (String mj : menuUser) {
-                    System.out.printf("| %6s| %-21s| \n", " " + (i++ + 1) + ". ", "  " + mj);
-                }
-                System.out.println("+------------------------------+");
-
-                System.out.println("========Pilih Untuk Mengakses Menu========");
-                int csm = chooseSubMenu();
-
-                switch (csm) {
-                    case 1:
-                        viewUser(true);
-                        break;
-                    case 2:
-                        insertUser();
-                        break;
-                    case 3:
-                        updateUser();
-                        break;
-                    case 4:
-                        removeUser();
-                        break;
-                    case 5:
-                        showMenu("menu", 0);
-                        break;
-                    default:
-                        break;
-
-                }
-            }
+            default:
+                break;
         }
     }
 
-    /*
-     * fungsi chooseMenu() akan mengembalikan angka yang sudah dimasukkan oleh
-     * pengguna untuk memilih menu apa yang akan di akses
-     */
-    int chooseMenu() {
-        int choosedMenu;
-        System.out.print("Masukkan Angka Menu : ");
-        choosedMenu = input.nextInt();
+    void menuKategori(User currentUser) {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+        
+        output(mainMenus, mainMenuAccess, currentUser);
 
-        return choosedMenu;
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
+
+        switch (inpmenu) {
+            case "A":
+                viewKategori(true);
+                break;
+            case "B":
+                insertKategori();
+                break;
+            case "C":
+                updateKategori();
+                break;
+            case "D":
+                removeKategori();
+                break;
+
+            default:
+                break;
+        }
     }
 
-    /*
-     * fungsi chooseSubMenu() akan mengembalikan angka yang sudah dimasukkan oleh
-     * pengguna untuk memilih submenu apa yang akan di akses
-     */
-    int chooseSubMenu() {
-        int choosedSubMenu;
-        System.out.println("Masukkan Angka Menu : ");
-        choosedSubMenu = input.nextInt();
+    void menuProduk(User currentUser) {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+        
+        output(mainMenus, mainMenuAccess, currentUser);
 
-        return choosedSubMenu;
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
+
+        switch (inpmenu) {
+            case "A":
+                viewProduk(true);
+                break;
+            case "B":
+                insertProduk();
+                break;
+            case "C":
+                updateProduk();
+                break;
+            case "D":
+                removeProduk();
+                break;
+
+            default:
+                break;
+        }
     }
+    
+        void menuTransaksi(User currentUser) {
+            // 0 = nama menu, 1 = kode menu
+            String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" },  { "hapus", "D" } };
+            // 0 = kode user, 1 = string dari kode menu
+            String[][] mainMenuAccess = { { "UA", "ACD" }, {"UD", "ABD"} };
+            
+            output(mainMenus, mainMenuAccess, currentUser);
+    
+            System.out.println("Masukkan kode menu");
+            String inpmenu = input.nextLine();
+    
+            switch (inpmenu) {
+                case "A":
+                    viewMenu3();
+                    break;
+                case "B":
+                    tambahMenu3();
+                    break;
+                case "C":
+                    editMenu3();
+                    break;
+                case "D":
+                    hapusMenu3();
+                    break;
+    
+                default:
+                    break;
+            }
+        }
+
+            void menuManajemenUser(User currentUser) {
+                // 0 = nama menu, 1 = kode menu
+                String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, {"edit","C"} { "hapus", "D" } };
+                // 0 = kode user, 1 = string dari kode menu
+                String[][] mainMenuAccess = { { "UA", "ABCD" }, {"UC","ABCD"}};
+                
+                output(mainMenus, mainMenuAccess, currentUser);
+        
+                System.out.println("Masukkan kode menu");
+                String inpmenu = input.nextLine();
+        
+                switch (inpmenu) {
+                    case "A":
+                        viewPengguna(true);
+                        break;
+                    case "B":
+                        insertPengguna();
+                        break;
+                    case "C":
+                        editMenu3();
+                        break;
+                    case "D":
+                        hapusMenu3();
+                        break;
+        
+                    default:
+                        break;
+                }
+            }
+
+
+
+
+
+
+
+
+    
+
+
 
     /*
      * method viewJenis() menampilkan data jenis produk, dengan parameter isShowMenu
@@ -572,7 +490,9 @@ class Sitose {
          * untuk mengambil pesan error program
          */
         try {
-            headermenu("TAMBAH JENIS PRODUK");
+            header("TAMBAH JENIS PRODUK");
+            
+            
 
             int id = 1;
             if (!jenisProdukObject.isEmpty()) {
@@ -635,9 +555,9 @@ class Sitose {
      * kelas Jenis()
      */
     void updateJenis() {
-        try {
-            headermenu("EDIT JENIS PRODUK");
-
+        header("EDIT JENIS PRODUK");
+        
+    try {
             /*
              * memanggil method viewJenis() untuk menampilkan data jenis produk agar
              * pengguna bisa melihat id jenis produk, dengan parameter isShowMenu bernilai
@@ -705,9 +625,9 @@ class Sitose {
      * method removeJenis() digunakkan untuk menghapus data jenis produk
      */
     void removeJenis() {
-        try {
-            headermenu("HAPUS JENIS PRODUK");
-
+        header("HAPUS JENIS PRODUK");
+        
+    try {
             /*
              * memanggil method viewJenis() untuk menampilkan data jenis produk agar
              * pengguna bisa melihat id jenis produk, dengan parameter isShowMenu bernilai
@@ -761,12 +681,13 @@ class Sitose {
         } else {
             // atas
             System.out.println("+----+----+----------------------+");
-            System.out.printf("| %-2s |%-2s| %-18s |\n", "ID", "Kode", "Nama Kategori Produk");
+            System.out.printf("| %-2s |%-2s| %-18s |\n", "ID", "Kode", "Nama Kategori Produk" );
             System.out.println("+----+----+----------------------+");
 
             // Isi
             for (Kategori item : kategoriProdukObject) {
                 System.out.printf("| %-2s | %-2s | %-20s |\n", item.id, item.kode, item.nama);
+                
             }
 
             // bawah
@@ -800,7 +721,8 @@ class Sitose {
          * untuk mengambil pesan error program
          */
         try {
-            headermenu("TAMBAH KATEGORI PRODUK");
+            header("TAMBAH KATEGORI PRODUK");
+            
 
             int id = 1;
             if (!kategoriProdukObject.isEmpty()) {
@@ -864,9 +786,9 @@ class Sitose {
      * kelas Kategori()
      */
     void updateKategori() {
-        try {
-            headermenu("EDIT KATEGORI PRODUK");
-
+        header("EDIT KATEGORI PRODUK");
+        
+    try{
             /*
              * memanggil method viewKategori() untuk menampilkan data kategori produk agar
              * pengguna bisa melihat id kategori produk, dengan parameter isShowMenu
@@ -936,16 +858,10 @@ class Sitose {
      * method removeKategori() digunakkan untuk menghapus data kategori produk
      */
     void removeKategori() {
-        try {
-            headermenu("HAPUS KATEGORI PRODUK");
+        header("HAPUS KATEGORI PRODUK");
 
-            /*
-             * memanggil method viewKategori() untuk menampilkan data kategori produk agar
-             * pengguna bisa melihat id kategori produk, dengan parameter isShowMenu
-             * bernilai
-             * false agar menu tidak ditampilkan
-             */
-            viewKategori(false);
+       
+    try {
             /*
              * pengguna memasukkan id jenis produk
              */
@@ -991,7 +907,7 @@ class Sitose {
 
     void insertProduk() {
         try {
-            headermenu("TAMBAH PRODUK");
+            header("TAMBAH PRODUK");
 
             int id = 1;
             if (!produkObject.isEmpty()) {
@@ -1041,7 +957,7 @@ class Sitose {
 
     void updateProduk() {
         try {
-            headermenu("EDIT PRODUK");
+            header("EDIT PRODUK");
 
             int id = input.nextInt();
             /*
@@ -1089,7 +1005,7 @@ class Sitose {
     }
 
     void removeProduk() {
-        headermenu("HAPUS PRODUK");
+        header("HAPUS PRODUK");
 
         // tampilkan kategori produk
         viewProduk(false);
@@ -1126,8 +1042,8 @@ class Sitose {
 
     void insertCabangToko() {
         try {
-            headermenu("TAMBAH CABANG PRODUK");
-
+            header("TAMBAH CABANG PRODUK");
+            
             int id = 1;
             if (!cabangTokoObject.isEmpty()) {
                 id = cabangTokoObject.get(cabangTokoObject.size() - 1).id + 1;
@@ -1164,7 +1080,8 @@ class Sitose {
     }
 
     void updateCabangToko() {
-        headermenu("EDIT CABANG TOKO");
+        header("EDIT CABANG TOKO");
+
 
         // tampilkan cabang toko produk
         viewCabangToko(false);
@@ -1198,8 +1115,8 @@ class Sitose {
     }
 
     void removeCabangToko() {
-        headermenu("HAPUS CABANG TOKO");
-
+        header("HAPUS CABANG TOKO");
+		
         // tampilkan cabang toko
         viewCabangToko(false);
 
@@ -1210,108 +1127,6 @@ class Sitose {
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
         showMenu("submenu", 4);
-    }
-
-    void viewTransaksi(boolean isShowMenu) {
-        if (transaksiObject.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
-        } else {
-            for (Transaksi item : transaksiObject) {
-                System.out.println(item.id);
-                System.out.println(item.kode);
-                System.out.println(item.waktu);
-                System.out.println(item.total);
-                System.out.println(item.transaksi_detail);
-            }
-        }
-        if (isShowMenu) {
-            showMenu("submenu", 6);
-        }
-    }
-
-    void insertTransaksi() {
-        try {
-            headermenu("TAMBAH TRANSAKSI");
-
-            cabangTokoObject.add(new CabangToko(1, "Cabang 1", "C1", "0000", "tes"));
-            jenisProdukObject.add(new Jenis(1, "jenis 1", "J"));
-            kategoriProdukObject.add(new Kategori(1, "kategori 1", "KA"));
-            produkObject.add(new Produk(1, "produk 1", jenisProdukObject.get(0),
-                    kategoriProdukObject.get(0), 10, 10000));
-
-            ArrayList<ArrayList<String>> tmp = new ArrayList<>();
-            ArrayList<String> tmpItem;
-
-            boolean isNewProduct = true;
-            while (isNewProduct) {
-                viewProduk(false);
-
-                input.nextLine();
-
-                System.out.print("Pilih produk : ");
-                String produk = input.nextLine();
-
-                System.out.print("Masukkan Quantity : ");
-                String qty = input.nextLine();
-
-                tmpItem = new ArrayList<>();
-                tmpItem.add(produk); // 0
-                tmpItem.add(qty); // 1
-                tmp.add(new ArrayList<>(tmpItem));
-
-                System.out.print("Ingin menambahkan produk baru (y/n)?");
-                String isnpr = input.nextLine();
-
-                if (isnpr.equals("n")) {
-                    isNewProduct = false;
-                }
-            }
-
-            if (!isNewProduct) {
-                int total = 0;
-                CabangToko cabang = cabangTokoObject.get(0); // diganti jadi diambil dari data user
-                Transaksi transaksiBaru = new Transaksi(total, cabang);
-
-                for (ArrayList<String> item : tmp) {
-                    int produkIndex = Integer.parseInt(item.get(0));
-                    int kuantiti = Integer.parseInt(item.get(1));
-
-                    Produk produkName = produkObject.get(produkIndex - 1);
-                    int totalPerProduk = kuantiti * produkName.harga;
-                    total += totalPerProduk;
-
-                    ArrayList<String> detailItem = new ArrayList<>();
-                    detailItem.add(produkName.nama); // Nama produk
-                    detailItem.add(produkName.kode); // Kode produk
-                    detailItem.add(String.valueOf(kuantiti)); // Kuantitas
-                    detailItem.add(String.valueOf(totalPerProduk)); // Total harga
-                    transaksiBaru.transaksi_detail.add(detailItem);
-
-                    // viewNota(); <- tampilkan nota
-                }
-
-                showMenu("submenu", 5);
-            }
-
-        } catch (Exception e) {
-            System.out.println("!!!!Data Gagal Disimpan!!!!");
-            System.out.println("error : " + e.getMessage());
-        }
-    }
-
-    void removeTransaksi() {
-        headermenu("HAPUS TRANSAKSI");
-
-        // tampilkan transaksi
-        viewUser(false);
-
-        System.out.println("Masukkan id transaksi : ");
-        int id = input.nextInt();
-
-        transaksiObject.removeIf(n -> n.id == id);
-        System.out.println(">>>>Data Berhasil Dihapus<<<<");
-
-        showMenu("submenu", 6);
     }
 
     void viewUser(boolean isShowMenu) {
@@ -1334,7 +1149,8 @@ class Sitose {
 
     void insertUser() {
         try {
-            headermenu("TAMBAH USER");
+            header("TAMBAH USER");
+			
 
             int id = 1;
             if (!penggunaObject.isEmpty()) {
@@ -1378,7 +1194,7 @@ class Sitose {
     }
 
     void updateUser() {
-        headermenu("EDIT USER");
+        header("EDIT USER");
 
         // tampilkan kategori produk
         viewUser(false);
@@ -1406,8 +1222,8 @@ class Sitose {
     }
 
     void removeUser() {
-        headermenu("HAPUS USER");
-
+        header("HAPUS USER");
+			
         // tampilkan kategori produk
         viewUser(false);
 
@@ -1486,25 +1302,5 @@ class CabangToko {
         this.kode = kode;
         this.telepon = telepon;
         this.alamat = alamat;
-    }
-}
-
-class Transaksi {
-    int id, total;
-    String kode, waktu;
-    ArrayList<ArrayList<String>> transaksi_detail = new ArrayList<>();
-    ArrayList<String> transaksi_detail_item;
-
-    public Transaksi(int total, CabangToko cabang) {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = now.format(formatter);
-        System.out.println("Tanggal dan waktu yang diformat: " + formattedDate);
-
-        // this.id = id;
-        this.kode = kode;
-        this.waktu = formattedDate;
-        this.total = total;
-        // this.transaksi_detail_i;
     }
 }
