@@ -278,9 +278,10 @@ class Sitose {
 
     void menuJenis() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
+                { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+        String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
 
         header("MENU JENIS PRODUK");
 
@@ -302,6 +303,9 @@ class Sitose {
             case "D":
                 removeJenis();
                 break;
+            case "0":
+                showMenu();
+                break;
 
             default:
                 break;
@@ -310,7 +314,8 @@ class Sitose {
 
     void menuKategori() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
+                { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
 
@@ -332,6 +337,9 @@ class Sitose {
             case "D":
                 removeKategori();
                 break;
+            case "0":
+                showMenu();
+                break;
 
             default:
                 break;
@@ -340,7 +348,8 @@ class Sitose {
 
     void menuProduk() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
+                { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
 
@@ -361,6 +370,9 @@ class Sitose {
                 break;
             case "D":
                 removeProduk();
+                break;
+            case "0":
+                showMenu();
                 break;
 
             default:
@@ -370,7 +382,8 @@ class Sitose {
 
     void menuCabangToko() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
+                { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
 
@@ -392,6 +405,9 @@ class Sitose {
             case "D":
                 removeProduk();
                 break;
+            case "0":
+                showMenu();
+                break;
 
             default:
                 break;
@@ -400,7 +416,7 @@ class Sitose {
 
     void menuTransaksi() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Hapus", "D" }, { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ACD" }, { "UD", "ABD" } };
 
@@ -419,6 +435,9 @@ class Sitose {
             case "D":
                 removeTransaksi();
                 break;
+            case "0":
+                showMenu();
+                break;
 
             default:
                 break;
@@ -427,7 +446,8 @@ class Sitose {
 
     void menuManajemenUser() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "edit", "C" }, { "Hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "edit", "C" }, { "Hapus", "D" },
+                { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UC", "ABCD" } };
 
@@ -449,7 +469,9 @@ class Sitose {
             case "D":
                 removeUser();
                 break;
-
+            case "0":
+                showMenu();
+                break;
             default:
                 break;
         }
@@ -494,7 +516,7 @@ class Sitose {
          */
 
         if (isShowMenu) {
-            showMenu();
+            menuJenis();
         }
     }
 
@@ -545,10 +567,10 @@ class Sitose {
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
                 /*
-                 * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
+                 * memanggil method menuJenis(parameter "submenu" sebagai tipe menu yang
                  * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
                  */
-                showMenu();
+                menuJenis();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -622,10 +644,8 @@ class Sitose {
             System.out.println(">>>>Data Berhasil Diubah<<<<");
 
             /*
-             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
-             * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
-             */
-            showMenu();
+            */
+            menuJenis();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -658,11 +678,8 @@ class Sitose {
             jenisProdukObject.remove(id - 1);
             System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-            /*
-             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
-             * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
-             */
-            showMenu();
+            input.nextLine(); // clear buffer
+            menuJenis();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -842,10 +859,7 @@ class Sitose {
             kategoriProdukObject.get(id - 1).kode = kode.isEmpty() ? kodeTmp : kode;
             System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-            /*
-             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
-             * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
-             */
+
             showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
@@ -872,10 +886,7 @@ class Sitose {
             kategoriProdukObject.remove(id - 1);
             System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-            /*
-             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
-             * dipanggil dan "2" sebagai submenu untuk menampilkan submenu kategori produk
-             */
+            input.nextLine(); // clear buffer
             showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
@@ -900,7 +911,7 @@ class Sitose {
         }
 
         if (isShowMenu) {
-            showMenu();
+            menuProduk();
         }
     }
 
@@ -932,7 +943,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu();
+                menuProduk();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -981,7 +992,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu();
+                menuProduk();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -1004,7 +1015,8 @@ class Sitose {
         produkObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu();
+        input.nextLine(); // clear buffer
+        menuProduk();
     }
 
     void viewCabangToko(boolean isShowMenu) {
@@ -1025,7 +1037,7 @@ class Sitose {
         }
 
         if (isShowMenu) {
-            showMenu();
+            menuCabangToko();
         }
     }
 
@@ -1047,7 +1059,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu();
+                menuCabangToko();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -1089,7 +1101,7 @@ class Sitose {
         cabangTokoObject.get(id - 1).alamat = alamat;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-        showMenu();
+        menuCabangToko();
     }
 
     void removeCabangToko() {
@@ -1104,7 +1116,8 @@ class Sitose {
         cabangTokoObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu();
+        input.nextLine(); // clear buffer
+        menuCabangToko();
     }
 
     void viewTransaksi(boolean isShowMenu) {
@@ -1121,7 +1134,7 @@ class Sitose {
             }
         }
         if (isShowMenu) {
-            showMenu();
+            menuTransaksi();
         }
     }
 
@@ -1184,7 +1197,7 @@ class Sitose {
                     // viewNota(); <- tampilkan nota
                 }
 
-                showMenu();
+                menuTransaksi();
             }
 
         } catch (Exception e) {
@@ -1205,7 +1218,8 @@ class Sitose {
         transaksiObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu();
+        input.nextLine(); // clear buffer
+        menuTransaksi();
     }
 
     void viewUser(boolean isShowMenu) {
@@ -1223,7 +1237,7 @@ class Sitose {
             }
         }
         if (isShowMenu) {
-            showMenu();
+            menuManajemenUser();
         }
     }
 
@@ -1257,7 +1271,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu();
+                menuManajemenUser();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -1293,7 +1307,7 @@ class Sitose {
         penggunaObject.get(id - 1).password = password;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-        showMenu();
+        menuManajemenUser();
     }
 
     void removeUser() {
@@ -1308,7 +1322,8 @@ class Sitose {
         penggunaObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu();
+        input.nextLine(); // clear buffer
+        menuManajemenUser();
     }
 }
 
