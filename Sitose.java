@@ -678,7 +678,12 @@ class Sitose {
             jenisProdukObject.remove(id - 1);
             System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-            input.nextLine(); // clear buffer
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
             menuJenis();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
@@ -859,7 +864,6 @@ class Sitose {
             kategoriProdukObject.get(id - 1).kode = kode.isEmpty() ? kodeTmp : kode;
             System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-
             showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
@@ -886,7 +890,12 @@ class Sitose {
             kategoriProdukObject.remove(id - 1);
             System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-            input.nextLine(); // clear buffer
+            /*
+             * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+             * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+             * nextLine(), program tidak langsung melewatkannya.
+             */
+            input.nextLine();
             showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
@@ -1015,7 +1024,12 @@ class Sitose {
         produkObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        input.nextLine(); // clear buffer
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
         menuProduk();
     }
 
@@ -1116,7 +1130,12 @@ class Sitose {
         cabangTokoObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        input.nextLine(); // clear buffer
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
         menuCabangToko();
     }
 
@@ -1218,7 +1237,12 @@ class Sitose {
         transaksiObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        input.nextLine(); // clear buffer
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
         menuTransaksi();
     }
 
@@ -1322,7 +1346,12 @@ class Sitose {
         penggunaObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        input.nextLine(); // clear buffer
+        /*
+         * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+         * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+         * nextLine(), program tidak langsung melewatkannya.
+         */
+        input.nextLine();
         menuManajemenUser();
     }
 }
