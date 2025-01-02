@@ -20,6 +20,11 @@ class Sitose {
      * variabel level untuk menyimpan kode level pengguna yang sedang login
      */
     String level;
+    /*
+     * variabel userCabang untuk menyimpan data cabang toko pengguna yang sedang
+     * login
+     */
+    CabangToko userCabang;
 
     /*
      * ArrayList<Jenis> jenisProdukObject = new ArrayList<>();
@@ -164,8 +169,10 @@ class Sitose {
                     this.level = "UB";
                 } else if (user.level.equals("manajer")) {
                     this.level = "UC";
+                    this.userCabang = user.cabangtoko;
                 } else if (user.level.equals("kasir")) {
                     this.level = "UD";
+                    this.userCabang = user.cabangtoko;
                 }
 
                 return true;
@@ -1195,7 +1202,7 @@ class Sitose {
 
             if (!isNewProduct) {
                 int total = 0;
-                CabangToko cabang = cabangTokoObject.get(0); // diganti jadi diambil dari data user
+                CabangToko cabang = this.userCabang; // diganti jadi diambil dari data user
                 Transaksi transaksiBaru = new Transaksi(total, cabang);
 
                 for (ArrayList<String> item : tmp) {
@@ -1251,13 +1258,28 @@ class Sitose {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             int id = 0;
-            for (User item : penggunaObject) {
-                System.out.println((id++ + 1));
-                System.out.println(item.username);
-                System.out.println(item.password);
-                System.out.println(item.level);
-                if (item.level.equals("manajer") || item.level.equals("kasir"))
-                    System.out.println(item.cabangtoko.toString());
+            // jika levelnya adalah manajer, maka
+            if (this.level.equals("UC")) {
+                for (User item : penggunaObject) {
+                    // menampilkan data user yang levelnya hanya kasir, yang terkait dengan toko si
+                    // manajer ketika login
+                    if (item.level.equals("kasir") && item.cabangtoko.kode.equals(this.userCabang.kode)) {
+                        System.out.println((id++ + 1));
+                        System.out.println(item.username);
+                        System.out.println(item.password);
+                        System.out.println(item.level);
+                        System.out.println(item.cabangtoko.nama);
+                    }
+                }
+            } else {
+                for (User item : penggunaObject) {
+                    System.out.println((id++ + 1));
+                    System.out.println(item.username);
+                    System.out.println(item.password);
+                    System.out.println(item.level);
+                    if (item.level.equals("manajer") || item.level.equals("kasir"))
+                        System.out.println(item.cabangtoko.nama);
+                }
             }
         }
         if (isShowMenu) {
@@ -1343,7 +1365,7 @@ class Sitose {
         System.out.println("Masukkan id kategori produk : ");
         int id = input.nextInt();
 
-        penggunaObject.removeIf(n -> n.id == id);
+        penggunaObject.remove(id - 1);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
         /*
@@ -1357,7 +1379,6 @@ class Sitose {
 }
 
 class User {
-    int id;
     String username, password, level;
     CabangToko cabangtoko;
 
