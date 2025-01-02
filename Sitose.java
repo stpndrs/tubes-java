@@ -344,6 +344,8 @@ class Sitose {
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
 
+        header("MENU KATEGORI PRODUK");
+
         output(mainMenus, mainMenuAccess);
 
         System.out.println("Masukkan kode menu");
@@ -379,6 +381,8 @@ class Sitose {
                 { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
+
+        header("MENU DATA PRODUK");
 
         output(mainMenus, mainMenuAccess);
 
@@ -416,6 +420,8 @@ class Sitose {
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
 
+        header("MENU CABANG TOKO");
+
         output(mainMenus, mainMenuAccess);
 
         System.out.println("Masukkan kode menu");
@@ -451,6 +457,8 @@ class Sitose {
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ACD0" }, { "UD", "ABD0" } };
 
+        header("MENU TRANSAKSI");
+
         output(mainMenus, mainMenuAccess);
 
         System.out.println("Masukkan kode menu");
@@ -483,6 +491,8 @@ class Sitose {
                 { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UC", "ABCD0" } };
+
+        header("MENU MANAJEMEN PENGGUNA");
 
         output(mainMenus, mainMenuAccess);
 
