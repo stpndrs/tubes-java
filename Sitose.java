@@ -1201,10 +1201,6 @@ class Sitose {
     void cetakNota(Transaksi transaksi) {
         // Header Nota
         header("NOTA PEMBELIAN");
-        // System.out.println("+-----+--------------------+----------+----------+----------+");
-        // System.out.printf("|%-5s|%-20s|%-10s|%-10s|%-10s|\n", "No", "Nama Barang",
-        // "Jumlah", "Harga", "Subtotal");
-        // System.out.println("+-----+--------------------+----------+----------+----------+");
 
         // Data Nota
         double totalHarga = 0;
@@ -1234,11 +1230,6 @@ class Sitose {
         Line();
         System.out.println("Alamat : " + this.userCabang.alamat);
     }
-
-    // for (Transaksi item : transaksi.transaksi_detail) {
-    // System.out.println(item);
-    // double subtotal = item.jumlah * item.harga;
-    // totalHarga += subtotal;
 
     void viewTransaksi(boolean isShowMenu) {
         if (transaksiObject.isEmpty()) {
@@ -1278,6 +1269,11 @@ class Sitose {
                 System.out.print("Masukkan Quantity : ");
                 String qty = input.nextLine();
 
+                if (produkObject.get(Integer.parseInt(produk) - 1).stok < Integer.parseInt(qty)) {
+                    System.out.println(">>>>Stok tidak mencukupi. Silakan masukkan ulang produk dan kuantitas.<<<<");
+                    continue; // Kembali ke awal loop
+                }
+
                 tmpItem = new ArrayList<>();
                 tmpItem.add(produk); // 0
                 tmpItem.add(qty); // 1
@@ -1305,6 +1301,9 @@ class Sitose {
                     int totalPerProduk = kuantiti * produkName.harga;
                     transaksiBaru.total += totalPerProduk;
 
+                    // kurangi stok barang
+                    produkName.stok -= kuantiti;
+
                     ArrayList<String> detailItem = new ArrayList<>();
                     detailItem.add(produkName.nama); // Nama produk
                     detailItem.add(produkName.kode); // Kode produk
@@ -1323,9 +1322,9 @@ class Sitose {
 
                     if (transaksiBaru.uang_dibayarkan < transaksiBaru.total) {
                         System.out.println(
-                                "Uang yang dibayarkan kurang sebesar "
-                                        + (transaksiBaru.total - transaksiBaru.uang_dibayarkan));
-                        System.out.println("Silakan masukkan uang tambahan.");
+                                ">>>>Uang yang dibayarkan kurang sebesar : "
+                                        + (transaksiBaru.total - transaksiBaru.uang_dibayarkan) + "<<<<");
+                        System.out.println(">>>>Silakan masukkan uang tambahan.<<<<");
                     } else {
                         isPaid = true;
                     }
