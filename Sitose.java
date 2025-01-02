@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 class Sitose {
@@ -105,8 +106,15 @@ class Sitose {
          * -> password : password pengguna
          * -> level : level atau role yang digunakkan untuk memvalidasi hak akses
          */
+        cabangTokoObject.add(new CabangToko("Cabang 1", "C1", "0000", "tes"));
+        jenisProdukObject.add(new Jenis("jenis 1", "J"));
+        kategoriProdukObject.add(new Kategori("kategori 1", "KA"));
+        produkObject.add(new Produk("produk 1", jenisProdukObject.get(0),
+                kategoriProdukObject.get(0), 10, 10000));
         penggunaObject.add(new User("admin", "password", "admin", null));
         penggunaObject.add(new User("gudang", "password", "gudang", null));
+        penggunaObject.add(new User("manajer", "password", "manajer", cabangTokoObject.get(0)));
+        penggunaObject.add(new User("kasir", "password", "kasir", cabangTokoObject.get(0)));
     }
 
     /*
@@ -214,9 +222,9 @@ class Sitose {
         header("MENU APLIKASI");
         String[][] mainMenus = { { "Manajemen Jenis Produk", "A" }, { "Manajemen Kategori Produk", "B" },
                 { "Data Produk", "C" }, { "Manajemen Cabang Toko", "D" },
-                { "Transaksi", "E" }, { "Manajemen Pengguna", "F" } };
+                { "Transaksi", "E" }, { "Manajemen Pengguna", "F" }, { "Logout", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCDEF" }, { "UB", "BCD" }, { "UC", "CD" }, { "UD", "E" } };
+        String[][] mainMenuAccess = { { "UA", "ABCDEF0" }, { "UB", "BCD0" }, { "UC", "CD0" }, { "UD", "E0" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -242,6 +250,12 @@ class Sitose {
             case "F":
                 menuManajemenUser();
                 break;
+            case "0":
+                this.level = "";
+                this.userCabang = null;
+                System.out.println("Berhasil Logout!");
+                login();
+                break;
             default:
                 break;
         }
@@ -256,17 +270,18 @@ class Sitose {
             return;
         }
 
-        System.out.println("+--------------------------+");
-        System.out.printf("| %-4s | %-16s |\n", "pilih", "Menu");
-        System.out.println("+--------------------------+");
+        System.out.println("+-----------------------------------+");
+        System.out.printf("| %-4s | %-25s |\n", "pilih", "Menu");
+        System.out.println("+-----------------------------------+");
+
         for (String[] mainMenu : mainMenus) {
             if (!userAccess.contains(mainMenu[1]))
                 continue;
 
-            System.out.printf("| %-5s | %-16s |\n", mainMenu[1], mainMenu[0]);
+            System.out.printf("| %-5s | %-25s |\n", mainMenu[1], mainMenu[0]);
 
         }
-        System.out.println("+--------------------------+");
+        System.out.println("+-----------------------------------+");
     }
 
     public static String findUserAccess(String[][] mainMenuAccess, String roleName) {
@@ -324,7 +339,7 @@ class Sitose {
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
                 { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+        String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -358,7 +373,7 @@ class Sitose {
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
                 { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+        String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -392,7 +407,7 @@ class Sitose {
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" },
                 { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+        String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UB", "ABCD0" }, { "UC", "A0" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -425,7 +440,7 @@ class Sitose {
         // 0 = nama menu, 1 = kode menu
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Hapus", "D" }, { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ACD" }, { "UD", "ABD" } };
+        String[][] mainMenuAccess = { { "UA", "ACD0" }, { "UD", "ABD0" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -456,7 +471,7 @@ class Sitose {
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "edit", "C" }, { "Hapus", "D" },
                 { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UC", "ABCD" } };
+        String[][] mainMenuAccess = { { "UA", "ABCD0" }, { "UC", "ABCD0" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -510,6 +525,9 @@ class Sitose {
 
             // Isi
             int id = 0;
+            System.out.println("+----+------+-------------------+");
+            System.out.printf("| %-2s | %-4s | %-17s | \n", "ID", "KODE", "NAMA");
+            System.out.println("+----+------+-------------------+");
             for (Jenis item : jenisProdukObject) {
                 System.out.printf("| %-2d | %-4s | %-17s | \n", (id++ + 1), item.kode, item.nama);
             }
@@ -739,7 +757,7 @@ class Sitose {
          */
 
         if (isShowMenu) {
-            showMenu();
+            menuKategori();
         }
     }
 
@@ -795,7 +813,7 @@ class Sitose {
                  * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
                  * dipanggil dan "2" sebagai submenu untuk menampilkan submenu kategori produk
                  */
-                showMenu();
+                menuKategori();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -871,7 +889,7 @@ class Sitose {
             kategoriProdukObject.get(id - 1).kode = kode.isEmpty() ? kodeTmp : kode;
             System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-            showMenu();
+            menuKategori();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -903,7 +921,7 @@ class Sitose {
              * nextLine(), program tidak langsung melewatkannya.
              */
             input.nextLine();
-            showMenu();
+            menuKategori();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -914,18 +932,21 @@ class Sitose {
         if (kategoriProdukObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
+            System.out.println(
+                    "+-----+--------------------+----------+---------------+---------------+----------+----------+");
+            System.out.printf("|%-5s|%-20s|%-10s|%-15s|%-15s|%-10s|%-10s|\n", "ID", "Nama", "Kode", "Jenis", "Kategori",
+                    "Stok", "Harga");
+            System.out.println(
+                    "+-----+--------------------+----------+---------------+---------------+----------+----------+");
+
             int id = 0;
             for (Produk item : produkObject) {
-                System.out.println((id++ + 1));
-                System.out.println(item.nama);
-                System.out.println(item.kode);
-                System.out.println(item.jenis);
-                System.out.println(item.kategori);
-                System.out.println(item.stok);
-                System.out.println(item.harga);
+                System.out.printf("|%-5d|%-20s|%-10s|%-15s|%-15s|%-10d|%-10d|\n", ++id, item.nama, item.kode,
+                        item.jenis.nama, item.kategori.nama, item.stok, item.harga);
             }
         }
-
+        System.out.println(
+                "+-----+--------------------+----------+---------------+---------------+----------+----------+");
         if (isShowMenu) {
             menuProduk();
         }
@@ -958,6 +979,8 @@ class Sitose {
                         harga));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
+
+                input.nextInt();
 
                 menuProduk();
             } else {
@@ -1044,17 +1067,14 @@ class Sitose {
         if (cabangTokoObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
+            System.out.printf("|%-5s|%-20s|%-10s|%-15s|%-30s|\n", "ID", "Nama", "Kode", "Telepon", "Alamat");
             int id = 0;
+            System.out.println("+-----+-------------------+----------+---------------+-----------------------------+");
             for (CabangToko item : cabangTokoObject) {
-                System.out.println((id++ + 1));
-                System.out.println(item.nama);
-                System.out.println(item.kode);
-                System.out.println(item.telepon);
-                System.out.println(item.alamat);
+                System.out.printf("|%-5d|%-20s|%-10s|%-15s|%-30s|\n", ++id, item.nama, item.kode, item.telepon,
+                        item.alamat);
             }
-
-            // bawah
-            System.out.println("+----+----------------------+");
+            System.out.println("+-----+-------------------+----------+---------------+-----------------------------+");
         }
 
         if (isShowMenu) {
@@ -1126,6 +1146,7 @@ class Sitose {
     }
 
     void removeCabangToko() {
+
         header("HAPUS CABANG TOKO");
 
         // tampilkan cabang toko
@@ -1146,18 +1167,71 @@ class Sitose {
         menuCabangToko();
     }
 
+    void Line() {
+        for (int i = 0; i < 52; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+
+    }
+
+    void cetakNota(Transaksi transaksi) {
+        // Header Nota
+        header("NOTA PEMBELIAN");
+        // System.out.println("+-----+--------------------+----------+----------+----------+");
+        // System.out.printf("|%-5s|%-20s|%-10s|%-10s|%-10s|\n", "No", "Nama Barang",
+        // "Jumlah", "Harga", "Subtotal");
+        // System.out.println("+-----+--------------------+----------+----------+----------+");
+
+        // Data Nota
+        double totalHarga = 0;
+        int no = 1;
+        int x = 0;
+        Line();
+        System.out.println("nomor nota : " + transaksi.kode);
+        System.out.print("waktu transaksi : " + transaksi.waktu);
+        System.out.println("");
+        Line();
+        System.out.printf(" %-20s %-10s %-10s %-10s \n", "nama", "harga", "jumlah", "subtotal");
+        Line();
+        for (int i = 0; i < transaksi.transaksi_detail.size(); i++) {
+            ArrayList<String> item = transaksi.transaksi_detail.get(i);
+
+            System.out.print(item.get(1));
+            System.out.printf(" %-15s %-10s %-10s %-10s \n", " ", item.get(3), item.get(2), item.get(4));
+
+            x = x + 1;
+
+        }
+        Line();
+        System.out.println("jumlah produk");
+        System.out.printf("%-15s %-10d %-10s %-10d\n", " ", " ", x, transaksi.total);
+        Line();
+        System.out.printf("%-15s %-10s %-10s %-10d\n", "Kemabalian", " ", " ", transaksi.kembalian);
+        Line();
+        System.out.println("Alamat : " + this.userCabang.alamat);
+    }
+
+    // for (Transaksi item : transaksi.transaksi_detail) {
+    // System.out.println(item);
+    // double subtotal = item.jumlah * item.harga;
+    // totalHarga += subtotal;
+
     void viewTransaksi(boolean isShowMenu) {
         if (transaksiObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             int id = 0;
+            System.out.println("+-----+----------+--------------------+----------+----------------+");
             for (Transaksi item : transaksiObject) {
-                System.out.println((id++ + 1));
-                System.out.println(item.kode);
-                System.out.println(item.waktu);
-                System.out.println(item.total);
-                System.out.println(item.transaksi_detail);
+
+                // Header
+                System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-20s|\n", "ID", "Kode", "Waktu", "Total", "Detail");
+                System.out.printf("|%-5d|%-10s|%-20s|%-10.2f|%-20s|\n", ++id, item.kode, item.waktu, item.total,
+                        item.transaksi_detail);
+
             }
+            System.out.println("+-----+----------+--------------------+----------+----------------+");
         }
         if (isShowMenu) {
             menuTransaksi();
@@ -1167,12 +1241,6 @@ class Sitose {
     void insertTransaksi() {
         try {
             header("TAMBAH TRANSAKSI");
-
-            cabangTokoObject.add(new CabangToko("Cabang 1", "C1", "0000", "tes"));
-            jenisProdukObject.add(new Jenis("jenis 1", "J"));
-            kategoriProdukObject.add(new Kategori("kategori 1", "KA"));
-            produkObject.add(new Produk("produk 1", jenisProdukObject.get(0),
-                    kategoriProdukObject.get(0), 10, 10000));
 
             ArrayList<ArrayList<String>> tmp = new ArrayList<>();
             ArrayList<String> tmpItem;
@@ -1192,7 +1260,7 @@ class Sitose {
                 tmpItem.add(qty); // 1
                 tmp.add(new ArrayList<>(tmpItem));
 
-                System.out.print("Ingin menambahkan produk baru (y/n)?");
+                System.out.print("Ingin menambahkan produk baru (y/n)? ");
                 String isnpr = input.nextLine();
 
                 if (isnpr.equals("n")) {
@@ -1201,9 +1269,10 @@ class Sitose {
             }
 
             if (!isNewProduct) {
-                int total = 0;
+
                 CabangToko cabang = this.userCabang; // diganti jadi diambil dari data user
-                Transaksi transaksiBaru = new Transaksi(total, cabang);
+                Transaksi transaksiBaru = new Transaksi(cabang);
+                transaksiObject.add(transaksiBaru);
 
                 for (ArrayList<String> item : tmp) {
                     int produkIndex = Integer.parseInt(item.get(0));
@@ -1211,17 +1280,45 @@ class Sitose {
 
                     Produk produkName = produkObject.get(produkIndex - 1);
                     int totalPerProduk = kuantiti * produkName.harga;
-                    total += totalPerProduk;
+                    transaksiBaru.total += totalPerProduk;
 
                     ArrayList<String> detailItem = new ArrayList<>();
                     detailItem.add(produkName.nama); // Nama produk
                     detailItem.add(produkName.kode); // Kode produk
                     detailItem.add(String.valueOf(kuantiti)); // Kuantitas
+                    detailItem.add(String.valueOf(produkName.harga)); // Harga Produk
                     detailItem.add(String.valueOf(totalPerProduk)); // Total harga
                     transaksiBaru.transaksi_detail.add(detailItem);
-
-                    // viewNota(); <- tampilkan nota
                 }
+
+                System.out.println("Total Harga : " + transaksiBaru.total);
+                boolean isPaid = false;
+
+                while (!isPaid) {
+                    System.out.print("Masukkan Uang Yang Dibayarkan : ");
+                    transaksiBaru.uang_dibayarkan = input.nextInt();
+
+                    if (transaksiBaru.uang_dibayarkan < transaksiBaru.total) {
+                        System.out.println(
+                                "Uang yang dibayarkan kurang sebesar "
+                                        + (transaksiBaru.total - transaksiBaru.uang_dibayarkan));
+                        System.out.println("Silakan masukkan uang tambahan.");
+                    } else {
+                        isPaid = true;
+                    }
+                }
+
+                transaksiBaru.kembalian = transaksiBaru.uang_dibayarkan - transaksiBaru.total;
+                System.out.println("Kembalian : " + transaksiBaru.kembalian);
+
+                cetakNota(transaksiBaru); // <- tampilkan nota
+
+                /*
+                 * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
+                 * input sebelumnya, supaya saat kita membaca input berikutnya dengan
+                 * nextLine(), program tidak langsung melewatkannya.
+                 */
+                input.nextLine();
 
                 menuTransaksi();
             }
@@ -1260,25 +1357,31 @@ class Sitose {
             int id = 0;
             // jika levelnya adalah manajer, maka
             if (this.level.equals("UC")) {
+                System.out.println("+----+---------------+---------------+--------+--------------------+");
+                System.out.printf("| %-2s |%-15s|%-15s|%-8s|%-20s|\n", "ID", "username", "password", "Level",
+                        "nama cabang");
+                System.out.println("+----+---------------+---------------+--------+--------------------+");
                 for (User item : penggunaObject) {
                     // menampilkan data user yang levelnya hanya kasir, yang terkait dengan toko si
                     // manajer ketika login
-                    if (item.level.equals("kasir") && item.cabangtoko.kode.equals(this.userCabang.kode)) {
-                        System.out.println((id++ + 1));
-                        System.out.println(item.username);
-                        System.out.println(item.password);
-                        System.out.println(item.level);
-                        System.out.println(item.cabangtoko.nama);
+                    if (item.level.equals("UC") && item.cabangtoko.kode.equals(this.userCabang.kode)) {
+                        System.out.printf("| %-2d |%-15s|s%-15s|%-8s|%-20s|\n", id++ + 1, item.username, item.password,
+                                item.level, item.cabangtoko.nama);
+                        System.out.println("+----+---------------+---------------+--------+--------------------+");
                     }
                 }
             } else {
+                System.out.println("+----+---------------+---------------+--------+--------------------+");
+                System.out.printf("| %-2s |%-15s|%-15s|%-8s|%-20s|\n", "ID", "username", "password", "Level",
+                        "nama cabang");
+                System.out.println("+----+---------------+---------------+--------+--------------------+");
                 for (User item : penggunaObject) {
-                    System.out.println((id++ + 1));
-                    System.out.println(item.username);
-                    System.out.println(item.password);
-                    System.out.println(item.level);
-                    if (item.level.equals("manajer") || item.level.equals("kasir"))
-                        System.out.println(item.cabangtoko.nama);
+                    System.out.printf("| %-2d |%-15s|%-15s|%-8s|%-20s|\n", id++ + 1, item.username, item.password,
+                            item.level,
+                            ((item.level.equals("manajer") || item.level.equals("kasir")) ? item.cabangtoko.nama
+                                    : "-"));
+                    System.out.println("+----+---------------+---------------+--------+--------------------+");
+
                 }
             }
         }
@@ -1438,16 +1541,15 @@ class CabangToko {
 }
 
 class Transaksi {
-    int total;
+    int total, uang_dibayarkan, kembalian;
     String kode, waktu;
     ArrayList<ArrayList<String>> transaksi_detail = new ArrayList<>();
-    ArrayList<String> transaksi_detail_item;
 
-    public Transaksi(int total, CabangToko cabang) {
+    public Transaksi(CabangToko cabang) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = now.format(formatter);
-        System.out.println("Tanggal dan waktu yang diformat: " + formattedDate);
+        // System.out.println("Tanggal dan waktu yang diformat: " + formattedDate);
 
         // this.id = id;
         this.kode = kode;
