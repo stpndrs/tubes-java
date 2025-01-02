@@ -221,9 +221,9 @@ class Sitose {
         header("MENU APLIKASI");
         String[][] mainMenus = { { "Manajemen Jenis Produk", "A" }, { "Manajemen Kategori Produk", "B" },
                 { "Data Produk", "C" }, { "Manajemen Cabang Toko", "D" },
-                { "Transaksi", "E" }, { "Manajemen Pengguna", "F" }, { "Logout", "0" } };
+                { "Transaksi", "E" }, { "Manajemen Pengguna", "F" }, { "Logout", "0" }, { "Exit Program", "X" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCDEF0" }, { "UB", "BCD0" }, { "UC", "CD0" }, { "UD", "E0" } };
+        String[][] mainMenuAccess = { { "UA", "ABCDEF0X" }, { "UB", "BCD0X" }, { "UC", "CD0X" }, { "UD", "E0X" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -254,6 +254,9 @@ class Sitose {
                 this.userCabang = null;
                 System.out.println("Berhasil Logout!");
                 login();
+                break;
+            case "X":
+                System.exit(0);
                 break;
             default:
                 System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
