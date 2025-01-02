@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 class Sitose {
@@ -257,6 +256,8 @@ class Sitose {
                 login();
                 break;
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                showMenu();
                 break;
         }
 
@@ -330,6 +331,8 @@ class Sitose {
                 break;
 
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                menuJenis();
                 break;
         }
     }
@@ -364,6 +367,8 @@ class Sitose {
                 break;
 
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                menuKategori();
                 break;
         }
     }
@@ -398,6 +403,8 @@ class Sitose {
                 break;
 
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                menuProduk();
                 break;
         }
     }
@@ -432,6 +439,8 @@ class Sitose {
                 break;
 
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                menuCabangToko();
                 break;
         }
     }
@@ -462,6 +471,8 @@ class Sitose {
                 break;
 
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                menuTransaksi();
                 break;
         }
     }
@@ -495,6 +506,8 @@ class Sitose {
                 showMenu();
                 break;
             default:
+                System.out.println(">>>>Kode tidak ditemukan. Masukkan ulang kode!<<<<");
+                menuManajemenUser();
                 break;
         }
     }
@@ -1554,7 +1567,7 @@ class Transaksi {
         // this.id = id;
         this.kode = kode;
         this.waktu = formattedDate;
-        this.total = total;
+        // this.total = total;
         // this.transaksi_detail_i;
     }
 }
