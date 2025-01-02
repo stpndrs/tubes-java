@@ -1203,8 +1203,6 @@ class Sitose {
         header("NOTA PEMBELIAN");
 
         // Data Nota
-        double totalHarga = 0;
-        int no = 1;
         int x = 0;
         Line();
         System.out.println("nomor nota : " + transaksi.kode);
@@ -1223,10 +1221,10 @@ class Sitose {
 
         }
         Line();
-        System.out.println("jumlah produk");
-        System.out.printf("%-15s %-10d %-10s %-10d\n", " ", " ", x, transaksi.total);
+        System.out.println("Jumlah Produk");
+        System.out.printf("%-15s %-10s %-10d %-10d\n", " ", " ", x, transaksi.total);
         Line();
-        System.out.printf("%-15s %-10s %-10s %-10d\n", "Kemabalian", " ", " ", transaksi.kembalian);
+        System.out.printf("%-15s %-10s %-10s %-10d\n", "Kembalian", " ", " ", transaksi.kembalian);
         Line();
         System.out.println("Alamat : " + this.userCabang.alamat);
     }
