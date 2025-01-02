@@ -226,6 +226,15 @@ class Sitose {
             case "C":
                 menuProduk();
                 break;
+            case "D":
+                menuCabangToko();
+                break;
+            case "E":
+                menuTransaksi();
+                break;
+            case "F":
+                menuManajemenUser();
+                break;
             default:
                 break;
         }
@@ -359,6 +368,36 @@ class Sitose {
         }
     }
 
+    void menuCabangToko() {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
+
+        output(mainMenus, mainMenuAccess);
+
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
+
+        switch (inpmenu) {
+            case "A":
+                viewProduk(true);
+                break;
+            case "B":
+                insertProduk();
+                break;
+            case "C":
+                updateProduk();
+                break;
+            case "D":
+                removeProduk();
+                break;
+
+            default:
+                break;
+        }
+    }
+
     void menuTransaksi() {
         // 0 = nama menu, 1 = kode menu
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Hapus", "D" } };
@@ -424,15 +463,6 @@ class Sitose {
      * parameter "submenu" sebagai tipe menu yang dipanggil dan "1" sebagai
      * submenu yang dipilih untuk ditampilkan
      * -> jika isShowMenu bernilai salah, maka tidak akan memanggil method
-     * showMenu(
-     * // checkpoint
-     * void viewJenis(boolean isShowMenu) {
-     * // atas
-     * System.out.println("+----+------+-------------------+");
-     * System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode",
-     * "Nama Jenis Produk");
-     * System.out.println("+----+------+-------------------+");
-     * /*
      * kondisi dibawah akan mengecek apakah data didalam jenisProdukObject kosong
      * atau tidak,
      * -> jika data kosong, maka tampilkan pesan "Tidak ada data untuk ditampilkan"
