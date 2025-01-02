@@ -1,4 +1,6 @@
-    import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Sitose {
@@ -15,9 +17,9 @@ class Sitose {
      */
     ArrayList<User> penggunaObject = new ArrayList<>();
     /*
-     * variabel level untuk menyimpan level pengguna yang sedang login
+     * variabel level untuk menyimpan kode level pengguna yang sedang login
      */
-    int level;
+    String level;
 
     /*
      * ArrayList<Jenis> jenisProdukObject = new ArrayList<>();
@@ -46,6 +48,13 @@ class Sitose {
      * untuk menyimpan objek-objek yang dibentuk dari kelas CabangToko.
      */
     ArrayList<CabangToko> cabangTokoObject = new ArrayList<>();
+
+    /*
+     * ArrayList<Transaksi> transaksiObject = new ArrayList<>();
+     * mendefinisikan sebuah ArrayList sebagai wadah dinamis yang digunakan
+     * untuk menyimpan objek-objek yang dibentuk dari kelas Transaksi.
+     */
+    ArrayList<Transaksi> transaksiObject = new ArrayList<>();
 
     public static void main(String[] args) {
         // Membuat objek baru dari kelas Sitose dan menyimpannya di variabel func
@@ -150,13 +159,13 @@ class Sitose {
         for (User user : penggunaObject) {
             if (user.username.equals(usernameInput) && user.password.equals(passwordInput)) {
                 if (user.level.equals("admin")) {
-                    this.level = 1;
+                    this.level = "UA";
                 } else if (user.level.equals("gudang")) {
-                    this.level = 2;
+                    this.level = "UB";
                 } else if (user.level.equals("manajer")) {
-                    this.level = 3;
+                    this.level = "UC";
                 } else if (user.level.equals("kasir")) {
-                    this.level = 4;
+                    this.level = "UD";
                 }
 
                 return true;
@@ -171,13 +180,13 @@ class Sitose {
      * menu aplikasi sesuai dengan hak akses pengguna
      */
     void setup() {
-        showMenu("menu", 0);
+        showMenu();
     }
 
     /*
      * Rakha Jelasin
      */
-    static void header(String title){
+    static void header(String title) {
 
         int width = 29;
         int length = title.length();
@@ -193,54 +202,53 @@ class Sitose {
     /*
      * Rakha Jelasin
      */
-    void showmenu(String[] arg){
+    void showMenu() {
         // 0 = nama menu, 1 = kode menu
-        header("semabarang aja dulu");
-        String[][] mainMenus = { { "JENIS", "A" }, { "KATEGORI", "B" }, { "produk", "C" },  {"cabang toko", "D"}, {"transaksi","E"}, {"Manajemen User", "F"} };
+        header("MENU APLIKASI");
+        String[][] mainMenus = { { "Manajemen Jenis Produk", "A" }, { "Manajemen Kategori Produk", "B" },
+                { "Data Produk", "C" }, { "Manajemen Cabang Toko", "D" },
+                { "Transaksi", "E" }, { "Manajemen Pengguna", "F" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCDEF" }, { "UB", "BCD" }, { "UC", "CD" }, {"UD","E"}};
-        
-        output(mainMenus, mainMenuAccess, currentUser);
-      
+        String[][] mainMenuAccess = { { "UA", "ABCDEF" }, { "UB", "BCD" }, { "UC", "CD" }, { "UD", "E" } };
+
+        output(mainMenus, mainMenuAccess);
+
         System.out.println("Masukkan kode menu");
         String inpmenu = input.nextLine();
 
         switch (inpmenu) {
             case "A":
-                // TINGGAL DIGANTI JADI SUBMENU 1
-                // subMenu3(currentUser);
+                menuJenis();
                 break;
             case "B":
-                // TINGGAL DIGANTI JADI SUBMENU 2
-                // subMenu3(currentUser);
+                menuKategori();
                 break;
             case "C":
-                subMenu3(currentUser);
+                menuProduk();
                 break;
-
             default:
                 break;
         }
-        
-    }
-    void output(String[][] mainMenus, String[][] mainMenuAccess, User currentUser){
 
-        String userAccess = findUserAccess(mainMenuAccess, currentUser.level);
+    }
+
+    void output(String[][] mainMenus, String[][] mainMenuAccess) {
+        String userAccess = findUserAccess(mainMenuAccess, this.level);
         // cek jika false brarti ga ktemu
         if (userAccess.equals("false")) {
             System.out.println("There is an error");
             return;
         }
-    
+
         System.out.println("+--------------------------+");
-        System.out.printf("| %-4s | %-16s |\n","pilih", "Menu");
+        System.out.printf("| %-4s | %-16s |\n", "pilih", "Menu");
         System.out.println("+--------------------------+");
         for (String[] mainMenu : mainMenus) {
             if (!userAccess.contains(mainMenu[1]))
                 continue;
-                
-            System.out.printf("| %-5s | %-16s |\n", mainMenu[1], mainMenu[0] );
-    
+
+            System.out.printf("| %-5s | %-16s |\n", mainMenu[1], mainMenu[0]);
+
         }
         System.out.println("+--------------------------+");
     }
@@ -259,15 +267,15 @@ class Sitose {
         return err;
     }
 
-    void menuJenis(User currentUser) {
+    void menuJenis() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
 
-        header("A dil A");
-        
-        output(mainMenus, mainMenuAccess, currentUser);
+        header("MENU JENIS PRODUK");
+
+        output(mainMenus, mainMenuAccess);
 
         System.out.println("Masukkan kode menu");
         String inpmenu = input.nextLine();
@@ -291,13 +299,13 @@ class Sitose {
         }
     }
 
-    void menuKategori(User currentUser) {
+    void menuKategori() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
-        
-        output(mainMenus, mainMenuAccess, currentUser);
+
+        output(mainMenus, mainMenuAccess);
 
         System.out.println("Masukkan kode menu");
         String inpmenu = input.nextLine();
@@ -321,13 +329,13 @@ class Sitose {
         }
     }
 
-    void menuProduk(User currentUser) {
+    void menuProduk() {
         // 0 = nama menu, 1 = kode menu
-        String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, { "edit", "C" }, { "hapus", "D" } };
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Edit", "C" }, { "Hapus", "D" } };
         // 0 = kode user, 1 = string dari kode menu
         String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UB", "ABCD" }, { "UC", "A" } };
-        
-        output(mainMenus, mainMenuAccess, currentUser);
+
+        output(mainMenus, mainMenuAccess);
 
         System.out.println("Masukkan kode menu");
         String inpmenu = input.nextLine();
@@ -350,100 +358,87 @@ class Sitose {
                 break;
         }
     }
-    
-        void menuTransaksi(User currentUser) {
-            // 0 = nama menu, 1 = kode menu
-            String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" },  { "hapus", "D" } };
-            // 0 = kode user, 1 = string dari kode menu
-            String[][] mainMenuAccess = { { "UA", "ACD" }, {"UD", "ABD"} };
-            
-            output(mainMenus, mainMenuAccess, currentUser);
-    
-            System.out.println("Masukkan kode menu");
-            String inpmenu = input.nextLine();
-    
-            switch (inpmenu) {
-                case "A":
-                    viewMenu3();
-                    break;
-                case "B":
-                    tambahMenu3();
-                    break;
-                case "C":
-                    editMenu3();
-                    break;
-                case "D":
-                    hapusMenu3();
-                    break;
-    
-                default:
-                    break;
-            }
+
+    void menuTransaksi() {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ACD" }, { "UD", "ABD" } };
+
+        output(mainMenus, mainMenuAccess);
+
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
+
+        switch (inpmenu) {
+            case "A":
+                viewTransaksi(true);
+                break;
+            case "B":
+                insertTransaksi();
+                break;
+            case "D":
+                removeTransaksi();
+                break;
+
+            default:
+                break;
         }
+    }
 
-            void menuManajemenUser(User currentUser) {
-                // 0 = nama menu, 1 = kode menu
-                String[][] mainMenus = { { "lihat", "A" }, { "tambah", "B" }, {"edit","C"} { "hapus", "D" } };
-                // 0 = kode user, 1 = string dari kode menu
-                String[][] mainMenuAccess = { { "UA", "ABCD" }, {"UC","ABCD"}};
-                
-                output(mainMenus, mainMenuAccess, currentUser);
-        
-                System.out.println("Masukkan kode menu");
-                String inpmenu = input.nextLine();
-        
-                switch (inpmenu) {
-                    case "A":
-                        viewPengguna(true);
-                        break;
-                    case "B":
-                        insertPengguna();
-                        break;
-                    case "C":
-                        editMenu3();
-                        break;
-                    case "D":
-                        hapusMenu3();
-                        break;
-        
-                    default:
-                        break;
-                }
-            }
+    void menuManajemenUser() {
+        // 0 = nama menu, 1 = kode menu
+        String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "edit", "C" }, { "Hapus", "D" } };
+        // 0 = kode user, 1 = string dari kode menu
+        String[][] mainMenuAccess = { { "UA", "ABCD" }, { "UC", "ABCD" } };
 
+        output(mainMenus, mainMenuAccess);
 
+        System.out.println("Masukkan kode menu");
+        String inpmenu = input.nextLine();
 
+        switch (inpmenu) {
+            case "A":
+                viewUser(true);
+                break;
+            case "B":
+                insertUser();
+                break;
+            case "C":
+                updateUser();
+                break;
+            case "D":
+                removeUser();
+                break;
 
-
-
-
-
-    
-
-
+            default:
+                break;
+        }
+    }
 
     /*
      * method viewJenis() menampilkan data jenis produk, dengan parameter isShowMenu
      * dengan tipe data boolean yang berfungsi untuk memberikan kondisi apakah
-     * method showMenu akan dipanggil atau tidak.
-     * -> jika isShowMenu bernilai benar, maka akan memanggil method showMenu()
-     * dengan parameter "submenu" sebagai tipe menu yang dipanggil dan "1" sebagai
+     * method showMenu nggil atau tidak.
+     * -> jika isShowMenu bernilai benar, maka akan memanggil method showMenu(dengan
+     * parameter "submenu" sebagai tipe menu yang dipanggil dan "1" sebagai
      * submenu yang dipilih untuk ditampilkan
      * -> jika isShowMenu bernilai salah, maka tidak akan memanggil method
-     * showMenu()
+     * showMenu(
+     * // checkpoint
+     * void viewJenis(boolean isShowMenu) {
+     * // atas
+     * System.out.println("+----+------+-------------------+");
+     * System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode",
+     * "Nama Jenis Produk");
+     * System.out.println("+----+------+-------------------+");
+     * /*
+     * kondisi dibawah akan mengecek apakah data didalam jenisProdukObject kosong
+     * atau tidak,
+     * -> jika data kosong, maka tampilkan pesan "Tidak ada data untuk ditampilkan"
+     * -> jika data tidak kosong, maka tampilkan data dalam bentuk tabel
      */
-    // checkpoint
-    void viewJenis(boolean isShowMenu) {
-        // atas
-        System.out.println("+----+------+-------------------+");
-        System.out.printf("| %-2s | %-4s | %-17s |\n", "ID", "Kode", "Nama Jenis Produk");
-        System.out.println("+----+------+-------------------+");
-        /*
-         * kondisi dibawah akan mengecek apakah data didalam jenisProdukObject kosong
-         * atau tidak,
-         * -> jika data kosong, maka tampilkan pesan "Tidak ada data untuk ditampilkan"
-         * -> jika data tidak kosong, maka tampilkan data dalam bentuk tabel
-         */
+    void viewJenis(Boolean isShowMenu) {
         if (jenisProdukObject.isEmpty()) {
 
             System.out.println("|       Tidak ada data          |");
@@ -469,7 +464,7 @@ class Sitose {
          */
 
         if (isShowMenu) {
-            showMenu("submenu", 1);
+            showMenu();
         }
     }
 
@@ -491,8 +486,6 @@ class Sitose {
          */
         try {
             header("TAMBAH JENIS PRODUK");
-            
-            
 
             int id = 1;
             if (!jenisProdukObject.isEmpty()) {
@@ -534,10 +527,10 @@ class Sitose {
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
                 /*
-                 * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+                 * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
                  * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
                  */
-                showMenu("submenu", 1);
+                showMenu();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -556,8 +549,8 @@ class Sitose {
      */
     void updateJenis() {
         header("EDIT JENIS PRODUK");
-        
-    try {
+
+        try {
             /*
              * memanggil method viewJenis() untuk menampilkan data jenis produk agar
              * pengguna bisa melihat id jenis produk, dengan parameter isShowMenu bernilai
@@ -611,10 +604,10 @@ class Sitose {
             System.out.println(">>>>Data Berhasil Diubah<<<<");
 
             /*
-             * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
              * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
              */
-            showMenu("submenu", 1);
+            showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -626,8 +619,8 @@ class Sitose {
      */
     void removeJenis() {
         header("HAPUS JENIS PRODUK");
-        
-    try {
+
+        try {
             /*
              * memanggil method viewJenis() untuk menampilkan data jenis produk agar
              * pengguna bisa melihat id jenis produk, dengan parameter isShowMenu bernilai
@@ -648,10 +641,10 @@ class Sitose {
             System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
             /*
-             * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
              * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
              */
-            showMenu("submenu", 1);
+            showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -662,32 +655,31 @@ class Sitose {
      * method viewKategori() menampilkan data jenis produk, dengan parameter
      * isShowMenu
      * dengan tipe data boolean yang berfungsi untuk memberikan kondisi apakah
-     * method showMenu akan dipanggil atau tidak.
-     * -> jika isShowMenu bernilai benar, maka akan memanggil method showMenu()
-     * dengan parameter "submenu" sebagai tipe menu yang dipanggil dan "2" sebagai
+     * method showMenu nggil atau tidak.
+     * -> jika isShowMenu bernilai benar, maka akan memanggil method showMenu(dengan
+     * parameter "submenu" sebagai tipe menu yang dipanggil dan "2" sebagai
      * submenu yang dipilih untuk ditampilkan
      * -> jika isShowMenu bernilai salah, maka tidak akan memanggil method
-     * showMenu()
+     * showMenu(
+     * void viewKategori(boolean isShowMenu) {
+     * /*
+     * kondisi dibawah akan mengecek apakah data didalam kategoriProdukObject kosong
+     * atau tidak,
+     * -> jika data kosong, maka tampilkan pesan "Tidak ada data untuk ditampilkan"
+     * -> jika data tidak kosong, maka tampilkan data dalam bentuk tabel
      */
-    void viewKategori(boolean isShowMenu) {
-        /*
-         * kondisi dibawah akan mengecek apakah data didalam kategoriProdukObject kosong
-         * atau tidak,
-         * -> jika data kosong, maka tampilkan pesan "Tidak ada data untuk ditampilkan"
-         * -> jika data tidak kosong, maka tampilkan data dalam bentuk tabel
-         */
+    void viewKategori(Boolean isShowMenu) {
         if (kategoriProdukObject.isEmpty()) {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             // atas
             System.out.println("+----+----+----------------------+");
-            System.out.printf("| %-2s |%-2s| %-18s |\n", "ID", "Kode", "Nama Kategori Produk" );
+            System.out.printf("| %-2s |%-2s| %-18s |\n", "ID", "Kode", "Nama Kategori Produk");
             System.out.println("+----+----+----------------------+");
 
             // Isi
             for (Kategori item : kategoriProdukObject) {
                 System.out.printf("| %-2s | %-2s | %-20s |\n", item.id, item.kode, item.nama);
-                
             }
 
             // bawah
@@ -699,7 +691,7 @@ class Sitose {
          */
 
         if (isShowMenu) {
-            showMenu("submenu", 2);
+            showMenu();
         }
     }
 
@@ -722,7 +714,6 @@ class Sitose {
          */
         try {
             header("TAMBAH KATEGORI PRODUK");
-            
 
             int id = 1;
             if (!kategoriProdukObject.isEmpty()) {
@@ -764,10 +755,10 @@ class Sitose {
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
                 /*
-                 * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+                 * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
                  * dipanggil dan "2" sebagai submenu untuk menampilkan submenu kategori produk
                  */
-                showMenu("submenu", 2);
+                showMenu();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -787,8 +778,8 @@ class Sitose {
      */
     void updateKategori() {
         header("EDIT KATEGORI PRODUK");
-        
-    try{
+
+        try {
             /*
              * memanggil method viewKategori() untuk menampilkan data kategori produk agar
              * pengguna bisa melihat id kategori produk, dengan parameter isShowMenu
@@ -844,10 +835,10 @@ class Sitose {
             System.out.println(">>>>Data Berhasil Diubah<<<<");
 
             /*
-             * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
              * dipanggil dan "1" sebagai submenu untuk menampilkan submenu jenis produk
              */
-            showMenu("submenu", 2);
+            showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -860,8 +851,7 @@ class Sitose {
     void removeKategori() {
         header("HAPUS KATEGORI PRODUK");
 
-       
-    try {
+        try {
             /*
              * pengguna memasukkan id jenis produk
              */
@@ -875,10 +865,10 @@ class Sitose {
             System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
             /*
-             * memanggil method showMenu() dengan parameter "submenu" sebagai tipe menu yang
+             * memanggil method showMenu(parameter "submenu" sebagai tipe menu yang
              * dipanggil dan "2" sebagai submenu untuk menampilkan submenu kategori produk
              */
-            showMenu("submenu", 2);
+            showMenu();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -901,7 +891,7 @@ class Sitose {
         }
 
         if (isShowMenu) {
-            showMenu("submenu", 3);
+            showMenu();
         }
     }
 
@@ -944,7 +934,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu("submenu", 3);
+                showMenu();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -993,7 +983,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu("submenu", 3);
+                showMenu();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -1016,7 +1006,7 @@ class Sitose {
         produkObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu("submenu", 3);
+        showMenu();
     }
 
     void viewCabangToko(boolean isShowMenu) {
@@ -1036,14 +1026,14 @@ class Sitose {
         }
 
         if (isShowMenu) {
-            showMenu("submenu", 4);
+            showMenu();
         }
     }
 
     void insertCabangToko() {
         try {
             header("TAMBAH CABANG PRODUK");
-            
+
             int id = 1;
             if (!cabangTokoObject.isEmpty()) {
                 id = cabangTokoObject.get(cabangTokoObject.size() - 1).id + 1;
@@ -1068,7 +1058,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu("submenu", 4);
+                showMenu();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -1081,7 +1071,6 @@ class Sitose {
 
     void updateCabangToko() {
         header("EDIT CABANG TOKO");
-
 
         // tampilkan cabang toko produk
         viewCabangToko(false);
@@ -1111,12 +1100,12 @@ class Sitose {
         cabangTokoObject.get(id - 1).alamat = alamat;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-        showMenu("submenu", 4);
+        showMenu();
     }
 
     void removeCabangToko() {
         header("HAPUS CABANG TOKO");
-		
+
         // tampilkan cabang toko
         viewCabangToko(false);
 
@@ -1126,7 +1115,109 @@ class Sitose {
         cabangTokoObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu("submenu", 4);
+        showMenu();
+    }
+
+    void viewTransaksi(boolean isShowMenu) {
+        if (transaksiObject.isEmpty()) {
+            System.out.println("Tidak ada data untuk ditampilkan.");
+        } else {
+            for (Transaksi item : transaksiObject) {
+                System.out.println(item.id);
+                System.out.println(item.kode);
+                System.out.println(item.waktu);
+                System.out.println(item.total);
+                System.out.println(item.transaksi_detail);
+            }
+        }
+        if (isShowMenu) {
+            showMenu();
+        }
+    }
+
+    void insertTransaksi() {
+        try {
+            header("TAMBAH TRANSAKSI");
+
+            cabangTokoObject.add(new CabangToko(1, "Cabang 1", "C1", "0000", "tes"));
+            jenisProdukObject.add(new Jenis(1, "jenis 1", "J"));
+            kategoriProdukObject.add(new Kategori(1, "kategori 1", "KA"));
+            produkObject.add(new Produk(1, "produk 1", jenisProdukObject.get(0),
+                    kategoriProdukObject.get(0), 10, 10000));
+
+            ArrayList<ArrayList<String>> tmp = new ArrayList<>();
+            ArrayList<String> tmpItem;
+
+            boolean isNewProduct = true;
+            while (isNewProduct) {
+                viewProduk(false);
+
+                input.nextLine();
+
+                System.out.print("Pilih produk : ");
+                String produk = input.nextLine();
+
+                System.out.print("Masukkan Quantity : ");
+                String qty = input.nextLine();
+
+                tmpItem = new ArrayList<>();
+                tmpItem.add(produk); // 0
+                tmpItem.add(qty); // 1
+                tmp.add(new ArrayList<>(tmpItem));
+
+                System.out.print("Ingin menambahkan produk baru (y/n)?");
+                String isnpr = input.nextLine();
+
+                if (isnpr.equals("n")) {
+                    isNewProduct = false;
+                }
+            }
+
+            if (!isNewProduct) {
+                int total = 0;
+                CabangToko cabang = cabangTokoObject.get(0); // diganti jadi diambil dari data user
+                Transaksi transaksiBaru = new Transaksi(total, cabang);
+
+                for (ArrayList<String> item : tmp) {
+                    int produkIndex = Integer.parseInt(item.get(0));
+                    int kuantiti = Integer.parseInt(item.get(1));
+
+                    Produk produkName = produkObject.get(produkIndex - 1);
+                    int totalPerProduk = kuantiti * produkName.harga;
+                    total += totalPerProduk;
+
+                    ArrayList<String> detailItem = new ArrayList<>();
+                    detailItem.add(produkName.nama); // Nama produk
+                    detailItem.add(produkName.kode); // Kode produk
+                    detailItem.add(String.valueOf(kuantiti)); // Kuantitas
+                    detailItem.add(String.valueOf(totalPerProduk)); // Total harga
+                    transaksiBaru.transaksi_detail.add(detailItem);
+
+                    // viewNota(); <- tampilkan nota
+                }
+
+                showMenu();
+            }
+
+        } catch (Exception e) {
+            System.out.println("!!!!Data Gagal Disimpan!!!!");
+            System.out.println("error : " + e.getMessage());
+        }
+    }
+
+    void removeTransaksi() {
+        header("HAPUS TRANSAKSI");
+
+        // tampilkan transaksi
+        viewUser(false);
+
+        System.out.println("Masukkan id transaksi : ");
+        int id = input.nextInt();
+
+        transaksiObject.removeIf(n -> n.id == id);
+        System.out.println(">>>>Data Berhasil Dihapus<<<<");
+
+        showMenu();
     }
 
     void viewUser(boolean isShowMenu) {
@@ -1143,14 +1234,13 @@ class Sitose {
             }
         }
         if (isShowMenu) {
-            showMenu("submenu", 6);
+            showMenu();
         }
     }
 
     void insertUser() {
         try {
             header("TAMBAH USER");
-			
 
             int id = 1;
             if (!penggunaObject.isEmpty()) {
@@ -1182,7 +1272,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                showMenu("submenu", 6);
+                showMenu();
             } else {
                 System.out.println("Kolom wajib diisi!");
             }
@@ -1218,12 +1308,12 @@ class Sitose {
         penggunaObject.get(id - 1).password = password;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
-        showMenu("submenu", 6);
+        showMenu();
     }
 
     void removeUser() {
         header("HAPUS USER");
-			
+
         // tampilkan kategori produk
         viewUser(false);
 
@@ -1233,7 +1323,7 @@ class Sitose {
         penggunaObject.removeIf(n -> n.id == id);
         System.out.println(">>>>Data Berhasil Dihapus<<<<");
 
-        showMenu("submenu", 6);
+        showMenu();
     }
 }
 
@@ -1302,5 +1392,25 @@ class CabangToko {
         this.kode = kode;
         this.telepon = telepon;
         this.alamat = alamat;
+    }
+}
+
+class Transaksi {
+    int id, total;
+    String kode, waktu;
+    ArrayList<ArrayList<String>> transaksi_detail = new ArrayList<>();
+    ArrayList<String> transaksi_detail_item;
+
+    public Transaksi(int total, CabangToko cabang) {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = now.format(formatter);
+        System.out.println("Tanggal dan waktu yang diformat: " + formattedDate);
+
+        // this.id = id;
+        this.kode = kode;
+        this.waktu = formattedDate;
+        this.total = total;
+        // this.transaksi_detail_i;
     }
 }
