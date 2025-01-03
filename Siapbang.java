@@ -433,16 +433,16 @@ class Siapbang {
 
         switch (inpmenu) {
             case "A":
-                viewProduk(true);
+                viewCabangToko(true);
                 break;
             case "B":
-                insertProduk();
+                insertCabangToko();
                 break;
             case "C":
-                updateProduk();
+                updateCabangToko();
                 break;
             case "D":
-                removeProduk();
+                removeCabangToko();
                 break;
             case "0":
                 showMenu();
