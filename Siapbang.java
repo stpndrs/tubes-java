@@ -106,6 +106,7 @@ class Siapbang {
          * -> level : level atau role yang digunakkan untuk memvalidasi hak akses
          */
         cabangTokoObject.add(new CabangToko("Cabang 1", "C1", "0000", "tes"));
+        cabangTokoObject.add(new CabangToko("Cabang 2", "C2", "0000", "tes"));
         jenisProdukObject.add(new Jenis("jenis 1", "J"));
         kategoriProdukObject.add(new Kategori("kategori 1", "KA"));
         produkObject.add(new Produk("produk 1", jenisProdukObject.get(0),
@@ -113,7 +114,9 @@ class Siapbang {
         penggunaObject.add(new User("admin", "password", "admin", null));
         penggunaObject.add(new User("gudang", "password", "gudang", null));
         penggunaObject.add(new User("manajer", "password", "manajer", cabangTokoObject.get(0)));
+        penggunaObject.add(new User("manajer2", "password", "manajer", cabangTokoObject.get(1)));
         penggunaObject.add(new User("kasir", "password", "kasir", cabangTokoObject.get(0)));
+        penggunaObject.add(new User("kasir2", "password", "kasir", cabangTokoObject.get(1)));
     }
 
     /*
@@ -224,7 +227,7 @@ class Siapbang {
                 { "Data Produk", "C" }, { "Manajemen Cabang Toko", "D" },
                 { "Transaksi", "E" }, { "Manajemen Pengguna", "F" }, { "Logout", "0" }, { "Exit Program", "X" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCDEF0X" }, { "UB", "ABC0X" }, { "UC", "CD0X" }, { "UD", "E0X" } };
+        String[][] mainMenuAccess = { { "UA", "ABCDEF0X" }, { "UB", "ABC0X" }, { "UC", "CDE0X" }, { "UD", "E0X" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -459,7 +462,7 @@ class Siapbang {
         // 0 = nama menu, 1 = kode menu
         String[][] mainMenus = { { "Lihat", "A" }, { "Tambah", "B" }, { "Hapus", "D" }, { "Kembali", "0" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ACD0" }, { "UD", "ABD0" } };
+        String[][] mainMenuAccess = { { "UA", "ACD0" }, {"UC", "A0"}, { "UD", "ABD0" } };
 
         header("MENU TRANSAKSI");
 
@@ -1108,6 +1111,7 @@ class Siapbang {
             System.out.println("|       Tidak ada data          |");
             System.out.println("+-------------------------------+");
         } else {
+            System.out.println("+-----+-------------------+----------+---------------+-----------------------------+");
             System.out.printf("|%-5s|%-20s|%-10s|%-15s|%-30s|\n", "ID", "Nama", "Kode", "Telepon", "Alamat");
             int id = 0;
             System.out.println("+-----+-------------------+----------+---------------+-----------------------------+");
@@ -1129,7 +1133,7 @@ class Siapbang {
 
             System.out.print("Masukkan nama cabang : ");
             String nama = input.nextLine();
-            System.out.print("Masukkan kode cabang : ");
+            System.out.print("Masukkan kode cabang (masukkan 2 huruf) : ");
             String kode = input.nextLine();
             System.out.print("Masukkan telepon cabang : ");
             String telepon = input.nextLine();
@@ -1263,40 +1267,48 @@ class Siapbang {
 
             for (Transaksi item : transaksiObject) {
 
-                System.out.println("+-----+----------+--------------------+----------+----------------+");
-                System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-16s|\n", "ID", "Kode", "Waktu", "Total", "Detail");
-                System.out.println("+-----+----------+--------------------+----------+----------------+");
-
-                System.out.printf("|%-5d|%-10s|%-20s|%-10d|%-16s|\n",
-                        ++id, item.kode, item.waktu, item.total, "Lihat Detail");
-
-                if (!item.transaksi_detail.isEmpty()) {
+                // String kodeToko = item.kode.substring(0, 2);
+                // System.out.println(kodeToko);
+                // System.out.println(userCabang.kode);
+                // System.out.println(kodeToko == userCabang.kode);
+                // if (kodeToko == userCabang.kode) {
+                    
                     System.out.println("+-----+----------+--------------------+----------+----------------+");
-                    System.out.printf("| %-50s |\n", "Detail Transaksi:");
-                    System.out.println("+-----+----------+----------+---------+----------+----------+");
-
-                    // Header untuk detail transaksi
-                    System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-10s|\n",
-                            "No", "Nama", "Harga", "Jumlah", "Subtotal");
-                    System.out.println("+-----+----------+----------+---------+----------+----------+");
-
-                    // itu gabisa pakai foreach, jadinya pakai for biasa
-
-                    for (int i = 0; i < item.transaksi_detail.size(); i++) {
-                        ArrayList<String> detail = item.transaksi_detail.get(i);
-
-                        System.out.printf("|%-5d|%-10s|%-20s|%-10s|%-10s|\n",
-                                (i + 1), detail.get(0), detail.get(3), detail.get(2), detail.get(4));
+                    System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-16s|\n", "ID", "Kode", "Waktu", "Total", "Detail");
+                    System.out.println("+-----+----------+--------------------+----------+----------------+");
+    
+                    System.out.printf("|%-5d|%-10s|%-20s|%-10d|%-16s|\n",
+                            ++id, item.kode, item.waktu, item.total, "Lihat Detail");
+    
+                    if (!item.transaksi_detail.isEmpty()) {
+                        System.out.println("+-----+----------+--------------------+----------+----------------+");
+                        System.out.printf("| %-50s |\n", "Detail Transaksi:");
+                        System.out.println("+-----+----------+----------+---------+----------+----------+");
+    
+                        // Header untuk detail transaksi
+                        System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-10s|\n",
+                                "No", "Nama", "Harga", "Jumlah", "Subtotal");
+                        System.out.println("+-----+----------+----------+---------+----------+----------+");
+    
+                        // itu gabisa pakai foreach, jadinya pakai for biasa
+    
+                        for (int i = 0; i < item.transaksi_detail.size(); i++) {
+                            ArrayList<String> detail = item.transaksi_detail.get(i);
+    
+                            System.out.printf("|%-5d|%-10s|%-20s|%-10s|%-10s|\n",
+                                    (i + 1), detail.get(0), detail.get(3), detail.get(2), detail.get(4));
+                        }
+    
+                        System.out.println("+-----+----------+----------+---------+----------+----------+");
+    
                     }
+                // }
 
-                    System.out.println("+-----+----------+----------+---------+----------+----------+");
-
-                }
 
             }
-            if (isShowMenu) {
-                menuTransaksi();
-            }
+        }
+        if (isShowMenu) {
+            menuTransaksi();
         }
     }
 
