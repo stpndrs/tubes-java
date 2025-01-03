@@ -1006,7 +1006,7 @@ class Sitose {
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
-                input.nextInt();
+                input.nextLine();
 
                 menuProduk();
             } else {
@@ -1056,6 +1056,7 @@ class Sitose {
                 produkObject.get(id - 1).harga = harga;
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
+                input.nextLine();
 
                 menuProduk();
             } else {
@@ -1422,7 +1423,7 @@ class Sitose {
              * input sebelumnya, supaya saat kita membaca input berikutnya dengan
              * nextLine(), program tidak langsung melewatkannya.
              */
-            input.nextLine();
+            // input.nextLine();
             System.out.print("Masukkan username : ");
             String username = input.nextLine();
             System.out.print("Masukkan password : ");
@@ -1442,6 +1443,7 @@ class Sitose {
                 penggunaObject.add(new User(username, password, level, cabangToko));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
+                input.nextLine();
 
                 menuManajemenUser();
             } else {
