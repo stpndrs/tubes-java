@@ -3,7 +3,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-class Sitose {
+class Siapbang {
     /*
      * variabel input sebagai scanner yang akan digunakkan untuk menangkap data
      * inputan
@@ -63,7 +63,7 @@ class Sitose {
 
     public static void main(String[] args) {
         // Membuat objek baru dari kelas Sitose dan menyimpannya di variabel func
-        Sitose func = new Sitose();
+        Siapbang func = new Siapbang();
 
         // Menjalankan metode run() pada objek func yang telah dibuat
         func.run();
