@@ -541,7 +541,7 @@ class Sitose {
      */
     void viewJenis(Boolean isShowMenu) {
         if (jenisProdukObject.isEmpty()) {
-
+            System.out.println("+----+------+-------------------+");
             System.out.println("|       Tidak ada data          |");
             System.out.println("+-------------------------------+");
 
@@ -762,7 +762,9 @@ class Sitose {
      */
     void viewKategori(Boolean isShowMenu) {
         if (kategoriProdukObject.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
+            System.out.println("+----+------+-------------------+");
+            System.out.println("|       Tidak ada data          |");
+            System.out.println("+-------------------------------+");
         } else {
             // atas
             System.out.println("+----+----+----------------------+");
@@ -957,7 +959,9 @@ class Sitose {
 
     void viewProduk(boolean isShowMenu) {
         if (kategoriProdukObject.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
+            System.out.println("+----+------+-------------------+");
+            System.out.println("|       Tidak ada data          |");
+            System.out.println("+-------------------------------+");
         } else {
             System.out.println(
                     "+-----+--------------------+----------+---------------+---------------+----------+----------+");
@@ -1100,7 +1104,9 @@ class Sitose {
 
     void viewCabangToko(boolean isShowMenu) {
         if (cabangTokoObject.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
+            System.out.println("+----+------+-------------------+");
+            System.out.println("|       Tidak ada data          |");
+            System.out.println("+-------------------------------+");
         } else {
             System.out.printf("|%-5s|%-20s|%-10s|%-15s|%-30s|\n", "ID", "Nama", "Kode", "Telepon", "Alamat");
             int id = 0;
@@ -1249,7 +1255,9 @@ class Sitose {
 
     void viewTransaksi(boolean isShowMenu) {
         if (transaksiObject.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
+            System.out.println("+----+------+-------------------+");
+            System.out.println("|       Tidak ada data          |");
+            System.out.println("+-------------------------------+");
         } else {
             int id = 0;
 
@@ -1266,13 +1274,11 @@ class Sitose {
                     System.out.println("+-----+----------+--------------------+----------+----------------+");
                     System.out.printf("| %-50s |\n", "Detail Transaksi:");
                     System.out.println("+-----+----------+----------+---------+----------+----------+");
-                    
 
                     // Header untuk detail transaksi
                     System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-10s|\n",
                             "No", "Nama", "Harga", "Jumlah", "Subtotal");
                     System.out.println("+-----+----------+----------+---------+----------+----------+");
-                    
 
                     // itu gabisa pakai foreach, jadinya pakai for biasa
 
@@ -1422,7 +1428,9 @@ class Sitose {
 
     void viewUser(boolean isShowMenu) {
         if (penggunaObject.isEmpty()) {
-            System.out.println("Tidak ada data untuk ditampilkan.");
+            System.out.println("+----+------+-------------------+");
+            System.out.println("|       Tidak ada data          |");
+            System.out.println("+-------------------------------+");
         } else {
             int id = 0;
             // jika levelnya adalah manajer, maka
