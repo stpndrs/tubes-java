@@ -1259,13 +1259,11 @@ class Sitose {
                     System.out.println("+-----+----------+--------------------+----------+----------------+");
                     System.out.printf("| %-50s |\n", "Detail Transaksi:");
                     System.out.println("+-----+----------+----------+---------+----------+----------+");
-                    
 
                     // Header untuk detail transaksi
                     System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-10s|\n",
                             "No", "Nama", "Harga", "Jumlah", "Subtotal");
                     System.out.println("+-----+----------+----------+---------+----------+----------+");
-                    
 
                     // itu gabisa pakai foreach, jadinya pakai for biasa
 
@@ -1482,7 +1480,7 @@ class Sitose {
                 penggunaObject.add(new User(username, password, level, cabangToko));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
-                input.nextLine();
+                // input.nextLine();
 
                 menuManajemenUser();
             } else {
