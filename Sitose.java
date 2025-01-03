@@ -109,7 +109,7 @@ class Sitose {
         jenisProdukObject.add(new Jenis("jenis 1", "J"));
         kategoriProdukObject.add(new Kategori("kategori 1", "KA"));
         produkObject.add(new Produk("produk 1", jenisProdukObject.get(0),
-                kategoriProdukObject.get(0), 10, 10000));
+                kategoriProdukObject.get(0), 10, 10000, 1));
         penggunaObject.add(new User("admin", "password", "admin", null));
         penggunaObject.add(new User("gudang", "password", "gudang", null));
         penggunaObject.add(new User("manajer", "password", "manajer", cabangTokoObject.get(0)));
@@ -1000,9 +1000,14 @@ class Sitose {
             int harga = input.nextInt();
 
             if (nama != "") {
+                int lastNumber = 1;
+                int produkSize = produkObject.size();
+                if (produkObject.size() > 0)
+                    lastNumber = Integer.parseInt(produkObject.get(produkSize - 1).kode.substring(2)) + 1;
+
                 produkObject.add(new Produk(nama, jenisProdukObject.get(id_jenis - 1),
                         kategoriProdukObject.get(id_kategori - 1), stok,
-                        harga));
+                        harga, lastNumber));
 
                 System.out.println(">>>>Data Berhasil Disimpan<<<<");
 
@@ -1194,9 +1199,11 @@ class Sitose {
     }
 
     void Line() {
+        System.out.print("|");
         for (int i = 0; i < 52; i++) {
             System.out.print("-");
         }
+        System.out.print("|");
         System.out.println();
 
     }
@@ -1208,26 +1215,26 @@ class Sitose {
         // Data Nota
         int x = 0;
         Line();
-        System.out.println("nomor nota : " + transaksi.kode);
-        System.out.print("waktu transaksi : " + transaksi.waktu);
+        System.out.println("|nomor nota : " + transaksi.kode + "                                 |");
+        System.out.print("|waktu transaksi : " + transaksi.waktu + "               |");
         System.out.println("");
         Line();
-        System.out.printf(" %-20s %-10s %-10s %-10s \n", "nama", "harga", "jumlah", "subtotal");
+        System.out.printf("|%-20s %-10s %-10s %-9s|\n", "nama", "harga", "jumlah", "subtotal");
         Line();
         for (int i = 0; i < transaksi.transaksi_detail.size(); i++) {
             ArrayList<String> item = transaksi.transaksi_detail.get(i);
 
-            System.out.print(item.get(1));
-            System.out.printf(" %-15s %-10s %-10s %-10s \n", " ", item.get(3), item.get(2), item.get(4));
+            System.out.print("|" + item.get(1));
+            System.out.printf("%-15s %-10s %-10s %-7s|\n", " ", item.get(3), item.get(2), item.get(4));
 
             x = x + 1;
 
         }
         Line();
-        System.out.println("Jumlah Produk");
-        System.out.printf("%-15s %-10s %-10d %-10d\n", " ", " ", x, transaksi.total);
+        System.out.println("|Jumlah Produk                                       |");
+        System.out.printf("|%-15s %-17s %-10d %-7d|\n", " ", " ", x, transaksi.total);
         Line();
-        System.out.printf("%-15s %-10s %-10s %-10d\n", "Kembalian", " ", " ", transaksi.kembalian);
+        System.out.printf("|%-15s %-14s %-10s %-10d|\n", "Kembalian", " ", " ", transaksi.kembalian);
         Line();
         System.out.println("Alamat : " + this.userCabang.alamat);
     }
@@ -1241,8 +1248,9 @@ class Sitose {
             for (Transaksi item : transaksiObject) {
 
                 // Header
+
                 System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-20s|\n", "ID", "Kode", "Waktu", "Total", "Detail");
-                System.out.printf("|%-5d|%-10s|%-20s|%-10.2f|%-20s|\n", ++id, item.kode, item.waktu, item.total,
+                System.out.printf("|%-5d|%-10s|%-20s|%-10s|%-20s|\n", ++id, item.kode, item.waktu, item.total,
                         item.transaksi_detail);
 
             }
@@ -1289,9 +1297,15 @@ class Sitose {
             }
 
             if (!isNewProduct) {
-
                 CabangToko cabang = this.userCabang; // diganti jadi diambil dari data user
-                Transaksi transaksiBaru = new Transaksi(cabang);
+
+                int lastNumber = 1;
+                int transaksiSize = transaksiObject.size();
+                if (transaksiObject.size() > 0)
+                    lastNumber = Integer.parseInt(transaksiObject.get(transaksiSize - 1).kode.substring(2)) + 1;
+                String kode = cabang.kode + String.format("%04d", lastNumber);
+                Transaksi transaksiBaru = new Transaksi(cabang, kode);
+
                 transaksiObject.add(transaksiBaru);
 
                 for (ArrayList<String> item : tmp) {
@@ -1540,11 +1554,11 @@ class Produk {
     Jenis jenis;
     Kategori kategori;
 
-    public Produk(String nama, Jenis jenis, Kategori kategori, int stok, int harga) {
+    public Produk(String nama, Jenis jenis, Kategori kategori, int stok, int harga, int lastKode) {
         this.nama = nama;
         this.jenis = jenis;
         this.kategori = kategori;
-        this.kode = this.jenis.kode + this.kategori.kode + String.format("%04d", 0);
+        this.kode = this.jenis.kode + this.kategori.kode + String.format("%04d", lastKode);
         // (B-MA-0001 = BMA0001 dengan B (barang) adalah kode dari
         // jenis, MA (makanan) kode dari kategori dan 0001 didapat dari nomor id)
         this.stok = stok;
@@ -1568,13 +1582,14 @@ class Transaksi {
     String kode, waktu;
     ArrayList<ArrayList<String>> transaksi_detail = new ArrayList<>();
 
-    public Transaksi(CabangToko cabang) {
+    public Transaksi(CabangToko cabang, String kode) {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedDate = now.format(formatter);
-        // System.out.println("Tanggal dan waktu yang diformat: " + formattedDate);
 
-        // this.id = id;
+        // CA0001
+        // CA = KODE CABANG, 0001 = JUMLAH TRANSAKSI, ANGKA DIAMBIL DARI ANGKA
+        // SEBELUMNYA
         this.kode = kode;
         this.waktu = formattedDate;
         // this.total = total;
