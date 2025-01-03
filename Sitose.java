@@ -224,7 +224,7 @@ class Sitose {
                 { "Data Produk", "C" }, { "Manajemen Cabang Toko", "D" },
                 { "Transaksi", "E" }, { "Manajemen Pengguna", "F" }, { "Logout", "0" }, { "Exit Program", "X" } };
         // 0 = kode user, 1 = string dari kode menu
-        String[][] mainMenuAccess = { { "UA", "ABCDEF0X" }, { "UB", "BCD0X" }, { "UC", "CD0X" }, { "UD", "E0X" } };
+        String[][] mainMenuAccess = { { "UA", "ABCDEF0X" }, { "UB", "ABC0X" }, { "UC", "CD0X" }, { "UD", "E0X" } };
 
         output(mainMenus, mainMenuAccess);
 
@@ -1008,7 +1008,7 @@ class Sitose {
                 int lastNumber = 1;
                 int produkSize = produkObject.size();
                 if (produkObject.size() > 0)
-                    lastNumber = Integer.parseInt(produkObject.get(produkSize - 1).kode.substring(2)) + 1;
+                    lastNumber = Integer.parseInt(produkObject.get(produkSize - 1).kode.substring(3)) + 1;
 
                 produkObject.add(new Produk(nama, jenisProdukObject.get(id_jenis - 1),
                         kategoriProdukObject.get(id_kategori - 1), stok,
