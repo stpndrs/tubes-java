@@ -1252,20 +1252,45 @@ class Sitose {
             System.out.println("Tidak ada data untuk ditampilkan.");
         } else {
             int id = 0;
-            System.out.println("+-----+----------+--------------------+----------+----------------+");
+
             for (Transaksi item : transaksiObject) {
 
-                // Header
+                System.out.println("+-----+----------+--------------------+----------+----------------+");
+                System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-16s|\n", "ID", "Kode", "Waktu", "Total", "Detail");
+                System.out.println("+-----+----------+--------------------+----------+----------------+");
 
-                System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-20s|\n", "ID", "Kode", "Waktu", "Total", "Detail");
-                System.out.printf("|%-5d|%-10s|%-20s|%-10s|%-20s|\n", ++id, item.kode, item.waktu, item.total,
-                        item.transaksi_detail);
+                System.out.printf("|%-5d|%-10s|%-20s|%-10d|%-16s|\n",
+                        ++id, item.kode, item.waktu, item.total, "Lihat Detail");
+
+                if (!item.transaksi_detail.isEmpty()) {
+                    System.out.println("+-----+----------+--------------------+----------+----------------+");
+                    System.out.printf("| %-50s |\n", "Detail Transaksi:");
+                    System.out.println("+-----+----------+----------+---------+----------+----------+");
+                    
+
+                    // Header untuk detail transaksi
+                    System.out.printf("|%-5s|%-10s|%-20s|%-10s|%-10s|\n",
+                            "No", "Nama", "Harga", "Jumlah", "Subtotal");
+                    System.out.println("+-----+----------+----------+---------+----------+----------+");
+                    
+
+                    // itu gabisa pakai foreach, jadinya pakai for biasa
+
+                    for (int i = 0; i < item.transaksi_detail.size(); i++) {
+                        ArrayList<String> detail = item.transaksi_detail.get(i);
+
+                        System.out.printf("|%-5d|%-10s|%-20s|%-10s|%-10s|\n",
+                                (i + 1), detail.get(0), detail.get(3), detail.get(2), detail.get(4));
+                    }
+
+                    System.out.println("+-----+----------+----------+---------+----------+----------+");
+
+                }
 
             }
-            System.out.println("+-----+----------+--------------------+----------+----------------+");
-        }
-        if (isShowMenu) {
-            menuTransaksi();
+            if (isShowMenu) {
+                menuTransaksi();
+            }
         }
     }
 
