@@ -214,7 +214,8 @@ class Sitose {
     }
 
     /*
-     * Rakha Jelasin
+     * method showMenu() digunakkan untuk menampilkan daftar menu utama sesuai
+     * dengan hak akses
      */
     void showMenu() {
         // 0 = nama menu, 1 = kode menu
@@ -1036,38 +1037,40 @@ class Sitose {
              */
             input.nextLine();
 
-            System.out.print("Masukkan nama produk baru : ");
+            System.out.print("Masukkan nama produk baru (masukkan jika ingin mengganti) : ");
             String nama = input.nextLine();
 
             viewJenis(false);
-            System.out.print("Pilih angka jenis produk baru : ");
+            System.out.print("Pilih angka jenis produk baru (masukkan jika ingin mengganti) : ");
             int id_jenis = input.nextInt();
 
             viewKategori(false);
-            System.out.print("Pilih angka kategori produk baru : ");
+            System.out.print("Pilih angka kategori produk baru (masukkan jika ingin mengganti) : ");
             int id_kategori = input.nextInt();
 
-            System.out.print("Masukkan jumlah stok masuk baru : ");
+            System.out.print("Masukkan jumlah stok masuk baru (masukkan jika ingin mengganti) : ");
             int stok = input.nextInt();
 
-            System.out.print("Masukkan harga satuan baru : ");
+            System.out.print("Masukkan harga satuan baru (masukkan jika ingin mengganti) : ");
             int harga = input.nextInt();
 
-            if (nama != "") {
-                produkObject.get(id - 1).nama = nama;
-                produkObject.get(id - 1).jenis = jenisProdukObject.get(id_jenis - 1);
-                produkObject.get(id - 1).kategori = kategoriProdukObject.get(id_kategori - 1);
-                produkObject.get(id - 1).stok = stok;
-                produkObject.get(id - 1).harga = harga;
+            String namaTmp = produkObject.get(id - 1).nama;
+            Jenis jenisTmp = produkObject.get(id - 1).jenis;
+            Kategori kategoriTmp = produkObject.get(id - 1).kategori;
+            int stokTmp = produkObject.get(id - 1).stok;
+            int hargaTmp = produkObject.get(id - 1).harga;
 
-                System.out.println(">>>>Data Berhasil Disimpan<<<<");
-                input.nextLine();
+            produkObject.get(id - 1).nama = nama.isEmpty() ? namaTmp : nama;
+            produkObject.get(id - 1).jenis = id_jenis == 0 ? jenisTmp : jenisProdukObject.get(id_jenis - 1);
+            produkObject.get(id - 1).kategori = id_kategori == 0 ? kategoriTmp
+                    : kategoriProdukObject.get(id_kategori - 1);
+            produkObject.get(id - 1).stok = stok == 0 ? stokTmp : stok;
+            produkObject.get(id - 1).harga = harga == 0 ? hargaTmp : harga;
 
-                menuProduk();
-            } else {
-                System.out.println("Kolom wajib diisi!");
-            }
+            System.out.println(">>>>Data Berhasil Disimpan<<<<");
+            input.nextLine();
 
+            menuProduk();
         } catch (Exception e) {
             System.out.println("!!!!Data Gagal Disimpan!!!!");
             System.out.println("error : " + e.getMessage());
@@ -1158,20 +1161,24 @@ class Sitose {
          */
         input.nextLine();
 
-        System.out.println("Masukkan nama baru : ");
+        System.out.println("Masukkan nama baru (masukkan jika ingin mengganti) : ");
         String nama = input.nextLine();
-        System.out.println("Masukkan kode baru : ");
+        System.out.println("Masukkan kode baru (masukkan jika ingin mengganti) : ");
         String kode = input.nextLine();
-        System.out.println("Masukkan kode baru : ");
+        System.out.println("Masukkan kode baru (masukkan jika ingin mengganti) : ");
         String telepon = input.nextLine();
-        System.out.println("Masukkan kode baru : ");
+        System.out.println("Masukkan kode baru (masukkan jika ingin mengganti) : ");
         String alamat = input.nextLine();
 
-        // tambahkan if kosong maka tidak ada yang diubah ---------------------
-        cabangTokoObject.get(id - 1).nama = nama;
-        cabangTokoObject.get(id - 1).kode = kode;
-        cabangTokoObject.get(id - 1).telepon = telepon;
-        cabangTokoObject.get(id - 1).alamat = alamat;
+        String namaTmp = cabangTokoObject.get(id - 1).nama;
+        String kodeTmp = cabangTokoObject.get(id - 1).kode;
+        String teleponTmp = cabangTokoObject.get(id - 1).telepon;
+        String alamatTmp = cabangTokoObject.get(id - 1).alamat;
+
+        cabangTokoObject.get(id - 1).nama = nama.isEmpty() ? namaTmp : nama;
+        cabangTokoObject.get(id - 1).kode = kode.isEmpty() ? kodeTmp : kode;
+        cabangTokoObject.get(id - 1).telepon = telepon.isEmpty() ? teleponTmp : telepon;
+        cabangTokoObject.get(id - 1).alamat = alamat.isEmpty() ? alamatTmp : alamat;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
         menuCabangToko();
@@ -1473,10 +1480,10 @@ class Sitose {
     void updateUser() {
         header("EDIT USER");
 
-        // tampilkan kategori produk
+        // tampilkan user
         viewUser(false);
 
-        System.out.println("Masukkan id kategori produk : ");
+        System.out.println("Masukkan id user : ");
         int id = input.nextInt();
         /*
          * input.nextLine(); digunakan untuk menghapus sisa enter yang tertinggal dari
@@ -1485,14 +1492,16 @@ class Sitose {
          */
         input.nextLine();
 
-        System.out.println("Masukkan username baru : ");
+        System.out.println("Masukkan username baru (masukkan jika ingin mengganti) : ");
         String username = input.nextLine();
-        System.out.println("Masukkan password baru : ");
+        System.out.println("Masukkan password baru (masukkan jika ingin mengganti) : ");
         String password = input.nextLine();
 
-        // tambahkan if kosong maka tidak ada yang diubah ---------------------
-        penggunaObject.get(id - 1).username = username;
-        penggunaObject.get(id - 1).password = password;
+        String usernameTmp = penggunaObject.get(id - 1).username;
+        String passwordTmp = penggunaObject.get(id - 1).password;
+
+        penggunaObject.get(id - 1).username = username.isEmpty() ? usernameTmp : username;
+        penggunaObject.get(id - 1).password = password.isEmpty() ? passwordTmp : password;
         System.out.println(">>>>Data Berhasil Diubah<<<<");
 
         menuManajemenUser();
